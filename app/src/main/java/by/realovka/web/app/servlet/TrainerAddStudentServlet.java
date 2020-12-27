@@ -22,7 +22,7 @@ public class TrainerAddStudentServlet extends HttpServlet {
 
     private UserService userService;
 
-    Logger log = LoggerFactory.getLogger(TrainerAddStudentServlet.class);
+    private static final  Logger log = LoggerFactory.getLogger(TrainerAddStudentServlet.class);
 
     @Override
     public void init() throws ServletException {
