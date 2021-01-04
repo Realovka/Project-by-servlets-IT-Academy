@@ -24,7 +24,7 @@ public class DeleteMarkServlet extends HttpServlet {
 
     private UserRepository userRepository;
 
-    private final static Logger log = LoggerFactory.getLogger(RegistrationServlet.class);
+    private final static Logger log = LoggerFactory.getLogger(DeleteMarkServlet.class);
 
 
     @Override
