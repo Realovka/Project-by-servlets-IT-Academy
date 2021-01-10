@@ -7,15 +7,15 @@
 <body>
 <h2 style="color: mediumblue">Registration</h2>
 <form action="/reg" method="post">
-
+    ${requestScope.MassageAboutFailRegistration}
     <input type="text" name="nameRegistration" placeholder="Name"/>
     <input type="text" name="ageRegistration" placeholder="Age"/>
     <input type="text" name="loginRegistration" placeholder="Login"/>
     <input type="password" name="passwordRegistration" placeholder="Password"/>
     <select name="role">
-        <option>Admin</option>
-        <option>Trainer</option>
-        <option>Student</option>
+        <option>ADMIN</option>
+        <option>TRAINER</option>
+        <option>STUDENT</option>
     </select>
     <button type="submit"> Registration</button>
 

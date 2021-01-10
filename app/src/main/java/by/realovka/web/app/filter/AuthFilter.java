@@ -1,8 +1,7 @@
 package by.realovka.web.app.filter;
 
-import by.realovka.web.dao.model.Admin;
-import by.realovka.web.dao.model.Student;
-import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.dao.UserDao;
+import by.realovka.web.dao.model.Role;
 import by.realovka.web.dao.model.User;
 import by.realovka.web.dao.repository.UserRepository;
 import by.realovka.web.dao.repository.UserRepositoryImpl;
@@ -21,15 +20,13 @@ import java.io.IOException;
 public class AuthFilter extends UtilFilter {
 
     private UserService userService;
-
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     private final static Logger log = LoggerFactory.getLogger(AuthFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        userRepository = UserRepositoryImpl.getInstance();
-        userService = UserServiceImpl.getInstance(userRepository);
+        userService = UserServiceImpl.getInstance(userDao);
     }
 
     @Override
@@ -37,23 +34,25 @@ public class AuthFilter extends UtilFilter {
         HttpServletRequest req = (HttpServletRequest) request;
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
-        User user = userService.getUserByLoginAndPassword(login, password);
-        log.info("UserFromCollection = {}", user);
-        HttpSession session = req.getSession();
-        session.setAttribute("userAuth", user);
-        if (user instanceof Admin) {
-            req.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
-        } else {
-            if (user instanceof Student) {
-                req.getRequestDispatcher("/mainStudent.jsp").forward(request, response);
+        if (userService.identificationUserByLoginAndPassword(login, password).getUserName() != null) {
+            User auth = userService.identificationUserByLoginAndPassword(login, password);
+            log.info("UserFromCollection = {}", auth);
+            HttpSession session = req.getSession();
+            session.setAttribute("userAuth", auth);
+            if (auth.getRole().equals(Role.ADMIN)) {
+                req.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
             } else {
-                if (user instanceof Trainer) {
+                if (auth.getRole().equals(Role.TRAINER)) {
                     req.getRequestDispatcher("/mainTrainer.jsp").forward(request, response);
                 } else {
-                    req.getRequestDispatcher("/index.jsp").forward(request, response);
-                    request.setAttribute("authIsInvalid", "Authentication is invalid!"); //TODO
+                    if (auth.getRole().equals(Role.STUDENT)) {
+                        req.getRequestDispatcher("/mainStudent.jsp").forward(request, response);
+                    }
                 }
             }
+        } else {
+            request.setAttribute("MassageAboutFailIdentification", "Identification is fail!");
+            req.getRequestDispatcher("/index.jsp").forward(request, response);
         }
         chain.doFilter(request, response);
     }
