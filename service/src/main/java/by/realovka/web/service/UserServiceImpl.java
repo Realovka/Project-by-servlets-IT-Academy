@@ -1,36 +1,33 @@
 package by.realovka.web.service;
 
 import by.realovka.web.dao.dao.UserDao;
-//import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.dao.UserDaoImpl;
 import by.realovka.web.dao.dto.UserDTO;
 import by.realovka.web.dao.model.Theme;
-//import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
-import by.realovka.web.dao.repository.UserRepository;
-import by.realovka.web.service.exception.*;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-
+@Slf4j
 public class UserServiceImpl implements UserService {
 
-    private static UserServiceImpl instance;
-    private UserDao userDao;
+    private static volatile UserServiceImpl instance;
+    private final UserDao userDao = UserDaoImpl.getInstance();
 
-    private UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    private UserServiceImpl() {
     }
 
-    public static UserServiceImpl getInstance(UserDao userDao) {
+    public static UserServiceImpl getInstance() {
         if (instance == null) {
-            return new UserServiceImpl(userDao);
+            synchronized (UserDaoImpl.class) {
+                if (instance == null) {
+                    instance = new UserServiceImpl();
+                }
+            }
         }
         return instance;
     }
@@ -38,16 +35,17 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public boolean saveUser(UserDTO userDTO) {
-        if (UserDaoImpl.getInstance().findByLogin(userDTO.getLogin()).isEmpty()) { //TODO
+        if (userDao.findByLogin(userDTO.getLogin()).isEmpty()) { //TODO
             String loginAndPassword = userDTO.getLogin().concat(userDTO.getPassword());
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] loginAndPasswordHash = md5.digest(loginAndPassword.getBytes());
             StringBuilder builder = new StringBuilder();
-            for (byte b : loginAndPasswordHash){
+            for (byte b : loginAndPasswordHash) {
                 builder.append(String.format("%02X", b));
             }
             User user = new User(userDTO.getUserName(), userDTO.getAge(), userDTO.getLogin(), builder, userDTO.getRole());
-            UserDaoImpl.getInstance().createUser(user);
+            log.info("Save new user {}", user);
+            userDao.createUser(user);
             return true;
         } else {
             return false;
@@ -57,52 +55,77 @@ public class UserServiceImpl implements UserService {
 
     @SneakyThrows
     @Override
-    public User identificationUserByLoginAndPassword(String login, String password) {
-        User auth = null;
+    public Optional<User> identificationUserByLoginAndPassword(String login, String password) {
+        Optional<User> user;
         String loginAndPasswordFromUI = login.concat(password); //TODO
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         byte[] loginAndPasswordHashFromUI = messageDigest.digest(loginAndPasswordFromUI.getBytes());
         StringBuilder builder = new StringBuilder();
-        for (byte b : loginAndPasswordHashFromUI){
+        for (byte b : loginAndPasswordHashFromUI) {
             builder.append(String.format("%02X", b));
         }
         String loginAndPassword = String.valueOf(builder);
-        if (UserDaoImpl.getInstance().identificationUser(loginAndPassword).isPresent()) {
-            auth = UserDaoImpl.getInstance().identificationUser(loginAndPassword).get();
-        }
-        return auth;
+        user = userDao.identificationUser(loginAndPassword);
+        log.info("Identification user {}", user);
+        return user;
     }
-//
-//    @Override
-//    public List<User> getAllStudents() {
-//        Map<String, User> users = userRepository.findAll();
-//        Collection<User> userCollection = users.values();
-//        return userCollection.stream().filter(user -> user.getClass().equals(Student.class))
-//                .sorted(Comparator.comparing(User::getLogin))
-//                .collect(Collectors.toList());
-//    }
 
-//    @Override
-//    public Trainer addStudentToTrainer(Trainer trainer, String studentName) {
-//        Map<String, User> users = userRepository.findAll();
-//        Trainer trainerFromMap = (Trainer) users.get(trainer.getLogin());
-//        Student studentFromMap = (Student) users.get(studentName);
-//        trainerFromMap.getStudents().add(studentFromMap);
-//        return trainer;
-//
-//    }
+    @Override
+    public List<User> getAllStudents() {
+        return userDao.getAllStudents();
+    }
 
-//    @Override
-//    public List<Student> addThemeToStudents(Trainer trainer, String theme) {
-//        if (theme.equals("")){
-//            throw new ThemeFormatIsWrongException("You didn't enter name of theme");
-//        }
-//        List<Student> students = getListStudentsAuthTrainer(trainer);
-//        for (Student item : students) {
-//            item.getThemes().add(new Theme(theme));
-//        }
-//        return students;
-//    }
+    @Override
+    public User createGroupByTrainer(User auth) {
+        long maxGroupId = userDao.getMaxInGroupId();
+        userDao.addGroupToTrainer(maxGroupId + 1, auth.getId());
+        return userDao.findTrainerAfterAdditionGroup(auth);
+    }
+
+    @Override
+    public User addStudentToGroup(User trainer, Long studentId) {
+        userDao.addStudentToGroup(trainer.getGroupId(), studentId);
+        List<Theme> themes = userDao.findAllTrainerTheme(trainer);
+        userDao.addThemesToOneStudent(themes, studentId);
+        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(trainer.getGroupId());
+        List<User> students = userDao.findAllTrainerStudents(studentsId, trainer);
+        List<User> studentsWithThemesAuthTrainer = getStudentsWithThemesAuthTrainer(students, trainer);
+        trainer.setStudents(studentsWithThemesAuthTrainer);
+        return trainer;
+    }
+
+    @Override
+    public User getTrainerAndHisStudents(User trainer) {
+        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(trainer.getGroupId());
+        List<User> students = userDao.findAllTrainerStudents(studentsId, trainer);
+        List<User> studentsWithThemesAuthTrainer = getStudentsWithThemesAuthTrainer(students, trainer);
+        trainer.setStudents(studentsWithThemesAuthTrainer);
+        return trainer;
+    }
+
+
+    private List<User> getStudentsWithThemesAuthTrainer(List<User> students, User auth) {
+        for(User item : students) {
+            List<Theme> themes = item.getThemes();
+            List<Theme> themesAuthTrainer = themes.stream()
+                                            .filter(t->t.getIdGroup()==auth.getGroupId())
+                                            .collect(Collectors.toList());
+            item.setThemes(themesAuthTrainer);
+        }
+        return students;
+    }
+
+    @Override
+    public User getTrainerAndHisStudentsAfterAddTheme(User trainer, String nameTheme) {
+        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(trainer.getGroupId());
+        userDao.addThemeToStudents(studentsId, trainer, nameTheme);
+        List<User> students = userDao.findAllTrainerStudents(studentsId,trainer);
+        List<User> studentsWithThemesAuthTrainer = getStudentsWithThemesAuthTrainer(students, trainer);
+        trainer.setStudents(studentsWithThemesAuthTrainer);
+        return trainer;
+    }
+
+
 //
 //    @Override
 //    public List<Student> addOrUpdateMarkToStudent(Trainer trainer, String studentLogin, String theme, Integer mark) {

@@ -1,10 +1,12 @@
 package by.realovka.web.app.servlet;
 
+import by.realovka.web.dao.dao.UserDao;
 import by.realovka.web.dao.model.User;
 import by.realovka.web.dao.repository.UserRepository;
 import by.realovka.web.dao.repository.UserRepositoryImpl;
 import by.realovka.web.service.UserService;
 import by.realovka.web.service.UserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,24 +21,15 @@ import java.util.List;
 @WebServlet(urlPatterns = "/allStudents")
 public class AllStudentsServlet extends HttpServlet {
 
-    private UserService userService;
-
-    private UserRepository userRepository;
-
-    private final static Logger log = LoggerFactory.getLogger(AllStudentsServlet.class);
-
-
-    @Override
-    public void init() throws ServletException {
-        userRepository = UserRepositoryImpl.getInstance();
-        userService = UserServiceImpl.getInstance(userRepository);
-    }
+    private final UserService userService = UserServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       List<User> students = userService.getAllStudents();
-       log.info("students = {}", students);
-       req.getSession().setAttribute("students", students);
-       req.getRequestDispatcher("/listAllStudents.jsp").forward(req, resp);
+        User auth = (User) req.getSession().getAttribute("userAuth");
+        List<User> students = userService.getAllStudents();
+        req.getSession().setAttribute("students", students);
+        List<User> trainerStudents = auth.getStudents();
+        req.getSession().setAttribute("listStudentsOfTrainer", trainerStudents);
+        req.getRequestDispatcher("/listAllStudents.jsp").forward(req, resp);
     }
 }

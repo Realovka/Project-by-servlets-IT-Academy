@@ -9,16 +9,16 @@
 <label>Click on student name if you want to add his to your list</label>
 <form action="/addStudent" method="post">
     <c:forEach items="${sessionScope.students}" var="student">
-        <a href="<c:url value="/addStudent"/>?student=${student.login}">${student.userName}</a><br>
+        <a href="<c:url value="/addStudent"/>?student=${student.id}">${student.userName}</a><br>
     </c:forEach>
 </form>
 
-<c:if test="${sessionScope.listStudentsForTrainer!=null}">
+<c:if test="${sessionScope.listStudentsOfTrainer!=null}">
     <table border="3">
         <thead>
         <th align="center">Students name in Your Group</th>
         </thead>
-        <c:forEach items="${sessionScope.listStudentsForTrainer}" var="student">
+        <c:forEach items="${sessionScope.listStudentsOfTrainer}" var="student">
             <tr>
                 <td>${student.userName}</td>
             </tr>

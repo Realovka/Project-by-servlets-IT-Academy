@@ -4,11 +4,10 @@ import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionToDB {
-    private static volatile ConnectionToDB instance;
+public class DataSource {
+    private static volatile DataSource instance;
 
     private String url;
     private String user;
@@ -16,7 +15,7 @@ public class ConnectionToDB {
     private String driverClassName;
 
     @SneakyThrows
-    private ConnectionToDB() {
+    private DataSource() {
         Properties property = new Properties();
         property.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties"));
         url = property.getProperty("url");
@@ -25,11 +24,11 @@ public class ConnectionToDB {
         driverClassName = property.getProperty("driver.class.name");
     }
 
-    public static ConnectionToDB getInstance() {
+    public static DataSource getInstance() {
         if (instance == null) {
-            synchronized (ConnectionToDB.class) {
+            synchronized (DataSource.class) {
                 if (instance == null) {
-                    instance = new ConnectionToDB();
+                    instance = new DataSource();
                 }
             }
         }

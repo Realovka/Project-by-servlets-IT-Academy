@@ -1,8 +1,6 @@
 package by.realovka.web.app.filter;
 
-import by.realovka.web.dao.model.Admin;
-import by.realovka.web.dao.model.Student;
-import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.Role;
 import by.realovka.web.dao.model.User;
 
 import javax.servlet.FilterChain;
@@ -25,13 +23,13 @@ public class SessionFilter extends UtilFilter {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } else {
             User auth = (User) session.getAttribute("userAuth");
-            if (auth instanceof Admin) {
+            if (auth.getRole().equals(Role.ADMIN)) {
                 request.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
             } else {
-                if (auth instanceof Student) {
+                if (auth.getRole().equals(Role.STUDENT)) {
                     request.getRequestDispatcher("/mainStudent.jsp").forward(request, response);
                 } else {
-                    if (auth instanceof Trainer) {
+                    if (auth.getRole().equals(Role.TRAINER)) {
                         request.getRequestDispatcher("/mainTrainer.jsp").forward(request, response);
                     }
                 }

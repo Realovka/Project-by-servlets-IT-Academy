@@ -9,26 +9,33 @@
 <h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
 <a href="/allStudents">List All Students</a><br>
 
+<c:if test="${sessionScope.userAuth.groupId == 0}">
+    <a href="/addGroup">Create group with students</a><br>
+</c:if>
+
 <a href="/addTheme.jsp">Add new theme</a><br>
 
-<c:if test="${sessionScope.listStudentsForTrainer!=null}">
 
-
-    ${applicationScope.massageFormatOfMarkIsWrong}
+<c:if test="${sessionScope.userAuth.students.size()>0}">
 
 
     <table border="3">
         <thead>
         <th align="center">Student name</th>
-        <c:forEach items="${sessionScope.listStudentsForTrainer.get(0).themes}" var="theme">
+
+        <c:forEach items="${sessionScope.userAuth.students.get(0).themes}" var="theme">
+
             <th align="center">${theme.name}</th>
+
         </c:forEach>
         </thead>
-        <c:forEach items="${sessionScope.listStudentsForTrainer}" var="student">
+
+        <c:forEach items="${sessionScope.userAuth.students}" var="student">
             <tr>
-                <td>
-                        ${student.userName}
-                </td>
+            <td>
+                    ${student.userName}
+            </td>
+                <c:if test="${sessionScope.userAuth.students.get(0).themes.size()>0}">
                 <c:forEach items="${student.themes}" var="theme">
                     <td>
                         <c:choose>
@@ -50,8 +57,11 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
+
                 </c:forEach>
-            </tr>
+                </c:if>
+                </tr>
+
         </c:forEach>
     </table>
 </c:if>
