@@ -9,7 +9,7 @@
 <label>Click on student name if you want to add his to your list</label>
 <form action="/addStudent" method="post">
     <c:forEach items="${sessionScope.students}" var="student">
-        <a href="<c:url value="/addStudent"/>?student=${student.id}">${student.userName}</a><br>
+        <a href="<c:url value="/addStudent"/>?studentId=${student.id}">${student.userName}</a><br>
     </c:forEach>
 </form>
 

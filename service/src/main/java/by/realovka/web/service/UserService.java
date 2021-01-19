@@ -4,10 +4,8 @@ package by.realovka.web.service;
 //import by.realovka.web.dao.model.Trainer;
 
 import by.realovka.web.dao.dto.UserDTO;
-import by.realovka.web.dao.model.Theme;
 import by.realovka.web.dao.model.User;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,5 +24,7 @@ public interface UserService {
     User getTrainerAndHisStudents(User trainer);
 
     User getTrainerAndHisStudentsAfterAddTheme(User trainer, String nameTheme);
+
+    User addOrUpdateMarkToStudent(User auth, String studentId, String themeName, int mark);
 
 }

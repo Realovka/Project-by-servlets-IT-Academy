@@ -1,14 +1,9 @@
 package by.realovka.web.app.servlet;
 
-import by.realovka.web.dao.dao.UserDao;
 import by.realovka.web.dao.model.User;
-import by.realovka.web.dao.repository.UserRepository;
-import by.realovka.web.dao.repository.UserRepositoryImpl;
 import by.realovka.web.service.UserService;
 import by.realovka.web.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +20,7 @@ public class TrainerAddStudentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long studentId = Long.parseLong(req.getParameter("student"));
+        Long studentId = Long.parseLong(req.getParameter("studentId"));
         User auth = (User) req.getSession().getAttribute("userAuth");
         User trainerAndHisStudents = userService.addStudentToGroup(auth, studentId);
         log.info("trainerAndHisStudents = {}", trainerAndHisStudents);

@@ -10,7 +10,7 @@ import lombok.With;
 @NoArgsConstructor
 @With
 public class Theme {
-
+    private Long id;
     private long idGroup;
     private String name;
     private int mark;

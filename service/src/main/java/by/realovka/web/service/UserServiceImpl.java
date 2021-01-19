@@ -9,7 +9,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -126,32 +127,17 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//
-//    @Override
-//    public List<Student> addOrUpdateMarkToStudent(Trainer trainer, String studentLogin, String theme, Integer mark) {
-//        if (mark>100 || mark<0){
-//            throw new MarkFormatIsInvalidException("Mark format is wrong!");
-//        }
-//        List<Student> students = getListStudentsAuthTrainer(trainer);
-//        for (Student item : students) {
-//            if (item.getLogin().equals(studentLogin)) {
-//                List<Theme> themes = item.getThemes();
-//                for (Theme var : themes) {
-//                    if (var.getName().equals(theme)) {
-//                        var.setMark(mark);
-//                    }
-//                }
-//            }
-//        }
-//        return students;
-//    }
 
-//    private List<Student> getListStudentsAuthTrainer(Trainer trainer) {
-//        Map<String, User> users = userRepository.findAll();
-//        Trainer trainerFromMap = (Trainer) users.get(trainer.getLogin());
-//        List<Student> students = trainerFromMap.getStudents();
-//        return students;
-//    }
+    @Override
+    public User addOrUpdateMarkToStudent(User auth, String studentId, String themeName, int mark) {
+       Long studentIdConvert = Long.parseLong(studentId);
+       userDao.addOrUpdateStudentMark(mark, studentIdConvert, themeName);
+       List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
+       List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
+       List<User> authTrainerAndHisStudents = getStudentsWithThemesAuthTrainer(students, auth);
+       auth.setStudents(authTrainerAndHisStudents);
+       return auth;
+    }
 
 
 //    @Override

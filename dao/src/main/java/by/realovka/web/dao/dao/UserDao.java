@@ -6,7 +6,6 @@ import by.realovka.web.dao.model.User;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface UserDao {
 
@@ -35,5 +34,7 @@ public interface UserDao {
     List<Theme> findAllTrainerTheme(User trainer);
 
     void addThemesToOneStudent (List<Theme> themes, long studentId);
+
+    void addOrUpdateStudentMark (int mark, Long studentId, String themeName);
 
 }

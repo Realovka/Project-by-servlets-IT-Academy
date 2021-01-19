@@ -5,7 +5,10 @@ import by.realovka.web.dao.model.Role;
 import by.realovka.web.dao.model.Theme;
 import by.realovka.web.dao.model.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,10 +24,11 @@ public class UserDaoImpl implements UserDao {
     private static final String FIND_BY_ID = "SELECT * FROM users WHERE id= ?";
     private static final String ADD_STUDENT_TO_GROUP = "INSERT INTO groups VALUES (?,?)";
     private static final String FIND_ALL_STUDENTS_OF_TRAINER_IN_GROUPS = "SELECT DISTINCT * FROM groups WHERE group_id = ?";
-    private static final String FIND_ALL_STUDENTS_OF_TRAINER_WITH_THERE_THEMES = "SELECT u.id, u.user_name, u.login, u.status, t.student_id, " +
+    private static final String FIND_ALL_STUDENTS_OF_TRAINER_WITH_THEIR_THEMES = "SELECT u.id, u.user_name, u.login, u.status, t.student_id, " +
             " t.group_id, t.name_theme, t.mark FROM users u FULL JOIN themes t ON u.id=t.student_id WHERE u.id IN(?)";
     private static final String ADD_THEME_TO_STUDENTS = "INSERT INTO themes VALUES (?,?,?, default )";
     private static final String FIND_ALL_TRAINER_THEMES = "SELECT DISTINCT * FROM themes WHERE group_id = ?";
+    private static final String ADD_OR_UPDATE_STUDENT_MARK = "UPDATE themes SET mark = ? WHERE student_id = ? AND name_theme = ?";
 
     private final DataSource dataSource = DataSource.getInstance();
 
@@ -187,39 +191,46 @@ public class UserDaoImpl implements UserDao {
         return studentsId;
     }
 
+
     @Override
     public List<User> findAllTrainerStudents(List<Long> studentsId, User auth) {
-        Map<Long, User> userMap = new HashMap<>();
-        Map<String, Theme> themeMap = new HashMap<>();
+        Set<User> students = new HashSet<>();
+        Set<Theme> themes = new HashSet<>();
         if (studentsId.size() > 0) {
             String studentsIdIN = studentsId.stream()
                     .map(x -> String.valueOf(x))
                     .collect(Collectors.joining(", ", "(", ")"));
 
-            studentsIdIN = FIND_ALL_STUDENTS_OF_TRAINER_WITH_THERE_THEMES.replace("(?)", studentsIdIN);
+            studentsIdIN = FIND_ALL_STUDENTS_OF_TRAINER_WITH_THEIR_THEMES.replace("(?)", studentsIdIN);
 
             try (Connection connection = dataSource.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(studentsIdIN)) {
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        themeMap.putIfAbsent(rs.getString("name_theme"), new Theme()
+                        themes.add(new Theme()
+                                .withId(rs.getLong("student_id"))
                                 .withIdGroup(rs.getLong("group_id"))
                                 .withName(rs.getString("name_theme"))
                                 .withMark(rs.getInt("mark")));
-                        userMap.putIfAbsent(rs.getLong("id"), new User()
+                        students.add(new User()
                                 .withId(rs.getLong("id"))
                                 .withUserName(rs.getString("user_name"))
                                 .withLogin(rs.getString("login"))
                                 .withRole(Role.valueOf(rs.getString("status"))));
-                        userMap.computeIfPresent(rs.getLong("id"), (id, user) ->
-                                user.withThemes(new ArrayList<>(themeMap.values())));
                     }
-                }
+                        for (User item : students) {
+                            for (Theme var : themes) {
+                                if (!item.getThemes().contains(var) && var.getId().equals(item.getId())) {
+                                     item.getThemes().add(var);
+                                }
+                            }
+                        }
+                    }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return new ArrayList<>(userMap.values());
+        return new ArrayList<>(students);
     }
 
 
@@ -271,6 +282,19 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return new ArrayList<>(themesMap.values());
+    }
+
+    @Override
+    public void addOrUpdateStudentMark(int mark, Long studentId, String themeName) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(ADD_OR_UPDATE_STUDENT_MARK)) {
+            preparedStatement.setInt(1, mark);
+            preparedStatement.setLong(2, studentId);
+            preparedStatement.setString(3, themeName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

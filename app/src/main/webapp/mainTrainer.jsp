@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -41,18 +40,18 @@
                         <c:choose>
                             <c:when test="${theme.mark!=0}">
                                 ${theme.mark}
-                                <a href="/deleteMark?student=${student.login}&theme=${theme.name}">Delete</a>
+                                <a href="/deleteMark?studentId=${student.id}&theme=${theme.name}">Delete</a>
                                 <form action="/updateMark" method="post">
                                     <input type="text" name="mark" placeholder="Update mark here"/>
-                                    <input type="hidden" name="student" value="${student.login}"/>
-                                    <input type="hidden" name="theme" value="${theme.name}"/>
+                                    <input type="hidden" name="studentId" value="${student.id}"/>
+                                    <input type="hidden" name="themeName" value="${theme.name}"/>
                                 </form>
                             </c:when>
                             <c:otherwise>
                                 <form action="addMark" method="post">
                                     <input type="text" name="mark" placeholder="Enter mark here"/>
-                                    <input type="hidden" name="student" value="${student.login}"/>
-                                    <input type="hidden" name="theme" value="${theme.name}"/>
+                                    <input type="hidden" name="studentId" value="${student.id}"/>
+                                    <input type="hidden" name="themeName" value="${theme.name}"/>
                                 </form>
                             </c:otherwise>
                         </c:choose>
