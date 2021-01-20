@@ -1,5 +1,7 @@
 package by.realovka.web.service;
 
+import by.realovka.web.dao.comparator.ThemeComparator;
+import by.realovka.web.dao.comparator.UserComparator;
 import by.realovka.web.dao.dao.UserDao;
 import by.realovka.web.dao.dao.UserDaoImpl;
 import by.realovka.web.dao.dto.UserDTO;
@@ -84,49 +86,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addStudentToGroup(User trainer, Long studentId) {
-        userDao.addStudentToGroup(trainer.getGroupId(), studentId);
-        List<Theme> themes = userDao.findAllTrainerTheme(trainer);
+    public User addStudentToGroup(User auth, Long studentId) {
+        userDao.addStudentToGroup(auth.getGroupId(), studentId);
+        List<Theme> themes = userDao.findAllTrainerTheme(auth);
         userDao.addThemesToOneStudent(themes, studentId);
-        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(trainer.getGroupId());
-        List<User> students = userDao.findAllTrainerStudents(studentsId, trainer);
-        List<User> studentsWithThemesAuthTrainer = getStudentsWithThemesAuthTrainer(students, trainer);
-        trainer.setStudents(studentsWithThemesAuthTrainer);
-        return trainer;
+        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
+        List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
+        List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
+        auth.setStudents(studentsWithThemesAuthTrainer);
+        return auth;
     }
 
     @Override
-    public User getTrainerAndHisStudents(User trainer) {
-        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(trainer.getGroupId());
-        List<User> students = userDao.findAllTrainerStudents(studentsId, trainer);
-        List<User> studentsWithThemesAuthTrainer = getStudentsWithThemesAuthTrainer(students, trainer);
-        trainer.setStudents(studentsWithThemesAuthTrainer);
-        return trainer;
+    public User getTrainerAndHisStudents(User auth) {
+        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
+        List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
+        List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
+        auth.setStudents(studentsWithThemesAuthTrainer);
+        return auth;
     }
 
-
-    private List<User> getStudentsWithThemesAuthTrainer(List<User> students, User auth) {
-        for(User item : students) {
-            List<Theme> themes = item.getThemes();
-            List<Theme> themesAuthTrainer = themes.stream()
-                                            .filter(t->t.getIdGroup()==auth.getGroupId())
-                                            .collect(Collectors.toList());
-            item.setThemes(themesAuthTrainer);
-        }
-        return students;
-    }
 
     @Override
-    public User getTrainerAndHisStudentsAfterAddTheme(User trainer, String nameTheme) {
-        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(trainer.getGroupId());
-        userDao.addThemeToStudents(studentsId, trainer, nameTheme);
-        List<User> students = userDao.findAllTrainerStudents(studentsId,trainer);
-        List<User> studentsWithThemesAuthTrainer = getStudentsWithThemesAuthTrainer(students, trainer);
-        trainer.setStudents(studentsWithThemesAuthTrainer);
-        return trainer;
+    public User getTrainerAndHisStudentsAfterAddTheme(User auth, String nameTheme) {
+        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
+        userDao.addThemeToStudents(studentsId, auth, nameTheme);
+        List<User> students = userDao.findAllTrainerStudents(studentsId,auth);
+        List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
+        auth.setStudents(studentsWithThemesAuthTrainer);
+        return auth;
     }
-
-
 
     @Override
     public User addOrUpdateMarkToStudent(User auth, String studentId, String themeName, int mark) {
@@ -134,35 +123,19 @@ public class UserServiceImpl implements UserService {
        userDao.addOrUpdateStudentMark(mark, studentIdConvert, themeName);
        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
        List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
-       List<User> authTrainerAndHisStudents = getStudentsWithThemesAuthTrainer(students, auth);
-       auth.setStudents(authTrainerAndHisStudents);
+       List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
+       auth.setStudents(studentsWithThemesAuthTrainer);
        return auth;
     }
 
 
-//    @Override
-//    public List<Student> deleteMark(Trainer trainer, String studentLogin, String theme) {
-//        List<Student> students = getListStudentsAuthTrainer(trainer);
-//        for (Student item : students) {
-//            if (item.getLogin().equals(studentLogin)) {
-//                List<Theme> themes = item.getThemes();
-//                for (Theme var : themes) {
-//                    if (var.getName().equals(theme)) {
-//                        var.setMark(0);
-//                    }
-//                }
-//            }
-//        }
-//        return students;
-//    }
-//
-//    @Override
-//    public Student getStudentByLogin(String login){
-//        User result = null;
-//        List<User> students = getAllStudents();
-//        Stream<User> studentStream = students.stream();
-//        studentStream.forEach(x -> x.getLogin().equals(login));
-//       return (Student) result;
-//    }
+    private List<User> sortListStudentsAndSortThemesAuthTrainer(List<User> students, User auth) {
+        for (User item : students){
+             List<Theme> themesSort = item.getThemes().stream().filter(t->t.getIdGroup()==auth.getGroupId())
+                                      .sorted(new ThemeComparator()).collect(Collectors.toList());
+             item.setThemes(themesSort);
+        }
+        return students.stream().sorted(new UserComparator()).collect(Collectors.toList());
+    }
 
 }

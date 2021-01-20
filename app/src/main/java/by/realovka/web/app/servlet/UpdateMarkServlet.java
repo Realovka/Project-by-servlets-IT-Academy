@@ -1,9 +1,4 @@
 //package by.realovka.web.app.servlet;
-//
-//import by.realovka.web.dao.model.Student;
-//import by.realovka.web.dao.model.Trainer;
-//import by.realovka.web.dao.repository.UserRepository;
-//import by.realovka.web.dao.repository.UserRepositoryImpl;
 //import by.realovka.web.service.UserService;
 //import by.realovka.web.service.UserServiceImpl;
 //import org.slf4j.Logger;

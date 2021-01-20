@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@WebServlet(urlPatterns = "/addMark")
+@WebServlet(urlPatterns = "/addOrUpdateMark")
 public class NewMarkAdditionServlet extends HttpServlet {
 
     private UserService userService = UserServiceImpl.getInstance();

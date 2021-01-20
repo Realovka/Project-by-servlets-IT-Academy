@@ -194,8 +194,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAllTrainerStudents(List<Long> studentsId, User auth) {
-        Set<User> students = new HashSet<>();
-        Set<Theme> themes = new HashSet<>();
+//        Set<User> students = new HashSet<>();
+//        Set<Theme> themes = new HashSet<>();
+        Set<User> students = new LinkedHashSet<>();
+        Set<Theme> themes = new LinkedHashSet<>();
         if (studentsId.size() > 0) {
             String studentsIdIN = studentsId.stream()
                     .map(x -> String.valueOf(x))
@@ -268,11 +270,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<Theme> findAllTrainerTheme(User trainer) {
+    public List<Theme> findAllTrainerTheme(User auth) {
         Map<String, Theme> themesMap = new HashMap<>();
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_TRAINER_THEMES)) {
-            preparedStatement.setLong(1, trainer.getGroupId());
+            preparedStatement.setLong(1, auth.getGroupId());
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     themesMap.putIfAbsent(rs.getString("name_theme"), new Theme(rs.getLong("group_id"), rs.getString("name_theme")));

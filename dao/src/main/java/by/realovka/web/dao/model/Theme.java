@@ -9,7 +9,7 @@ import lombok.With;
 @AllArgsConstructor
 @NoArgsConstructor
 @With
-public class Theme {
+public class Theme  {
     private Long id;
     private long idGroup;
     private String name;
@@ -23,4 +23,5 @@ public class Theme {
         this.idGroup = idGroup;
         this.name = name;
     }
+
 }

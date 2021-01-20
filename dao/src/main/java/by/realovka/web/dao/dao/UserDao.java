@@ -31,7 +31,7 @@ public interface UserDao {
 
     void addThemeToStudents (List<Long> studentsId, User auth, String themeName);
 
-    List<Theme> findAllTrainerTheme(User trainer);
+    List<Theme> findAllTrainerTheme(User auth);
 
     void addThemesToOneStudent (List<Theme> themes, long studentId);
 

@@ -1,14 +1,9 @@
 package by.realovka.web.dao.model;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -72,6 +67,5 @@ public class User {
         this.login = login;
         this.role = role;
     }
-
 
 }
