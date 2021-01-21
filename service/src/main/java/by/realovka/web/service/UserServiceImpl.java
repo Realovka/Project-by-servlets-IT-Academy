@@ -1,7 +1,5 @@
 package by.realovka.web.service;
 
-import by.realovka.web.dao.comparator.ThemeComparator;
-import by.realovka.web.dao.comparator.UserComparator;
 import by.realovka.web.dao.dao.UserDao;
 import by.realovka.web.dao.dao.UserDaoImpl;
 import by.realovka.web.dao.dto.UserDTO;
@@ -86,56 +84,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addStudentToGroup(User auth, Long studentId) {
-        userDao.addStudentToGroup(auth.getGroupId(), studentId);
-        List<Theme> themes = userDao.findAllTrainerTheme(auth);
-        userDao.addThemesToOneStudent(themes, studentId);
+    public User getUserWithHisStudents(User auth) {
         List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
         List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
-        List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
-        auth.setStudents(studentsWithThemesAuthTrainer);
+        List<User> trainerWithHisStudents = getStudentsWithThemesAuthTrainer(students, auth);
+        auth.setStudents(trainerWithHisStudents);
         return auth;
     }
 
     @Override
-    public User getTrainerAndHisStudents(User auth) {
-        List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
-        List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
-        List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
-        auth.setStudents(studentsWithThemesAuthTrainer);
+    public User addStudentToGroup(User auth, Long studentId) {
+        userDao.addStudentToGroup(auth.getGroupId(), studentId);
+        List<Theme> themes = userDao.findAllTrainerTheme(auth);
+        userDao.addThemesToOneStudent(themes, studentId);
+        getUserWithHisStudents(auth);
         return auth;
     }
-
 
     @Override
     public User getTrainerAndHisStudentsAfterAddTheme(User auth, String nameTheme) {
         List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
         userDao.addThemeToStudents(studentsId, auth, nameTheme);
-        List<User> students = userDao.findAllTrainerStudents(studentsId,auth);
-        List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
-        auth.setStudents(studentsWithThemesAuthTrainer);
+        getUserWithHisStudents(auth);
         return auth;
     }
 
     @Override
     public User addOrUpdateMarkToStudent(User auth, String studentId, String themeName, int mark) {
-       Long studentIdConvert = Long.parseLong(studentId);
-       userDao.addOrUpdateStudentMark(mark, studentIdConvert, themeName);
-       List<Long> studentsId = userDao.findAllTrainerStudentsInGroups(auth.getGroupId());
-       List<User> students = userDao.findAllTrainerStudents(studentsId, auth);
-       List<User> studentsWithThemesAuthTrainer = sortListStudentsAndSortThemesAuthTrainer(students, auth);
-       auth.setStudents(studentsWithThemesAuthTrainer);
-       return auth;
+        Long studentIdConvert = Long.parseLong(studentId);
+        userDao.addOrUpdateStudentMark(mark, studentIdConvert, themeName);
+        getUserWithHisStudents(auth);
+        return auth;
     }
 
+    @Override
+    public User deleteMark(User auth, String studentId, String themeName) {
+        Long studentIdConvert = Long.parseLong(studentId);
+        userDao.deleteMark(studentIdConvert, themeName);
+        getUserWithHisStudents(auth);
+        return auth;
+    }
 
-    private List<User> sortListStudentsAndSortThemesAuthTrainer(List<User> students, User auth) {
-        for (User item : students){
-             List<Theme> themesSort = item.getThemes().stream().filter(t->t.getIdGroup()==auth.getGroupId())
-                                      .sorted(new ThemeComparator()).collect(Collectors.toList());
-             item.setThemes(themesSort);
+    //показывает студентов на UI в ситуации, когда тренер добавил студентов в группу, но не создал тему
+    private List<User> getStudentsWithThemesAuthTrainer(List<User> students, User auth) {
+        for(User item : students) {
+            List<Theme> themes = item.getThemes();
+            List<Theme> themesAuthTrainer = themes.stream()
+                    .filter(t->t.getIdGroup()==auth.getGroupId())
+                    .collect(Collectors.toList());
+            item.setThemes(themesAuthTrainer);
         }
-        return students.stream().sorted(new UserComparator()).collect(Collectors.toList());
+        return students;
     }
 
 }

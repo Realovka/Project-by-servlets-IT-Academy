@@ -21,10 +21,12 @@ public interface UserService {
 
     User addStudentToGroup(User trainer, Long studentId);
 
-    User getTrainerAndHisStudents(User trainer);
+    User getUserWithHisStudents(User auth);
 
     User getTrainerAndHisStudentsAfterAddTheme(User trainer, String nameTheme);
 
     User addOrUpdateMarkToStudent(User auth, String studentId, String themeName, int mark);
+
+    User deleteMark(User auth, String studentId, String themeName);
 
 }

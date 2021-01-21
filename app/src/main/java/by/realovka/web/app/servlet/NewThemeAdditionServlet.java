@@ -5,7 +5,6 @@ import by.realovka.web.service.UserService;
 import by.realovka.web.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,15 +16,15 @@ import java.io.IOException;
 @WebServlet (urlPatterns = "/addTheme")
 public class NewThemeAdditionServlet extends HttpServlet {
 
-    private UserService userService = UserServiceImpl.getInstance();
+    private final UserService userService = UserServiceImpl.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User auth = (User) req.getSession().getAttribute("userAuth");
         String themeName = req.getParameter("themeName");
         req.getSession().setAttribute("theme",themeName);
-        User trainer = (User) req.getSession().getAttribute("userAuth");
-        User trainerAndHisStudentsAfterAddTheme = userService.getTrainerAndHisStudentsAfterAddTheme(trainer, themeName);
-        log.info("Trainer after addition theme {}", trainerAndHisStudentsAfterAddTheme);
+        auth = userService.getTrainerAndHisStudentsAfterAddTheme(auth, themeName);
+        log.info("Trainer after addition theme {}", auth);
         req.getRequestDispatcher("mainTrainer.jsp").forward(req, resp);
     }
 }

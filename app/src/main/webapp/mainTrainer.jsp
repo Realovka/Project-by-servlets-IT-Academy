@@ -14,9 +14,12 @@
 
 <a href="/addTheme.jsp">Add new theme</a><br>
 
+<c:if test="${sessionScope.massageFormatOfMarkIsWrong!=null}">
+    ${sessionScope.massageFormatOfMarkIsWrong}
+    ${sessionScope.massageFormatOfMarkIsWrong = null}
+</c:if>
 
 <c:if test="${sessionScope.userAuth.students.size()>0}">
-
 
     <table border="3">
         <thead>
@@ -40,7 +43,7 @@
                         <c:choose>
                             <c:when test="${theme.mark!=0}">
                                 ${theme.mark}
-                                <a href="/deleteMark?studentId=${student.id}&theme=${theme.name}">Delete</a>
+                                <a href="/deleteMark?studentId=${student.id}&themeName=${theme.name}">Delete</a>
                                 <form action="/addOrUpdateMark" method="post">
                                     <input type="text" name="mark" placeholder="Update mark here"/>
                                     <input type="hidden" name="studentId" value="${student.id}"/>

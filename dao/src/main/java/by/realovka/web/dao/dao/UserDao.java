@@ -37,4 +37,6 @@ public interface UserDao {
 
     void addOrUpdateStudentMark (int mark, Long studentId, String themeName);
 
+    void deleteMark(Long studentId, String themeName);
+
 }

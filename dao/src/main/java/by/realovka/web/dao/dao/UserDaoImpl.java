@@ -25,10 +25,11 @@ public class UserDaoImpl implements UserDao {
     private static final String ADD_STUDENT_TO_GROUP = "INSERT INTO groups VALUES (?,?)";
     private static final String FIND_ALL_STUDENTS_OF_TRAINER_IN_GROUPS = "SELECT DISTINCT * FROM groups WHERE group_id = ?";
     private static final String FIND_ALL_STUDENTS_OF_TRAINER_WITH_THEIR_THEMES = "SELECT u.id, u.user_name, u.login, u.status, t.student_id, " +
-            " t.group_id, t.name_theme, t.mark FROM users u FULL JOIN themes t ON u.id=t.student_id WHERE u.id IN(?)";
+            " t.group_id, t.name_theme, t.mark FROM users u LEFT JOIN themes t ON u.id=t.student_id WHERE u.id IN(?) ORDER BY t.name_theme ASC, u.user_name ASC";
     private static final String ADD_THEME_TO_STUDENTS = "INSERT INTO themes VALUES (?,?,?, default )";
     private static final String FIND_ALL_TRAINER_THEMES = "SELECT DISTINCT * FROM themes WHERE group_id = ?";
     private static final String ADD_OR_UPDATE_STUDENT_MARK = "UPDATE themes SET mark = ? WHERE student_id = ? AND name_theme = ?";
+    private static final String DELETE_MARK = "UPDATE themes SET mark = default WHERE student_id = ? AND name_theme = ?";
 
     private final DataSource dataSource = DataSource.getInstance();
 
@@ -194,8 +195,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAllTrainerStudents(List<Long> studentsId, User auth) {
-//        Set<User> students = new HashSet<>();
-//        Set<Theme> themes = new HashSet<>();
         Set<User> students = new LinkedHashSet<>();
         Set<Theme> themes = new LinkedHashSet<>();
         if (studentsId.size() > 0) {
@@ -220,14 +219,14 @@ public class UserDaoImpl implements UserDao {
                                 .withLogin(rs.getString("login"))
                                 .withRole(Role.valueOf(rs.getString("status"))));
                     }
-                        for (User item : students) {
-                            for (Theme var : themes) {
-                                if (!item.getThemes().contains(var) && var.getId().equals(item.getId())) {
-                                     item.getThemes().add(var);
-                                }
+                    for (User item : students) {
+                        for (Theme var : themes) {
+                            if (!item.getThemes().contains(var) && var.getId().equals(item.getId())) {
+                                item.getThemes().add(var);
                             }
                         }
                     }
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -277,7 +276,8 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setLong(1, auth.getGroupId());
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    themesMap.putIfAbsent(rs.getString("name_theme"), new Theme(rs.getLong("group_id"), rs.getString("name_theme")));
+                    themesMap.putIfAbsent(rs.getString("name_theme"),
+                            new Theme(rs.getLong("group_id"), rs.getString("name_theme")));
                 }
             }
         } catch (SQLException e) {
@@ -293,6 +293,18 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setInt(1, mark);
             preparedStatement.setLong(2, studentId);
             preparedStatement.setString(3, themeName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteMark(Long studentId, String themeName) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MARK)) {
+            preparedStatement.setLong(1, studentId);
+            preparedStatement.setString(2, themeName);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
