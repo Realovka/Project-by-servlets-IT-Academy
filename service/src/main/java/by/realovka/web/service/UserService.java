@@ -29,4 +29,6 @@ public interface UserService {
 
     User deleteMark(User auth, String studentId, String themeName);
 
+    User findAllThemesAndMarkOfStudent(User auth);
+
 }

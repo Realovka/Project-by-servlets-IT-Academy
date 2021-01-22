@@ -30,6 +30,7 @@ public class UserDaoImpl implements UserDao {
     private static final String FIND_ALL_TRAINER_THEMES = "SELECT DISTINCT * FROM themes WHERE group_id = ?";
     private static final String ADD_OR_UPDATE_STUDENT_MARK = "UPDATE themes SET mark = ? WHERE student_id = ? AND name_theme = ?";
     private static final String DELETE_MARK = "UPDATE themes SET mark = default WHERE student_id = ? AND name_theme = ?";
+    private static final String FIND_ALL_THEMES_AND_MARKS_OF_STUDENT = "SELECT * FROM themes WHERE student_id = ?";
 
     private final DataSource dataSource = DataSource.getInstance();
 
@@ -174,7 +175,6 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
     @Override
     public List<Long> findAllTrainerStudentsInGroups(long groupId) {
         List<Long> studentsId = new ArrayList<>();
@@ -309,6 +309,26 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Theme> findAllThemesAndMarksOfStudent(Long studentId) {
+        List<Theme> themes = new ArrayList<>();
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_THEMES_AND_MARKS_OF_STUDENT)) {
+            preparedStatement.setLong(1, studentId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    themes.add(new Theme()
+                               .withName(resultSet.getString("name_theme"))
+                               .withMark(resultSet.getInt("mark")));
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return themes;
     }
 
 }

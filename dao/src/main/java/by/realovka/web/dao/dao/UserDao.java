@@ -39,4 +39,6 @@ public interface UserDao {
 
     void deleteMark(Long studentId, String themeName);
 
+    List<Theme> findAllThemesAndMarksOfStudent(Long studentId);
+
 }

@@ -6,14 +6,13 @@
 </head>
 <body>
 <h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
-<a href="/marks">Get marks</a><br>
-<c:if test="${sessionScope.studentTheme.size()>0}">
+<c:if test="${sessionScope.userAuth.themes.size()>0}">
     <table border="3">
         <thead>
         <th>Theme name</th>
         <th>Mark</th>
         </thead>
-        <c:forEach items="${sessionScope.studentTheme}" var="theme">
+        <c:forEach items="${sessionScope.userAuth.themes}" var="theme">
             <tr>
                 <td>
                         ${theme.name}

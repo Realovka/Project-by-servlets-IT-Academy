@@ -11,6 +11,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -23,56 +24,38 @@ public class AuthFilter extends UtilFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
         userService.identificationUserByLoginAndPassword(login, password).ifPresentOrElse(auth -> {
-                    log.info("User from Collection = {}", auth);
-                    if (auth.getRole().equals(Role.ADMIN)) {
-                        try {
-                            req.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
-                        } catch (ServletException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }  else {
-                        if (auth.getRole().equals(Role.TRAINER)) {
-                            if (auth.getGroupId() != 0) {
-                                auth = userService.getUserWithHisStudents(auth);
-                            }
-                            HttpSession session = req.getSession();
-                            session.setAttribute("userAuth", auth);
-                            try {
-                                req.getRequestDispatcher("/mainTrainer.jsp").forward(request, response);
-                            } catch (ServletException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    log.info("User from DB = {}", auth);
+                    HttpSession session = req.getSession();
+                    session.setAttribute("userAuth", auth);
+                    try {
+                        if (auth.getRole().equals(Role.ADMIN)) {
+                            request.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
                         } else {
-                            if (auth.getRole().equals(Role.STUDENT)) {
-                                try {
-                                    req.getRequestDispatcher("/mainStudent.jsp").forward(request, response);
-                                } catch (ServletException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                            if (auth.getRole().equals(Role.TRAINER)) {
+                                req.getRequestDispatcher("/trainerAndHisStudents").forward(request, response);
+                            } else {
+                                if (auth.getRole().equals(Role.STUDENT)) {
+                                   req.getRequestDispatcher("/studentThemesAndMarks").forward(request, response);
                                 }
                             }
                         }
+                    } catch (ServletException | IOException e) {
+                        e.printStackTrace();
                     }
                 },
                 () -> {
-                   req.setAttribute("authorizationFail", "Login or password is wrong!");
                     try {
+                        req.setAttribute("authorizationFail", "Login or password is wrong!");
                         req.getRequestDispatcher("/index.jsp").forward(request, response);
-                    } catch (ServletException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (ServletException | IOException e) {
                         e.printStackTrace();
                     }
                 });
 
-        chain.doFilter(request, response);
     }
+
 }

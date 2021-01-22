@@ -1,7 +1,7 @@
 package by.realovka.web.app.servlet;
 
 import by.realovka.web.dao.dto.UserDTO;
-import by.realovka.web.dao.model.*;
+import by.realovka.web.dao.model.Role;
 import by.realovka.web.service.UserService;
 import by.realovka.web.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;

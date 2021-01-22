@@ -125,6 +125,13 @@ public class UserServiceImpl implements UserService {
         return auth;
     }
 
+    @Override
+    public User findAllThemesAndMarkOfStudent(User auth) {
+       List<Theme> themes = userDao.findAllThemesAndMarksOfStudent(auth.getId());
+       auth.setThemes(themes);
+       return auth;
+    }
+
     //показывает студентов на UI в ситуации, когда тренер добавил студентов в группу, но не создал тему
     private List<User> getStudentsWithThemesAuthTrainer(List<User> students, User auth) {
         for(User item : students) {
