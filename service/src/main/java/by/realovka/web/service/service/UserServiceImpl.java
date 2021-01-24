@@ -1,4 +1,4 @@
-package by.realovka.web.service;
+package by.realovka.web.service.service;
 
 import by.realovka.web.dao.dao.UserDao;
 import by.realovka.web.dao.dao.UserDaoImpl;
@@ -44,7 +44,12 @@ public class UserServiceImpl implements UserService {
             for (byte b : loginAndPasswordHash) {
                 builder.append(String.format("%02X", b));
             }
-            User user = new User(userDTO.getUserName(), userDTO.getAge(), userDTO.getLogin(), builder, userDTO.getRole());
+            User user = new User()
+                    .withUserName(userDTO.getUserName())
+                    .withAge(userDTO.getAge())
+                    .withLogin(userDTO.getLogin())
+                    .withLoginAndPassword(builder)
+                    .withRole(userDTO.getRole());
             log.info("Save new user {}", user);
             userDao.createUser(user);
             return true;
@@ -58,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> identificationUserByLoginAndPassword(String login, String password) {
         Optional<User> user;
-        String loginAndPasswordFromUI = login.concat(password); //TODO
+        String loginAndPasswordFromUI = login.concat(password);
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         byte[] loginAndPasswordHashFromUI = messageDigest.digest(loginAndPasswordFromUI.getBytes());
         StringBuilder builder = new StringBuilder();
@@ -127,17 +132,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findAllThemesAndMarkOfStudent(User auth) {
-       List<Theme> themes = userDao.findAllThemesAndMarksOfStudent(auth.getId());
-       auth.setThemes(themes);
-       return auth;
+        List<Theme> themes = userDao.findAllThemesAndMarksOfStudent(auth.getId());
+        auth.setThemes(themes);
+        return auth;
     }
 
-    //показывает студентов на UI в ситуации, когда тренер добавил студентов в группу, но не создал тему
+    //to show students in situation when the trainer added students but didn't create a theme
     private List<User> getStudentsWithThemesAuthTrainer(List<User> students, User auth) {
-        for(User item : students) {
+        for (User item : students) {
             List<Theme> themes = item.getThemes();
             List<Theme> themesAuthTrainer = themes.stream()
-                    .filter(t->t.getIdGroup()==auth.getGroupId())
+                    .filter(t -> t.getIdGroup() == auth.getGroupId())
                     .collect(Collectors.toList());
             item.setThemes(themesAuthTrainer);
         }

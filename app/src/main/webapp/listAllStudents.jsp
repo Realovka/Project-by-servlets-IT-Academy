@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2 style="color: mediumblue">List All Students in the University</h2>
-<label>Click on student name if you want to add his to your list</label>
+<label>If you want to add his to your list, click on student name</label>
 <form action="/addStudent" method="post">
     <c:forEach items="${sessionScope.students}" var="student">
         <a href="<c:url value="/addStudent"/>?studentId=${student.id}">${student.userName}</a><br>

@@ -1,4 +1,4 @@
-package by.realovka.web.service;
+package by.realovka.web.service.service;
 
 //import by.realovka.web.dao.model.Student;
 //import by.realovka.web.dao.model.Trainer;

@@ -1,8 +1,8 @@
 package by.realovka.web.app.servlet;
 
 import by.realovka.web.dao.model.User;
-import by.realovka.web.service.UserService;
-import by.realovka.web.service.UserServiceImpl;
+import by.realovka.web.service.service.UserService;
+import by.realovka.web.service.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;

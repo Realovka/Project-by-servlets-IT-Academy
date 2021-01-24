@@ -1,8 +1,8 @@
 package by.realovka.web.app.filter;
 
 import by.realovka.web.dao.model.Role;
-import by.realovka.web.service.UserService;
-import by.realovka.web.service.UserServiceImpl;
+import by.realovka.web.service.service.UserService;
+import by.realovka.web.service.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.FilterChain;
@@ -33,7 +33,7 @@ public class AuthFilter extends UtilFilter {
                     session.setAttribute("userAuth", auth);
                     try {
                         if (auth.getRole().equals(Role.ADMIN)) {
-                            request.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
+                            request.getRequestDispatcher("/adminAndTrainers").forward(request, response);
                         } else {
                             if (auth.getRole().equals(Role.TRAINER)) {
                                 req.getRequestDispatcher("/trainerAndHisStudents").forward(request, response);

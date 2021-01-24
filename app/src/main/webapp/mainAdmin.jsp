@@ -6,7 +6,8 @@
 </head>
 <body>
 <h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
-<a href="enterTrainer.jsp">Enter new trainer</a><br>
+<a href="addTrainer.jsp">Enter new trainer</a><br>
+<a href="listAllTrainers.jsp">All trainers</a><br>
 <a href="averageSalary.jsp">Average salaries of trainers</a><br>
 <a href="/logout">Logout</a>
 </body>

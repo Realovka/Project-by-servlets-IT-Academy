@@ -21,3 +21,13 @@ CREATE TABLE themes (
    name_theme VARCHAR (150),
    mark SMALLINT
 );
+
+CREATE TABLE trainers (
+   trainer_id BIGSERIAL PRIMARY KEY,
+   trainer_name VARCHAR(50)
+);
+
+CREATE TABLE salaries (
+  trainer_id BIGINT REFERENCES trainers(trainer_id),
+  salary NUMERIC
+);

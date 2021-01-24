@@ -15,13 +15,4 @@ public class Theme  {
     private String name;
     private int mark;
 
-    public Theme(String name) {
-        this.name = name;
-    }
-
-    public Theme(long idGroup, String name) {
-        this.idGroup = idGroup;
-        this.name = name;
-    }
-
 }

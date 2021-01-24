@@ -74,7 +74,8 @@ public class UserDaoImpl implements UserDao {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
 //                User user = new User.UserBuilder().login(login).build();
-                    return Optional.of(new User(login));
+                    return Optional.of(new User()
+                            .withLogin(login));
                 }
             }
         }
@@ -89,11 +90,12 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(1, loginAndPassword);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(new User(rs.getLong("id"),
-                            rs.getString("user_name"),
-                            rs.getString("login"),
-                            Role.valueOf(rs.getString("status")),
-                            rs.getLong("group_id")));
+                    return Optional.of(new User()
+                            .withId(rs.getLong("id"))
+                            .withUserName(rs.getString("user_name"))
+                            .withLogin(rs.getString("login"))
+                            .withRole(Role.valueOf(rs.getString("status")))
+                            .withGroupId(rs.getLong("group_id")));
                 }
             }
         } catch (SQLException e) {
@@ -109,8 +111,11 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STUDENTS);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    User user = new User(rs.getLong("id"), rs.getString("user_name"),
-                            rs.getString("login"), Role.valueOf(rs.getString("status")));
+                    User user = new User()
+                            .withId(rs.getLong("id"))
+                            .withUserName(rs.getString("user_name"))
+                            .withLogin(rs.getString("login"))
+                            .withRole(Role.valueOf(rs.getString("status")));
                     students.add(user);
                 }
             }
@@ -277,7 +282,9 @@ public class UserDaoImpl implements UserDao {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     themesMap.putIfAbsent(rs.getString("name_theme"),
-                            new Theme(rs.getLong("group_id"), rs.getString("name_theme")));
+                            new Theme()
+                                    .withIdGroup(rs.getLong("group_id"))
+                                    .withName(rs.getString("name_theme")));
                 }
             }
         } catch (SQLException e) {
@@ -314,14 +321,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<Theme> findAllThemesAndMarksOfStudent(Long studentId) {
         List<Theme> themes = new ArrayList<>();
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_THEMES_AND_MARKS_OF_STUDENT)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_THEMES_AND_MARKS_OF_STUDENT)) {
             preparedStatement.setLong(1, studentId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     themes.add(new Theme()
-                               .withName(resultSet.getString("name_theme"))
-                               .withMark(resultSet.getInt("mark")));
+                            .withName(resultSet.getString("name_theme"))
+                            .withMark(resultSet.getInt("mark")));
 
                 }
             }
