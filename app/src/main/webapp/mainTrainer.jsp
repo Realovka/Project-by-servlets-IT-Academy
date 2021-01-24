@@ -46,7 +46,7 @@
                             <c:choose>
                                 <c:when test="${theme.mark!=0}">
                                     ${theme.mark}
-                                    <a href="/deleteMark?studentId=${student.id}&themeName=${theme.name}">Delete</a>
+                                    <a href="/deleteMark">Delete</a>
                                     <form action="/addOrUpdateMark" method="post">
                                         <input type="text" name="mark" placeholder="Update mark here"/>
                                         <input type="hidden" name="studentId" value="${student.id}"/>

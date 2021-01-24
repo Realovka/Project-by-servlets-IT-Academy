@@ -1,5 +1,6 @@
 package by.realovka.web.app.servlet;
 
+import by.realovka.web.dao.dto.TrainerDTO;
 import by.realovka.web.service.service.TrainerService;
 import by.realovka.web.service.service.TrainerServiceImpl;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 
 @WebServlet(urlPatterns = "/addTrainer")
@@ -28,6 +30,8 @@ public class AdditionNewTrainerForAdminServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        List<TrainerDTO> trainerDTO = trainerService.getAllTrainers();
+        req.getServletContext().setAttribute("listTrainers", trainerDTO);
         req.getRequestDispatcher("/listAllTrainers.jsp").forward(req, resp);
     }
 }

@@ -5,9 +5,10 @@
     <title>Number of months</title>
 </head>
 <body>
-<h2 style="color: mediumblue">Enter the number of months for which you want to receive the average trainer's salary</h2>
+<h2 style="color: mediumblue">Enter the months of the trainer's work for which you want to calculate the average salary</h2>
+${sessionScope.enterWrongMonths}<br>
 <form action="/calculationAverageSalary" method="post">
-    <input type="text" name="monthsNumber" placeholder="Number of months">
+    <input type="text" name="finishMonthsNumber" placeholder="Enter months"/><br>
     <button>Submit</button>
 </form>
 <a href="mainAdmin.jsp">Main page</a><br>

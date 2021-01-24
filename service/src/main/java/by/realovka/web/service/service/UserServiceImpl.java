@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public boolean saveUser(UserDTO userDTO) {
-        if (userDao.findByLogin(userDTO.getLogin()).isEmpty()) { //TODO
+        if (userDao.findByLogin(userDTO.getLogin()).isEmpty()) {
             String loginAndPassword = userDTO.getLogin().concat(userDTO.getPassword());
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] loginAndPasswordHash = md5.digest(loginAndPassword.getBytes());
@@ -148,5 +148,6 @@ public class UserServiceImpl implements UserService {
         }
         return students;
     }
+
 
 }

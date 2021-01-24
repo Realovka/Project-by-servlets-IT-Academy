@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2 style="color: mediumblue">Answer about trainer average salary</h2>
-<label>Average salary of trainer ${sessionScope.trainerWithHisAverageSalary.name} is ${sessionScope.trainerWithHisAverageSalary.averageSalary}</label>
+<label>Average salary of trainer ${sessionScope.trainerWithHisAverageSalary.name} is ${sessionScope.trainerWithHisAverageSalary.averageSalary}</label><br>
 </body>
 <a href="mainAdmin.jsp">Main page</a><br>
 <a href="/logout">Logout</a>

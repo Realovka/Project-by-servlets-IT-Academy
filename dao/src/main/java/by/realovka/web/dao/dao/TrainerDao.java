@@ -13,5 +13,5 @@ public interface TrainerDao {
 
     void addNewSalaryToTrainer(long trainerId, BigDecimal salary);
 
-    Trainer getTrainerSalaries(long trainerId, int monthsNumber);
+    Trainer getTrainerSalaries(long trainerId, int limit);
 }

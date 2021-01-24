@@ -13,5 +13,5 @@ public interface TrainerService {
 
     void addNewSalaryToTrainer(String trainerId, String salary);
 
-    TrainerDTO getAverageSalary(String trainerId, String months);
+    TrainerDTO getAverageSalary(String trainerId, String finishMonthsNumber);
 }

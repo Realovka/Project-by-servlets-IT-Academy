@@ -73,7 +73,6 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-//                User user = new User.UserBuilder().login(login).build();
                     return Optional.of(new User()
                             .withLogin(login));
                 }

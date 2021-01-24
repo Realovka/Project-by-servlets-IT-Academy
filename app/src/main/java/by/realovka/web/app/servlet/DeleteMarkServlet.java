@@ -23,7 +23,7 @@ public class DeleteMarkServlet extends HttpServlet {
         String studentId = req.getParameter("studentId");
         String themeName = req.getParameter("themeName");
         User auth = (User) req.getSession().getAttribute("userAuth");
-        userService.deleteMark(auth, studentId, themeName);
+        auth = userService.deleteMark(auth, studentId, themeName);
         log.info("Trainer and his students after delete mark = {}", auth);
         req.getSession().setAttribute("userAuth", auth);
         req.getRequestDispatcher("mainTrainer.jsp").forward(req,resp);

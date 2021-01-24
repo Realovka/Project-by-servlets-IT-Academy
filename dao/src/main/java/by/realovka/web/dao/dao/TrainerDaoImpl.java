@@ -93,9 +93,9 @@ public class TrainerDaoImpl implements TrainerDao {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     salaries.add(resultSet.getBigDecimal("salary"));
-                            trainer.setId(resultSet.getLong("trainer_id"));
-                            trainer.setName(resultSet.getString("trainer_name"));
-                            trainer.setSalary(salaries);
+                    trainer.setId(resultSet.getLong("trainer_id"));
+                    trainer.setName(resultSet.getString("trainer_name"));
+                    trainer.setSalary(salaries);
 
                 }
             }

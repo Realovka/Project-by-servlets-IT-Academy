@@ -16,7 +16,7 @@
            <c:forEach items="${applicationScope.listTrainers}" var="trainer">
                <tr>
                    <td>
-                <a href="<c:url value="/choiceTrainer"/>?trainerId=${trainer.id}">${trainer.name}</a><br>
+                <a href="<c:url value="/choiceTrainer"/>?trainerId=${trainer.id}&trainerName=${trainer.name}">${trainer.name}</a><br>
                    </td>
                </tr>
             </c:forEach>

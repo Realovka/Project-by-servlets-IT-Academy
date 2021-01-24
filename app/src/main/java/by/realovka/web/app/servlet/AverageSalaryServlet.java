@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet (urlPatterns = "/calculationAverageSalary")
+
+@WebServlet(urlPatterns = "/calculationAverageSalary")
 public class AverageSalaryServlet extends HttpServlet {
 
     private final TrainerService trainerService = TrainerServiceImpl.getInstance();
@@ -19,9 +20,11 @@ public class AverageSalaryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String trainerId = (String) req.getSession().getAttribute("trainerId");
-        String monthsNumber = req.getParameter("monthsNumber");
-        TrainerDTO trainerDTO = trainerService.getAverageSalary(trainerId, monthsNumber);
+        String finishMonthsNumber = req.getParameter("finishMonthsNumber");
+        TrainerDTO trainerDTO = trainerService.getAverageSalary(trainerId, finishMonthsNumber);
         req.getSession().setAttribute("trainerWithHisAverageSalary", trainerDTO);
         req.getRequestDispatcher("answerAverageSalary.jsp").forward(req, resp);
+
     }
+
 }

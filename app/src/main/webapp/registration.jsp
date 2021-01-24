@@ -7,7 +7,7 @@
 <body>
 <h2 style="color: mediumblue">Registration</h2>
 <form action="/reg" method="post">
-    ${requestScope.massageAboutFailRegistration}
+    ${requestScope.massageAboutFailRegistration}<br>
     <input type="text" name="nameRegistration" placeholder="Name"/>
     <input type="text" name="ageRegistration" placeholder="Age"/>
     <input type="text" name="loginRegistration" placeholder="Login"/>
