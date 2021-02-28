@@ -1,25 +1,32 @@
 package by.realovka.web.dao.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
+import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @With
-public class User {
-
+@Entity
+@Table(name = "users_hb")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "status")
+public  class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "user_name")
     private String userName;
     private int age;
     private String login;
-    private StringBuilder loginAndPassword;
-    private Role role;
-    private long groupId;
-    private List<User> students = new ArrayList<>();
-    private List<Theme> themes = new ArrayList<>();
+    @Column(name = "login_and_password")
+    private String loginAndPassword;
 
 }

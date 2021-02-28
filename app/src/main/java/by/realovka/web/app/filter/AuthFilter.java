@@ -1,6 +1,9 @@
 package by.realovka.web.app.filter;
 
-import by.realovka.web.dao.model.Role;
+import by.realovka.web.dao.model.Admin;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.User;
 import by.realovka.web.service.service.UserService;
 import by.realovka.web.service.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -27,35 +30,33 @@ public class AuthFilter extends UtilFilter {
         HttpServletResponse resp = (HttpServletResponse) response;
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
-        userService.identificationUserByLoginAndPassword(login, password).ifPresentOrElse(auth -> {
-                    log.info("User from DB = {}", auth);
-                    HttpSession session = req.getSession();
-                    session.setAttribute("userAuth", auth);
-                    try {
-                        if (auth.getRole().equals(Role.ADMIN)) {
-                            request.getRequestDispatcher("/adminAndTrainers").forward(request, response);
-                        } else {
-                            if (auth.getRole().equals(Role.TRAINER)) {
-                                req.getRequestDispatcher("/trainerAndHisStudents").forward(request, response);
-                            } else {
-                                if (auth.getRole().equals(Role.STUDENT)) {
-                                   req.getRequestDispatcher("/studentThemesAndMarks").forward(request, response);
-                                }
-                            }
+        User auth = userService.identificationUserByLoginAndPassword(login, password);
+        req.getSession().setAttribute("userAuth", auth);
+        log.info("User from DB = {}", auth);
+        HttpSession session = req.getSession();
+        if (!auth.equals(new User())) {
+            try {
+                if (auth instanceof Admin) {
+                    request.getRequestDispatcher("mainAdmin.jsp").forward(request, response);
+                } else {
+                    if (auth instanceof Trainer) {
+                        req.getRequestDispatcher("/trainerAndHisStudents").forward(request, response);
+                    } else {
+                        if (auth instanceof Student) {
+                            req.getRequestDispatcher("mainStudent.jsp").forward(request, response);
                         }
-                    } catch (ServletException | IOException e) {
-                        e.printStackTrace();
                     }
-                },
-                () -> {
-                    try {
-                        req.setAttribute("authorizationFail", "Login or password is wrong!");
-                        req.getRequestDispatcher("/index.jsp").forward(request, response);
-                    } catch (ServletException | IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-
+                }
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                req.setAttribute("authorizationFail", "Login or password is wrong!");
+                req.getRequestDispatcher("/index.jsp").forward(request, response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 }

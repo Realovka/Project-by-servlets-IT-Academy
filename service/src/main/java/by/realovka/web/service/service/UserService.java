@@ -1,34 +1,29 @@
 package by.realovka.web.service.service;
 
-//import by.realovka.web.dao.model.Student;
-//import by.realovka.web.dao.model.Trainer;
-
 import by.realovka.web.dao.dto.UserDTO;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
     boolean saveUser(UserDTO userDTO);
 
-    Optional<User> identificationUserByLoginAndPassword(String login, String password);
+    User identificationUserByLoginAndPassword(String login, String password);
 
-    List<User> getAllStudents();
+    List<Student> getAllStudents();
 
-    User createGroupByTrainer(User auth);
+    Trainer getById(Long id);
 
-    User addStudentToGroup(User trainer, Long studentId);
+    Trainer createGroupByTrainer(Trainer trainer);
 
-    User getUserWithHisStudents(User auth);
+    Trainer addStudentToGroup(Trainer trainer, Long studentId);
 
-    User getTrainerAndHisStudentsAfterAddTheme(User trainer, String nameTheme);
+    Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme);
+//
+//    void addOrUpdateMark(String studentId, String themeName, int mark);
 
-    User addOrUpdateMarkToStudent(User auth, String studentId, String themeName, int mark);
-
-    User deleteMark(User auth, String studentId, String themeName);
-
-    User findAllThemesAndMarkOfStudent(User auth);
 
 }

@@ -1,33 +1,35 @@
-CREATE type user_role as enum ('ADMIN', 'TRAINER', 'STUDENT');
-
-CREATE TABLE users (
+CREATE TABLE users_hb (
 	id BIGSERIAL PRIMARY KEY,
 	user_name VARCHAR(50) NOT NULL,
 	age INTEGER NOT NULL,
 	login VARCHAR(50) NOT NULL,
 	login_and_password VARCHAR(150) NOT NULL,
-	status user_role,
-	group_id BIGINT UNIQUE
+	status VARCHAR(50) NOT NULL,
+	group_id int8 null
 );
 
-CREATE TABLE groups (
-	group_id BIGINT REFERENCES users(group_id),
-	student_id BIGINT REFERENCES users(id)
+CREATE TABLE groups_hb (
+	id BIGSERIAL,
+	name VARCHAR (50)
 );
 
-CREATE TABLE themes (
-   student_id BIGINT REFERENCES users(id),
-   group_id BIGINT REFERENCES users(group_id),
+CREATE TABLE group_student (
+   group_id int8,
+   student_id int8
+);
+
+CREATE TABLE themes_hb (
+   id BIGSERIAL,
    name_theme VARCHAR (150),
-   mark SMALLINT
+   mark smallint null,
+   group_id int8 null,
+   student_id int8 null
 );
 
-CREATE TABLE trainers (
-   trainer_id BIGSERIAL PRIMARY KEY,
-   trainer_name VARCHAR(50)
-);
+CREATE TABLE student_mark_hb (
+   id BIGSERIAL,
+   mark SMALLINT,
+   student_id int8 null,
+   theme_id int8 null
 
-CREATE TABLE salaries (
-  trainer_id BIGINT REFERENCES trainers(trainer_id),
-  salary NUMERIC
 );

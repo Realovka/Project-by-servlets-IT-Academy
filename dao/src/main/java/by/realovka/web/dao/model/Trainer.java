@@ -1,17 +1,26 @@
 package by.realovka.web.dao.model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
-import java.util.List;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
+@EqualsAndHashCode(callSuper = true, exclude = "group")
+@ToString(callSuper = true, exclude = "group")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @With
-public class Trainer {
-    private long id;
-    private String name;
-    private List<BigDecimal> salary;
+@Entity
+@DiscriminatorValue("TRAINER")
+public class Trainer extends User {
+
+    @OneToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+
 }

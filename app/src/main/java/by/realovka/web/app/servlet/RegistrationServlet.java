@@ -26,7 +26,13 @@ public class RegistrationServlet extends HttpServlet {
         String login = req.getParameter("loginRegistration");
         String password = req.getParameter("passwordRegistration");
         String role = req.getParameter("role");
-        UserDTO userDTO = new UserDTO(userName, age, login, password, Role.valueOf(role));
+        UserDTO userDTO = UserDTO.builder()
+                .userName(userName)
+                .age(age)
+                .login(login)
+                .password(password)
+                .role(Role.valueOf(role))
+                .build();
         log.info("User = {}", userDTO);
         if (!userService.saveUser(userDTO)) {
             req.setAttribute("massageAboutFailRegistration", "Such user already exists!");

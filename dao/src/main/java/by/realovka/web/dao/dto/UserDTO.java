@@ -1,15 +1,20 @@
 package by.realovka.web.dao.dto;
 
 import by.realovka.web.dao.model.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import by.realovka.web.dao.model.Theme;
+import by.realovka.web.dao.model.User;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @With
+@Builder
 public class UserDTO {
 
     private String userName;
@@ -17,5 +22,6 @@ public class UserDTO {
     private String login;
     private String password;
     private Role role;
-
+    private List<User> students = new ArrayList<>();
+    private Set<Theme> themes = new HashSet<>();
 }

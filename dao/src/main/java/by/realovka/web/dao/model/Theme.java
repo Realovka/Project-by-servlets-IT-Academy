@@ -1,18 +1,29 @@
 package by.realovka.web.dao.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
+
+import javax.persistence.*;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @With
-public class Theme  {
+@Builder
+@Entity
+@Table(name = "themes_hb")
+public class Theme {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long idGroup;
+    @Column(name = "name_theme")
     private String name;
     private int mark;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
 }

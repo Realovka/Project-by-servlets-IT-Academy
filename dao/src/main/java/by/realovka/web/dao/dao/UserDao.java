@@ -1,44 +1,30 @@
 package by.realovka.web.dao.dao;
 
-import by.realovka.web.dao.model.Theme;
-import by.realovka.web.dao.model.User;
+import by.realovka.web.dao.model.*;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserDao {
 
-    void createUser(User user);
+    User findByLogin(String login);
 
-    Optional<User> findByLogin(String login) throws SQLException;
+    void save(User user);
 
-    Optional<User> identificationUser(String loginAndPassword);
+    User identificationUser(String loginAndPassword);
 
-    List<User> getAllStudents();
+    List<Student> getAllStudents();
 
-    void addGroupToTrainer(long groupId, Long trainerId);
+    Trainer addGroupToTrainer(Trainer trainer, Group group);
 
-    long getMaxInGroupId();
+    User findById(Long id);
 
-    User findTrainerAfterAdditionGroup(User auth);
 
-    void addStudentToGroup(long id, Long studentId);
+//    Set<Student> findAllTrainerStudents(Trainer trainer);
 
-    List<Long> findAllTrainerStudentsInGroups(long groupId);
+    void addStudentToGroup(Trainer trainer);
 
-    List<User> findAllTrainerStudents(List<Long> studentsId, User auth);
+    void addThemeToGroup(List<Theme> themes);
 
-    void addThemeToStudents (List<Long> studentsId, User auth, String themeName);
-
-    List<Theme> findAllTrainerTheme(User auth);
-
-    void addThemesToOneStudent (List<Theme> themes, long studentId);
-
-    void addOrUpdateStudentMark (int mark, Long studentId, String themeName);
-
-    void deleteMark(Long studentId, String themeName);
-
-    List<Theme> findAllThemesAndMarksOfStudent(Long studentId);
+    void addOrUpdateMarkToStudent(Theme theme);
 
 }
