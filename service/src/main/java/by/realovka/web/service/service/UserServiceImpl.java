@@ -159,13 +159,15 @@ public class UserServiceImpl implements UserService {
     }
 
     private Trainer getStudentsWithTrainerThemes(Trainer trainer) {
-        List<Student> students = trainer.getGroup().getStudents();
-        for (Student item : students) {
-            List<Theme> themes = item.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
-            item.setThemes(themes);
+        if(trainer.getGroup() != null) {
+            List<Student> students = trainer.getGroup().getStudents();
+            for (Student item : students) {
+                List<Theme> themes = item.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
+                item.setThemes(themes);
+            }
+            trainer.getGroup().setStudents(students);
         }
-        trainer.getGroup().setStudents(students);
-        return  trainer;
+            return trainer;
     }
 //
 //    @Override

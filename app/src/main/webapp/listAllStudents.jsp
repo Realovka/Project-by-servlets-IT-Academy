@@ -13,12 +13,12 @@
     </c:forEach>
 </form>
 
-<c:if test="${sessionScope.userAuth.students!=null}">
+<c:if test="${sessionScope.userAuth.group.students.size()>0}">
     <table border="3">
         <thead>
         <th align="center">Students name in Your Group</th>
         </thead>
-        <c:forEach items="${sessionScope.userAuth.students}" var="student">
+        <c:forEach items="${sessionScope.userAuth.group.students}" var="student">
             <tr>
                 <td>${student.userName}</td>
             </tr>

@@ -26,8 +26,10 @@ public class TrainerMainServlet extends HttpServlet {
         HttpSession session = req.getSession();
         Trainer auth = (Trainer) session.getAttribute("userAuth");
         Trainer trainer = userService.getById(auth.getId());
-        List<Student> students = trainer.getGroup().getStudents();
-        req.getSession().setAttribute("listStudents", students);
+        if (trainer.getGroup() != null) {
+            List<Student> students = trainer.getGroup().getStudents();
+            req.getSession().setAttribute("listStudents", students);
+        }
         log.info("Auth trainer = {}", auth);
         req.getRequestDispatcher("/mainTrainer.jsp").forward(req, resp);
     }
