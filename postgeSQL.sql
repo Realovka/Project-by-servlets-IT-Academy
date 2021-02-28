@@ -26,10 +26,3 @@ CREATE TABLE themes_hb (
    student_id int8 null
 );
 
-CREATE TABLE student_mark_hb (
-   id BIGSERIAL,
-   mark SMALLINT,
-   student_id int8 null,
-   theme_id int8 null
-
-);

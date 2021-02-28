@@ -18,10 +18,9 @@ public interface UserDao {
 
     User findById(Long id);
 
-
 //    Set<Student> findAllTrainerStudents(Trainer trainer);
 
-    void addStudentToGroup(Trainer trainer);
+    void addStudentToGroup(Trainer trainer, Student student, List<Theme> themes);
 
     void addThemeToGroup(List<Theme> themes);
 

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Trainer createGroupByTrainer(Trainer trainer) {
         Group group = Group.builder()
-                .name("Theme ".concat(trainer.getUserName()))
+                .name("Group ".concat(trainer.getUserName()))
                 .trainer(trainer)
                 .themes(new ArrayList<>())
                 .students(new ArrayList<>())
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
         List<Theme> themesNewStudentInGroup = new ArrayList<>();
         Student student = (Student) userDao.findById(studentId);
         if (trainer.getGroup().getStudents().size() > 0) {
-            List<Theme> themes = trainer.getGroup().getStudents().get(0).getThemes();
+            List<Theme> themes = getStudentWithAuthTrainerThemes(trainer).getThemes();
             for (Theme item : themes) {
                 themesNewStudentInGroup.add(Theme.builder()
                         .name(item.getName())
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
             student.getThemes().addAll(themesNewStudentInGroup);
         }
         trainer.getGroup().getStudents().add(student);
-        userDao.addStudentToGroup(trainer);
+        userDao.addStudentToGroup(trainer, student, themesNewStudentInGroup);
         return getStudentsWithTrainerThemes((Trainer) userDao.findById(trainer.getId()));
     }
 
@@ -168,6 +168,13 @@ public class UserServiceImpl implements UserService {
             trainer.getGroup().setStudents(students);
         }
             return trainer;
+    }
+
+    private Student getStudentWithAuthTrainerThemes(Trainer trainer) {
+        Student student = trainer.getGroup().getStudents().get(0);
+        List<Theme> themes = student.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
+        student.setThemes(themes);
+        return student;
     }
 //
 //    @Override

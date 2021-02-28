@@ -111,12 +111,18 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public void addStudentToGroup(Trainer trainer) {
+    public void addStudentToGroup(Trainer trainer, Student student, List<Theme> themes) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
         em.merge(trainer);
-        em.merge(trainer.getGroup());
+        Group group = em.find(Group.class, trainer.getGroup().getId());
+        group.setStudents(trainer.getGroup().getStudents());
+        em.merge(group);
+        em.merge(student);
+        for (int i = 0; i < themes.size(); i++) {
+            em.persist(themes.get(i));
+        }
         trx.commit();
         em.close();
     }
