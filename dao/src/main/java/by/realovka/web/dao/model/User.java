@@ -11,7 +11,6 @@ import java.util.List;
 @Builder
 @With
 public class User {
-
     private Long id;
     private String userName;
     private int age;
