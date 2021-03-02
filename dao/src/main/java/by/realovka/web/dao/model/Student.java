@@ -20,6 +20,7 @@ public class Student extends User {
     @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
     private List<Group> groups = new ArrayList<>();
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OrderBy
     private List<Theme> themes = new ArrayList<>();
 
 }

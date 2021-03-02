@@ -1,6 +1,9 @@
 package by.realovka.web.dao.dao;
 
-import by.realovka.web.dao.model.*;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Theme;
+import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.User;
 
 import java.util.List;
 
@@ -14,7 +17,7 @@ public interface UserDao {
 
     List<Student> getAllStudents();
 
-    Trainer addGroupToTrainer(Trainer trainer, Group group);
+    Trainer addGroupToTrainer(Trainer trainer);
 
     User findById(Long id);
 
@@ -24,6 +27,6 @@ public interface UserDao {
 
     void addThemeToGroup(List<Theme> themes);
 
-    void addOrUpdateMarkToStudent(Long studentId, Long themeId, int mark);
+    Trainer addOrUpdateMarkToStudent(Long id, int mark, Trainer trainer);
 
 }

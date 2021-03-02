@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
                 .students(new ArrayList<>())
                 .build();
         trainer.setGroup(group);
-        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer, group));
+        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer));
     }
 
     @Override
@@ -179,9 +179,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Trainer addOrUpdateMark(Trainer trainer, String studentId, String themeId, int mark) {
-        Long studentIdPars = Long.parseLong(studentId);
-        Long themeIdPars = Long.parseLong(themeId);
-        userDao.addOrUpdateMarkToStudent(studentIdPars, themeIdPars, mark);
+//        Long studentIdPars = Long.parseLong(studentId);
+        Long id = Long.parseLong(themeId);
+        trainer = userDao.addOrUpdateMarkToStudent(id, mark, trainer);
         return getStudentsWithTrainerThemes(trainer);
     }
 

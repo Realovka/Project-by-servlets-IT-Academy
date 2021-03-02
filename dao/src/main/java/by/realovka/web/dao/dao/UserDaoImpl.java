@@ -1,6 +1,9 @@
 package by.realovka.web.dao.dao;
 
-import by.realovka.web.dao.model.*;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Theme;
+import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -86,11 +89,10 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public Trainer addGroupToTrainer(Trainer trainer, Group group) {
+    public Trainer addGroupToTrainer(Trainer trainer) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
-        em.persist(group);
         em.merge(trainer);
         trx.commit();
         em.close();
@@ -126,7 +128,7 @@ public class UserDaoImpl implements UserDao {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
-        for(int i = 0; i<themes.size(); i++) {
+        for (int i = 0; i < themes.size(); i++) {
             em.persist(themes.get(i));
         }
         trx.commit();
@@ -134,16 +136,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addOrUpdateMarkToStudent(Long studentId, Long themeId, int mark) {
+    public Trainer addOrUpdateMarkToStudent(Long id, int mark, Trainer trainer) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
-        Student student = em.createQuery("from Student where id=:id ", Student.class).setParameter("id", studentId).getSingleResult();
-        Theme updateTheme = student.getThemes().stream().filter(theme -> theme.getId().equals(themeId)).findAny().get();
-        updateTheme.setMark(mark);
-        em.merge(updateTheme);
+        em.createQuery("update Theme t set t.mark=:mark where t.id=:id ").setParameter("mark", mark).setParameter("id", id).executeUpdate();
+        trainer = em.find(Trainer.class, trainer.getId());
         trx.commit();
         em.close();
+        return trainer;
     }
 
 }
