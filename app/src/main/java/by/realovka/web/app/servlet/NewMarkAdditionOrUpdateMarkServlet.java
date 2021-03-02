@@ -24,7 +24,6 @@ public class NewMarkAdditionOrUpdateMarkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
-        String studentId = req.getParameter("studentId");
         String themeId = req.getParameter("themeId");
         Integer mark = null;
         try {
@@ -39,7 +38,7 @@ public class NewMarkAdditionOrUpdateMarkServlet extends HttpServlet {
             req.getRequestDispatcher("mainTrainer.jsp").forward(req, resp);
             return;
         }
-        Trainer trainer = userService.addOrUpdateMark(auth, studentId, themeId, mark);
+        Trainer trainer = userService.addOrUpdateOrDeleteMark(auth, themeId, mark);
         List<Student> students = trainer.getGroup().getStudents();
         req.getSession().setAttribute("listStudents", students);
         req.getRequestDispatcher("mainTrainer.jsp").forward(req, resp);

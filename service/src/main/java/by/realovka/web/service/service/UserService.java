@@ -23,7 +23,7 @@ public interface UserService {
 
     Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme);
 
-    Trainer addOrUpdateMark(Trainer trainer, String studentId, String themeName, int mark);
+    Trainer addOrUpdateOrDeleteMark(Trainer trainer, String themeName, int mark);
 
 
 }

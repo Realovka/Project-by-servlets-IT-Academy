@@ -46,17 +46,15 @@
                             <c:choose>
                                 <c:when test="${theme.mark!=0}">
                                     ${theme.mark}
-                                    <a href="/deleteMark">Delete</a>
+                                    <a href="<c:url value="/deleteMark"/>?themeId=${theme.id}">Delete</a>
                                     <form action="/addOrUpdateMark" method="post">
                                         <input type="text" name="mark" placeholder="Update mark here"/>
-                                        <input type="hidden" name="studentId" value="${student.id}"/>
                                         <input type="hidden" name="themeId" value="${theme.id}"/>
                                     </form>
                                 </c:when>
                                 <c:otherwise>
                                     <form action="/addOrUpdateMark" method="post">
                                         <input type="text" name="mark" placeholder="Enter mark here"/>
-                                        <input type="hidden" name="studentId" value="${student.id}"/>
                                         <input type="hidden" name="themeId" value="${theme.id}"/>
                                     </form>
                                 </c:otherwise>

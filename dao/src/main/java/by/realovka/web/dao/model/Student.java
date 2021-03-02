@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("STUDENT")
 public class Student extends User {
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "students")
     private List<Group> groups = new ArrayList<>();
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @OrderBy

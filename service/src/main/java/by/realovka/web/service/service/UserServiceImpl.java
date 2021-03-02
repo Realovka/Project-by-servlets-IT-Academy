@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
                 .students(new ArrayList<>())
                 .build();
         trainer.setGroup(group);
-        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer));
+        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer, group));
     }
 
     @Override
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
             student.getThemes().addAll(themesNewStudentInGroup);
         }
         trainer.getGroup().getStudents().add(student);
-        userDao.addStudentToGroup(trainer);
+        userDao.addStudentToGroup(trainer, student);
         return getStudentsWithTrainerThemes((Trainer) userDao.findById(trainer.getId()));
     }
 
@@ -178,10 +178,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Trainer addOrUpdateMark(Trainer trainer, String studentId, String themeId, int mark) {
-//        Long studentIdPars = Long.parseLong(studentId);
+    public Trainer addOrUpdateOrDeleteMark(Trainer trainer, String themeId, int mark) {
         Long id = Long.parseLong(themeId);
-        trainer = userDao.addOrUpdateMarkToStudent(id, mark, trainer);
+        trainer = userDao.addOrUpdateOrDeleteMarkToStudent(id, mark, trainer);
         return getStudentsWithTrainerThemes(trainer);
     }
 

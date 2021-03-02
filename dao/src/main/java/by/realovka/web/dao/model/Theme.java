@@ -11,7 +11,7 @@ import javax.persistence.*;
 @With
 @Builder
 @Entity
-@Table(name = "themes_hb1")
+@Table(name = "themes_hb2")
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

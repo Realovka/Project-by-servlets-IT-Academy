@@ -1,9 +1,6 @@
 package by.realovka.web.dao.dao;
 
-import by.realovka.web.dao.model.Student;
-import by.realovka.web.dao.model.Theme;
-import by.realovka.web.dao.model.Trainer;
-import by.realovka.web.dao.model.User;
+import by.realovka.web.dao.model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -89,11 +86,12 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public Trainer addGroupToTrainer(Trainer trainer) {
+    public Trainer addGroupToTrainer(Trainer trainer, Group group) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
         em.merge(trainer);
+        trainer = em.find(Trainer.class, trainer.getId());
         trx.commit();
         em.close();
         return trainer;
@@ -112,12 +110,17 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+
     @Override
-    public void addStudentToGroup(Trainer trainer) {
+    public void addStudentToGroup(Trainer trainer, Student student) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
         em.merge(trainer);
+        em.merge(student);
+        Group group = em.find(Group.class, trainer.getGroup().getId());
+        group.setStudents(trainer.getGroup().getStudents());
+        em.merge(group);
         trx.commit();
         em.close();
     }
@@ -135,8 +138,9 @@ public class UserDaoImpl implements UserDao {
         em.close();
     }
 
+
     @Override
-    public Trainer addOrUpdateMarkToStudent(Long id, int mark, Trainer trainer) {
+    public Trainer addOrUpdateOrDeleteMarkToStudent(Long id, int mark, Trainer trainer) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
