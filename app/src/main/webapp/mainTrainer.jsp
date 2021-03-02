@@ -50,14 +50,14 @@
                                     <form action="/addOrUpdateMark" method="post">
                                         <input type="text" name="mark" placeholder="Update mark here"/>
                                         <input type="hidden" name="studentId" value="${student.id}"/>
-                                        <input type="hidden" name="themeName" value="${theme.name}"/>
+                                        <input type="hidden" name="themeId" value="${theme.id}"/>
                                     </form>
                                 </c:when>
                                 <c:otherwise>
                                     <form action="/addOrUpdateMark" method="post">
                                         <input type="text" name="mark" placeholder="Enter mark here"/>
                                         <input type="hidden" name="studentId" value="${student.id}"/>
-                                        <input type="hidden" name="themeName" value="${theme.name}"/>
+                                        <input type="hidden" name="themeId" value="${theme.id}"/>
                                     </form>
                                 </c:otherwise>
                             </c:choose>

@@ -11,10 +11,10 @@ import javax.persistence.*;
 @With
 @Builder
 @Entity
-@Table(name = "themes_hb")
+@Table(name = "themes_hb1")
 public class Theme {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     @Column(name = "name_theme")
     private String name;

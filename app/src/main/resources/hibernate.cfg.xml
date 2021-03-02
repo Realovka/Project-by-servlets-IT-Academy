@@ -27,6 +27,9 @@
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <property name="hibernate.jdbc.batch_size">5</property>
+        <property name="hibernate.order_updates">true</property>
+        <property name="hibernate.order_inserts">true</property>
+        <property name="hibernate.generate_statistics">true</property>
 
         <mapping class="by.realovka.web.dao.model.User"/>
         <mapping class="by.realovka.web.dao.model.Student"/>

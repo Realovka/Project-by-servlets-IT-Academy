@@ -22,8 +22,8 @@ public interface UserService {
     Trainer addStudentToGroup(Trainer trainer, Long studentId);
 
     Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme);
-//
-//    void addOrUpdateMark(String studentId, String themeName, int mark);
+
+    Trainer addOrUpdateMark(Trainer trainer, String studentId, String themeName, int mark);
 
 
 }

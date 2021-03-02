@@ -111,18 +111,11 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public void addStudentToGroup(Trainer trainer, Student student, List<Theme> themes) {
+    public void addStudentToGroup(Trainer trainer) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
         em.merge(trainer);
-        Group group = em.find(Group.class, trainer.getGroup().getId());
-        group.setStudents(trainer.getGroup().getStudents());
-        em.merge(group);
-        em.merge(student);
-        for (int i = 0; i < themes.size(); i++) {
-            em.persist(themes.get(i));
-        }
         trx.commit();
         em.close();
     }
@@ -141,11 +134,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addOrUpdateMarkToStudent(Theme theme) {
+    public void addOrUpdateMarkToStudent(Long studentId, Long themeId, int mark) {
         EntityManager em = entityManagerHelper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
-        em.merge(theme);
+        Student student = em.createQuery("from Student where id=:id ", Student.class).setParameter("id", studentId).getSingleResult();
+        Theme updateTheme = student.getThemes().stream().filter(theme -> theme.getId().equals(themeId)).findAny().get();
+        updateTheme.setMark(mark);
+        em.merge(updateTheme);
         trx.commit();
         em.close();
     }

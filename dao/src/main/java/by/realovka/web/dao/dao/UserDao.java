@@ -20,10 +20,10 @@ public interface UserDao {
 
 //    Set<Student> findAllTrainerStudents(Trainer trainer);
 
-    void addStudentToGroup(Trainer trainer, Student student, List<Theme> themes);
+    void addStudentToGroup(Trainer trainer);
 
     void addThemeToGroup(List<Theme> themes);
 
-    void addOrUpdateMarkToStudent(Theme theme);
+    void addOrUpdateMarkToStudent(Long studentId, Long themeId, int mark);
 
 }

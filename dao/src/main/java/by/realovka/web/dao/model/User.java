@@ -15,7 +15,7 @@ import javax.persistence.*;
 @SuperBuilder
 @With
 @Entity
-@Table(name = "users_hb")
+@Table(name = "users_hb1")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "status")
 public  class User {

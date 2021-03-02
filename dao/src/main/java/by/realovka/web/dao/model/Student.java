@@ -3,10 +3,7 @@ package by.realovka.web.dao.model;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +17,9 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("STUDENT")
 public class Student extends User {
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
     private List<Group> groups = new ArrayList<>();
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Theme> themes = new ArrayList<>();
 
 }
