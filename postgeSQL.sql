@@ -26,3 +26,13 @@ CREATE TABLE themes_hb2 (
    student_id int8 null
 );
 
+CREATE TABLE trainer_with_salary_hb2 (
+   id BIGSERIAL,
+   name VARCHAR (35)
+);
+
+CREATE TABLE salary_hb2 (
+    id BIGSERIAL,
+    value numeric,
+    trainer_with_salary_id int8
+)

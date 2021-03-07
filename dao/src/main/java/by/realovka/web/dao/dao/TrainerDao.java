@@ -1,17 +1,20 @@
 package by.realovka.web.dao.dao;
 
-import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.Salary;
+import by.realovka.web.dao.model.TrainerWithSalary;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface TrainerDao {
 
-    int addTrainer(String name);
+    void saveTrainerWithSalary(TrainerWithSalary trainerWithSalary);
 
-    List<Trainer> findAllTrainers();
+    List<TrainerWithSalary> getAllTrainerWithSalary();
 
-    void addNewSalaryToTrainer(long trainerId, BigDecimal salary);
+    TrainerWithSalary getById (Long id);
 
-    Trainer getTrainerSalaries(long trainerId, int limit);
+    void addSalaryToTrainer(Salary salary);
+
+    List<Salary> getAverageSalary(Long id, Integer months);
+
 }

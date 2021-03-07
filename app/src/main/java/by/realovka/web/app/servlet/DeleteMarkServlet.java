@@ -29,6 +29,6 @@ public class DeleteMarkServlet extends HttpServlet {
         log.info("Trainer and his students after delete mark = {}", themeId);
         req.getSession().setAttribute("userAuth", trainer);
         req.getSession().setAttribute("listStudents", students);
-        req.getRequestDispatcher("mainTrainer.jsp").forward(req,resp);
+        req.getRequestDispatcher("mainTrainer.jsp").forward(req, resp);
     }
 }

@@ -13,12 +13,12 @@
         <th align="center">Trainer name</th>
         </thead>
         <form action="/choiceTrainer" method="get">
-           <c:forEach items="${applicationScope.listTrainers}" var="trainer">
-               <tr>
-                   <td>
-                <a href="<c:url value="/choiceTrainer"/>?trainerId=${trainer.id}&trainerName=${trainer.name}">${trainer.name}</a><br>
-                   </td>
-               </tr>
+            <c:forEach items="${applicationScope.listTrainers}" var="trainer">
+                <tr>
+                    <td>
+                        <a href="<c:url value="/choiceTrainer"/>?trainerId=${trainer.id}&trainerName=${trainer.name}">${trainer.name}</a><br>
+                    </td>
+                </tr>
             </c:forEach>
         </form>
     </table>

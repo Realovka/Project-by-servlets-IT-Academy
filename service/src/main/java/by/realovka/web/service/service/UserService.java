@@ -13,7 +13,7 @@ public interface UserService {
 
     User identificationUserByLoginAndPassword(String login, String password);
 
-    List<Student> getAllStudents();
+    List<Student> getAllStudents(Trainer trainer);
 
     Trainer getById(Long id);
 
@@ -24,6 +24,5 @@ public interface UserService {
     Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme);
 
     Trainer addOrUpdateOrDeleteMark(Trainer trainer, String themeName, int mark);
-
 
 }

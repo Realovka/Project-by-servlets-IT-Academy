@@ -3,7 +3,11 @@ package by.realovka.web.dao.dto;
 import by.realovka.web.dao.model.Role;
 import by.realovka.web.dao.model.Theme;
 import by.realovka.web.dao.model.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
 import java.util.ArrayList;
 import java.util.HashSet;

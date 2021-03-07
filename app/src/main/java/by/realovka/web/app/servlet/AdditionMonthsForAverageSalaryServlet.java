@@ -14,8 +14,8 @@ public class AdditionMonthsForAverageSalaryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       String trainerId = req.getParameter("trainerId");
-       req.getSession().setAttribute("trainerId", trainerId);
-       req.getRequestDispatcher("/monthsNumber.jsp").forward(req, resp);
+        String trainerId = req.getParameter("trainerId");
+        req.getSession().setAttribute("trainerId", trainerId);
+        req.getRequestDispatcher("/monthsNumber.jsp").forward(req, resp);
     }
 }

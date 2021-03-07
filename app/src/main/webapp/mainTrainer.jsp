@@ -17,10 +17,10 @@
 
 <a href="/addTheme.jsp">Add new theme</a><br>
 
-<%--<c:if test="${sessionScope.massageFormatOfMarkIsWrong!=null}">--%>
-<%--    ${sessionScope.massageFormatOfMarkIsWrong}--%>
-<%--    ${sessionScope.massageFormatOfMarkIsWrong = null}--%>
-<%--</c:if>--%>
+<c:if test="${sessionScope.massageFormatOfMarkIsWrong!=null}">
+    ${sessionScope.massageFormatOfMarkIsWrong}
+    ${sessionScope.massageFormatOfMarkIsWrong = null}
+</c:if>
 
 <c:if test="${sessionScope.listStudents.size()>0}">
 

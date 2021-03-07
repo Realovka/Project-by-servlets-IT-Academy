@@ -38,6 +38,8 @@
         <mapping class="by.realovka.web.dao.model.Role"/>
         <mapping class="by.realovka.web.dao.model.Group"/>
         <mapping class="by.realovka.web.dao.model.Theme"/>
+        <mapping class="by.realovka.web.dao.model.TrainerWithSalary"/>
+        <mapping class="by.realovka.web.dao.model.Salary"/>
 
 
     </session-factory>

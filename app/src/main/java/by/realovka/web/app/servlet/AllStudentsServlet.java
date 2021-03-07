@@ -1,6 +1,7 @@
 package by.realovka.web.app.servlet;
 
 import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.service.service.UserService;
 import by.realovka.web.service.service.UserServiceImpl;
 
@@ -19,7 +20,8 @@ public class AllStudentsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Student> students = userService.getAllStudents();
+        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
+        List<Student> students = userService.getAllStudents(auth);
         req.getSession().setAttribute("students", students);
         req.getRequestDispatcher("/listAllStudents.jsp").forward(req, resp);
     }

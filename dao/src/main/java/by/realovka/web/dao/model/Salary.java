@@ -1,12 +1,10 @@
 package by.realovka.web.dao.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,26 +12,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "themes_hb2")
-public class Theme {
+@Table(name = "salary_hb2")
+public class Salary {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name_theme")
-    private String name;
-    private int mark;
+    private BigDecimal value;
     @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
-
+    @JoinColumn(name = "trainer_with_salary_id")
+    private TrainerWithSalary trainerWithSalary;
 }

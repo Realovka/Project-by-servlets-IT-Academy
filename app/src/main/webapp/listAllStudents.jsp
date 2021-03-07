@@ -6,11 +6,18 @@
 </head>
 <body>
 <h2 style="color: mediumblue">List All Students in the University</h2>
-<label>If you want to add his to your list, click on student name</label>
 <form action="/addStudent" method="post">
-    <c:forEach items="${sessionScope.students}" var="student">
-        <a href="<c:url value="/addStudent"/>?studentId=${student.id}">${student.userName}</a><br>
-    </c:forEach>
+    <c:choose>
+        <c:when test="${sessionScope.students.size()>0}">
+            <label>If you want to add his to your list, click on student name</label><br>
+            <c:forEach items="${sessionScope.students}" var="student">
+                <a href="<c:url value="/addStudent"/>?studentId=${student.id}">${student.userName}</a><br>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <label>All students from University are in your group</label>
+        </c:otherwise>
+    </c:choose>
 </form>
 
 <c:if test="${sessionScope.userAuth.group.students.size()>0}">

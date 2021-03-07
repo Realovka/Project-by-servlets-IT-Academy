@@ -21,7 +21,7 @@ public class AdditionGroupToTrainerServlet extends HttpServlet {
     private final UserService userService = UserServiceImpl.getInstance();
 
     @Override
-    protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
         auth = userService.createGroupByTrainer(auth);
         log.info("Trainer after addition group {}", auth);

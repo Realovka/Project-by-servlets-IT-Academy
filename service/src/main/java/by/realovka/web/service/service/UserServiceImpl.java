@@ -5,7 +5,12 @@ package by.realovka.web.service.service;
 import by.realovka.web.dao.dao.UserDao;
 import by.realovka.web.dao.dao.UserDaoImpl;
 import by.realovka.web.dao.dto.UserDTO;
-import by.realovka.web.dao.model.*;
+import by.realovka.web.dao.model.Admin;
+import by.realovka.web.dao.model.Group;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Theme;
+import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.User;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static by.realovka.web.dao.model.Role.ADMIN;
 import static by.realovka.web.dao.model.Role.STUDENT;
 import static by.realovka.web.dao.model.Role.TRAINER;
 
@@ -50,7 +56,7 @@ public class UserServiceImpl implements UserService {
                 builder.append(String.format("%02X", b));
             }
             if (userDTO.getRole().equals(TRAINER)) {
-                User trainer = Trainer.builder()
+                Trainer trainer = Trainer.builder()
                         .userName(userDTO.getLogin())
                         .age(userDTO.getAge())
                         .login(userDTO.getLogin())
@@ -59,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 log.info("Save new user {}", trainer);
                 userDao.save(trainer);
             } else if (userDTO.getRole().equals(STUDENT)) {
-                User student = Student.builder()
+                Student student = Student.builder()
                         .userName(userDTO.getLogin())
                         .age(userDTO.getAge())
                         .login(userDTO.getLogin())
@@ -67,6 +73,15 @@ public class UserServiceImpl implements UserService {
                         .build();
                 log.info("Save new user {}", student);
                 userDao.save(student);
+            } else if (userDTO.getRole().equals(ADMIN)) {
+                Admin admin = Admin.builder()
+                        .userName(userDTO.getLogin())
+                        .age(userDTO.getAge())
+                        .login(userDTO.getLogin())
+                        .loginAndPassword(builder.toString())
+                        .build();
+                log.info("Save new user {}", admin);
+                userDao.save(admin);
             }
             return true;
         } else {
@@ -97,10 +112,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Student> getAllStudents() {
-        return userDao.getAllStudents();
+    public List<Student> getAllStudents(Trainer trainer) {
+        List<Student> students = userDao.getAllStudents();
+        students.removeAll(trainer.getGroup().getStudents());
+        return students;
     }
-
 
     @Override
     public Trainer createGroupByTrainer(Trainer trainer) {
@@ -111,7 +127,7 @@ public class UserServiceImpl implements UserService {
                 .students(new ArrayList<>())
                 .build();
         trainer.setGroup(group);
-        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer, group));
+        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer));
     }
 
     @Override
@@ -133,7 +149,6 @@ public class UserServiceImpl implements UserService {
         userDao.addStudentToGroup(trainer, student);
         return getStudentsWithTrainerThemes((Trainer) userDao.findById(trainer.getId()));
     }
-
 
     @Override
     public Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme) {
@@ -158,25 +173,6 @@ public class UserServiceImpl implements UserService {
         return getStudentsWithTrainerThemes((Trainer) userDao.findById(trainer.getId()));
     }
 
-    private Trainer getStudentsWithTrainerThemes(Trainer trainer) {
-        if(trainer.getGroup() != null) {
-            List<Student> students = trainer.getGroup().getStudents();
-            for (Student item : students) {
-                List<Theme> themes = item.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
-                item.setThemes(themes);
-            }
-            trainer.getGroup().setStudents(students);
-        }
-            return trainer;
-    }
-
-    private Student getStudentWithAuthTrainerThemes(Trainer trainer) {
-        Student student = trainer.getGroup().getStudents().get(0);
-        List<Theme> themes = student.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
-        student.setThemes(themes);
-        return student;
-    }
-
     @Override
     public Trainer addOrUpdateOrDeleteMark(Trainer trainer, String themeId, int mark) {
         Long id = Long.parseLong(themeId);
@@ -185,4 +181,22 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    private Trainer getStudentsWithTrainerThemes(Trainer trainer) {
+        if (trainer.getGroup() != null) {
+            List<Student> students = trainer.getGroup().getStudents();
+            for (Student item : students) {
+                List<Theme> themes = item.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
+                item.setThemes(themes);
+            }
+            trainer.getGroup().setStudents(students);
+        }
+        return trainer;
+    }
+
+    private Student getStudentWithAuthTrainerThemes(Trainer trainer) {
+        Student student = trainer.getGroup().getStudents().get(0);
+        List<Theme> themes = student.getThemes().stream().filter(theme -> theme.getGroup().equals(trainer.getGroup())).collect(Collectors.toList());
+        student.setThemes(themes);
+        return student;
+    }
 }

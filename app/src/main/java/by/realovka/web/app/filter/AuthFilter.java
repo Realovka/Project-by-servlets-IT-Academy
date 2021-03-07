@@ -15,7 +15,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
@@ -25,31 +24,16 @@ public class AuthFilter extends UtilFilter {
     private final UserService userService = UserServiceImpl.getInstance();
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpServletResponse res = (HttpServletResponse) response;
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
         User auth = userService.identificationUserByLoginAndPassword(login, password);
         req.getSession().setAttribute("userAuth", auth);
         log.info("User from DB = {}", auth);
-        HttpSession session = req.getSession();
         if (!auth.equals(new User())) {
-            try {
-                if (auth instanceof Admin) {
-                    request.getRequestDispatcher("mainAdmin.jsp").forward(request, response);
-                } else {
-                    if (auth instanceof Trainer) {
-                        req.getRequestDispatcher("/trainerAndHisStudents").forward(request, response);
-                    } else {
-                        if (auth instanceof Student) {
-                            req.getRequestDispatcher("mainStudent.jsp").forward(request, response);
-                        }
-                    }
-                }
-            } catch (ServletException | IOException e) {
-                e.printStackTrace();
-            }
+            forwardToSomeMainPage(auth, req, res);
         } else {
             try {
                 req.setAttribute("authorizationFail", "Login or password is wrong!");
@@ -57,6 +41,24 @@ public class AuthFilter extends UtilFilter {
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void forwardToSomeMainPage(User auth, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            if (auth instanceof Admin) {
+                request.getRequestDispatcher("/adminAndTrainers").forward(request, response);
+            } else {
+                if (auth instanceof Trainer) {
+                    request.getRequestDispatcher("/trainerAndHisStudents").forward(request, response);
+                } else {
+                    if (auth instanceof Student) {
+                        request.getRequestDispatcher("mainStudent.jsp").forward(request, response);
+                    }
+                }
+            }
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
         }
     }
 }
