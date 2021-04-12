@@ -121,8 +121,8 @@ public class UserDaoImpl implements UserDao {
     public void addThemeToGroup(List<Theme> themes) {
         List<Object> objects = emet.getEntityManagerAndEntityTransaction();
         EntityManager em = (EntityManager) objects.get(0);
-        for (int i = 0; i < themes.size(); i++) {
-            em.persist(themes.get(i));
+        for(Theme item : themes) {
+            em.persist(item);
         }
         emet.closeEntityManager(objects);
     }

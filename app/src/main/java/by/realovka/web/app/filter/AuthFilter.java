@@ -15,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
@@ -31,6 +32,8 @@ public class AuthFilter extends UtilFilter {
         String password = req.getParameter("passwordAuthorization");
         User auth = userService.identificationUserByLoginAndPassword(login, password);
         if (!auth.equals(new User())) {
+            HttpSession session = req.getSession();
+            session.setAttribute("userAuth", auth);
             forwardToSomeMainPage(auth, req, res);
         } else {
             try {
