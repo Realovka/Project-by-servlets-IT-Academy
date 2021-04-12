@@ -30,8 +30,6 @@ public class AuthFilter extends UtilFilter {
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
         User auth = userService.identificationUserByLoginAndPassword(login, password);
-        req.getSession().setAttribute("userAuth", auth);
-        log.info("User from DB = {}", auth);
         if (!auth.equals(new User())) {
             forwardToSomeMainPage(auth, req, res);
         } else {
