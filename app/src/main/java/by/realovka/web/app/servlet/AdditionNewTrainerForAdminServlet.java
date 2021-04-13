@@ -3,6 +3,10 @@ package by.realovka.web.app.servlet;
 import by.realovka.web.dao.dto.TrainerDTO;
 import by.realovka.web.service.service.TrainerService;
 import by.realovka.web.service.service.TrainerServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +16,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@Controller
+@RequestMapping(path = "/addTrainer")
+public class AdditionNewTrainerForAdminServlet {
 
-@WebServlet(urlPatterns = "/addTrainer")
-public class AdditionNewTrainerForAdminServlet extends HttpServlet {
+    private final TrainerService trainerService;
 
-    private final TrainerService trainerService = TrainerServiceImpl.getInstance();
+    @Autowired
+    public AdditionNewTrainerForAdminServlet(TrainerService trainerService) {
+        this.trainerService = trainerService;
+    }
 
-
-    @Override
+    @PostMapping
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String trainerName = req.getParameter("trainerName");
         trainerService.addTrainer(trainerName);

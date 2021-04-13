@@ -5,30 +5,39 @@ import by.realovka.web.dao.dao.TrainerDaoImpl;
 import by.realovka.web.dao.dto.TrainerDTO;
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
+@Transactional
 public class TrainerServiceImpl implements TrainerService {
 
-    private static volatile TrainerServiceImpl instance;
-    private final TrainerDao trainerDao = TrainerDaoImpl.getInstance();
+//    private static volatile TrainerServiceImpl instance;
+    private final TrainerDao trainerDao;
 
-    private TrainerServiceImpl() {
+    @Autowired
+    public TrainerServiceImpl(TrainerDao trainerDao) {
+        this.trainerDao = trainerDao;
     }
 
-    public static TrainerServiceImpl getInstance() {
-        if (instance == null) {
-            synchronized (TrainerDaoImpl.class) {
-                if (instance == null) {
-                    instance = new TrainerServiceImpl();
-                }
-            }
-        }
-        return instance;
-    }
+    //    private TrainerServiceImpl() {
+//    }
+//
+//    public static TrainerServiceImpl getInstance() {
+//        if (instance == null) {
+//            synchronized (TrainerDaoImpl.class) {
+//                if (instance == null) {
+//                    instance = new TrainerServiceImpl();
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
     @Override
     public void addTrainer(String name) {

@@ -5,32 +5,33 @@ import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Theme;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
 
-
+@Repository
 public class UserDaoImpl implements UserDao {
 
-    private static volatile UserDaoImpl instance;
-
+//    private static volatile UserDaoImpl instance;
+//
     private EntityManagerAndEntityTransactionHelper emet = EntityManagerAndEntityTransactionHelper.getInstance();
 
-    private UserDaoImpl() {
-
-    }
-
-    public static UserDaoImpl getInstance() {
-        if (instance == null) {
-            synchronized (UserDaoImpl.class) {
-                if (instance == null) {
-                    instance = new UserDaoImpl();
-                }
-            }
-        }
-        return instance;
-    }
+//    private UserDaoImpl() {
+//
+//    }
+////
+//    public static UserDaoImpl getInstance() {
+//        if (instance == null) {
+//            synchronized (UserDaoImpl.class) {
+//                if (instance == null) {
+//                    instance = new UserDaoImpl();
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
 
     @Override

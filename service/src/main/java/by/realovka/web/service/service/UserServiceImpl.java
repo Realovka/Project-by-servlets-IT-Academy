@@ -13,7 +13,10 @@ import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,24 +27,34 @@ import static by.realovka.web.dao.model.Role.STUDENT;
 import static by.realovka.web.dao.model.Role.TRAINER;
 
 @Slf4j
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
-    private static volatile UserServiceImpl instance;
-    private final UserDao userDao = UserDaoImpl.getInstance();
 
-    private UserServiceImpl() {
+    private final UserDao userDao;
+
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    public static UserServiceImpl getInstance() {
-        if (instance == null) {
-            synchronized (UserServiceImpl.class) {
-                if (instance == null) {
-                    instance = new UserServiceImpl();
-                }
-            }
-        }
-        return instance;
-    }
+    //    private static volatile UserServiceImpl instance;
+//    private final UserDao userDao = UserDaoImpl.getInstance();
+//
+//    private UserServiceImpl() {
+//    }
+//
+//    public static UserServiceImpl getInstance() {
+//        if (instance == null) {
+//            synchronized (UserServiceImpl.class) {
+//                if (instance == null) {
+//                    instance = new UserServiceImpl();
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
 
     @SneakyThrows

@@ -2,30 +2,32 @@ package by.realovka.web.dao.dao;
 
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@Repository
 public class TrainerDaoImpl implements TrainerDao {
 
     private EntityManagerAndEntityTransactionHelper emet = EntityManagerAndEntityTransactionHelper.getInstance();
 
-    private static volatile TrainerDaoImpl instance;
-
-    private TrainerDaoImpl() {
-
-    }
-
-    public static TrainerDaoImpl getInstance() {
-        if (instance == null) {
-            synchronized (TrainerDaoImpl.class) {
-                if (instance == null) {
-                    instance = new TrainerDaoImpl();
-                }
-            }
-        }
-        return instance;
-    }
+//    private static volatile TrainerDaoImpl instance;
+//
+//    private TrainerDaoImpl() {
+//
+//    }
+//
+//    public static TrainerDaoImpl getInstance() {
+//        if (instance == null) {
+//            synchronized (TrainerDaoImpl.class) {
+//                if (instance == null) {
+//                    instance = new TrainerDaoImpl();
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
     @Override
     public void saveTrainerWithSalary(TrainerWithSalary trainerWithSalary) {

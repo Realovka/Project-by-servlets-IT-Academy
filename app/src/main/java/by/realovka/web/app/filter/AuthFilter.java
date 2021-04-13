@@ -6,7 +6,11 @@ import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 import by.realovka.web.service.service.UserService;
 import by.realovka.web.service.service.UserServiceImpl;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,31 +23,32 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(value = "/auth", filterName = "authFilter")
-public class AuthFilter extends UtilFilter {
+@Component
+@AllArgsConstructor
+public class AuthFilter extends HandlerInterceptorAdapter {
 
-    private final UserService userService = UserServiceImpl.getInstance();
+    private final UserService userService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
         User auth = userService.identificationUserByLoginAndPassword(login, password);
         if (!auth.equals(new User())) {
             HttpSession session = req.getSession();
             session.setAttribute("userAuth", auth);
-            forwardToSomeMainPage(auth, req, res);
+            forwardToSomeMainPage(auth, req, resp);
         } else {
             try {
                 req.setAttribute("authorizationFail", "Login or password is wrong!");
-                req.getRequestDispatcher("/index.jsp").forward(request, response);
+                req.getRequestDispatcher("/index.jsp").forward(req, resp);
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
         }
+        return true;
     }
+
 
     private void forwardToSomeMainPage(User auth, HttpServletRequest request, HttpServletResponse response) {
         try {

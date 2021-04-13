@@ -5,6 +5,10 @@ import by.realovka.web.dao.model.Role;
 import by.realovka.web.service.service.UserService;
 import by.realovka.web.service.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,12 +18,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@WebServlet(urlPatterns = "/reg")
-public class RegistrationServlet extends HttpServlet {
+@Component
+@RequestMapping(path = "/reg")
+public class RegistrationServlet {
 
-    private final UserService userService = UserServiceImpl.getInstance();
+    private final UserService userService;
 
-    @Override
+    @Autowired
+    public RegistrationServlet(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = req.getParameter("nameRegistration");
         int age = Integer.parseInt(req.getParameter("ageRegistration"));

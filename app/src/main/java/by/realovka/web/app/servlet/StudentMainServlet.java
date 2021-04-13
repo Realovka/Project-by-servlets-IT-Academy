@@ -2,6 +2,9 @@ package by.realovka.web.app.servlet;
 
 import by.realovka.web.dao.model.Student;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +15,11 @@ import java.io.IOException;
 
 
 @Slf4j
-@WebServlet(urlPatterns = "/studentThemesAndMarks")
-public class StudentMainServlet extends HttpServlet {
+@Controller
+@RequestMapping(path = "/studentThemesAndMarks")
+public class StudentMainServlet {
 
-    @Override
+    @PostMapping
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Student auth = (Student) req.getSession().getAttribute("userAuth");
         req.getSession().setAttribute("userAuth", auth);

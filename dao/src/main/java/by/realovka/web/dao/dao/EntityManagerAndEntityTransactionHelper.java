@@ -1,9 +1,12 @@
 package by.realovka.web.dao.dao;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
 
+@Component
 public class EntityManagerAndEntityTransactionHelper {
 
     private static volatile EntityManagerAndEntityTransactionHelper instance;
