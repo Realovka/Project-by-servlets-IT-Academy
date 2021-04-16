@@ -14,25 +14,7 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-//    private static volatile UserDaoImpl instance;
-//
     private EntityManagerAndEntityTransactionHelper emet = EntityManagerAndEntityTransactionHelper.getInstance();
-
-//    private UserDaoImpl() {
-//
-//    }
-////
-//    public static UserDaoImpl getInstance() {
-//        if (instance == null) {
-//            synchronized (UserDaoImpl.class) {
-//                if (instance == null) {
-//                    instance = new UserDaoImpl();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
-
 
     @Override
     public User findByLogin(String login) {
@@ -48,7 +30,6 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-
     @Override
     public void save(User user) {
         List<Object> objects = emet.getEntityManagerAndEntityTransaction();
@@ -56,7 +37,6 @@ public class UserDaoImpl implements UserDao {
         em.persist(user);
         emet.closeEntityManager(objects);
     }
-
 
     @Override
     public User identificationUser(String loginAndPassword) {

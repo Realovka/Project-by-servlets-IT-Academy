@@ -3,7 +3,6 @@ package by.realovka.web.service.service;
 
 
 import by.realovka.web.dao.dao.UserDao;
-import by.realovka.web.dao.dao.UserDaoImpl;
 import by.realovka.web.dao.dto.UserDTO;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Group;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
@@ -185,14 +183,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Trainer addOrUpdateOrDeleteMark(Trainer trainer, String themeId, int mark) {
-        Long id = Long.parseLong(themeId);
-        trainer = userDao.addOrUpdateOrDeleteMarkToStudent(id, mark, trainer);
+    public Trainer addOrUpdateOrDeleteMark(Trainer trainer, Long themeId, Integer mark) {
+        trainer = userDao.addOrUpdateOrDeleteMarkToStudent(themeId, mark, trainer);
         return getStudentsWithTrainerThemes(trainer);
     }
 
-
-    private Trainer getStudentsWithTrainerThemes(Trainer trainer) {
+    @Override
+    public Trainer getStudentsWithTrainerThemes(Trainer trainer) {
         if (trainer.getGroup() != null) {
             List<Student> students = trainer.getGroup().getStudents();
             for (Student item : students) {

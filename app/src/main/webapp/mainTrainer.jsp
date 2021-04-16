@@ -1,13 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Hello Trainer</title>
 </head>
 <body>
-<h2 style="color: mediumblue">Hello ${userName}</h2>
+<h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
 <c:choose>
-    <c:when test="${userAuth.group!= null}">
+    <c:when test="${sessionScope.userAuth.group!= null}">
         <a href="/allStudents">List All Students</a><br>
     </c:when>
     <c:otherwise>
@@ -17,25 +18,25 @@
 
 <a href="/addTheme.jsp">Add new theme</a><br>
 
-<c:if test="${sessionScope.massageFormatOfMarkIsWrong!=null}">
-    ${sessionScope.massageFormatOfMarkIsWrong}
-    ${sessionScope.massageFormatOfMarkIsWrong = null}
+<c:if test="${massageFormatOfMarkIsWrong!=null}">
+    ${massageFormatOfMarkIsWrong}
+    ${massageFormatOfMarkIsWrong = null}
 </c:if>
 
-<c:if test="${sessionScope.listStudents.size()>0}">
+<c:if test="${listStudents.size()>0}">
 
     <table border="3">
         <thead>
         <th align="center">Student name</th>
 
-        <c:forEach items="${sessionScope.listStudents.get(0).themes}" var="theme">
+        <c:forEach items="${listStudents.get(0).themes}" var="theme">
 
             <th align="center">${theme.name}</th>
 
         </c:forEach>
         </thead>
 
-        <c:forEach items="${sessionScope.listStudents}" var="student">
+        <c:forEach items="${listStudents}" var="student">
             <tr>
                 <td>
                         ${student.userName}
@@ -46,17 +47,15 @@
                             <c:choose>
                                 <c:when test="${theme.mark!=0}">
                                     ${theme.mark}
-                                    <a href="<c:url value="/deleteMark"/>?themeId=${theme.id}">Delete</a>
-                                    <form action="/addOrUpdateMark" method="post">
+                                    <a href=/deleteMark/${theme.id}>Delete</a>
+                                    <f:form action="/addOrUpdateMark/${theme.id}" method="post" modelAttribute="mark" >
                                         <input type="text" name="mark" placeholder="Update mark here"/>
-                                        <input type="hidden" name="themeId" value="${theme.id}"/>
-                                    </form>
+                                    </f:form>
                                 </c:when>
                                 <c:otherwise>
-                                    <form action="/addOrUpdateMark" method="post">
+                                    <f:form action="/addOrUpdateMark/${theme.id}" method="post" modelAttribute="mark">
                                         <input type="text" name="mark" placeholder="Enter mark here"/>
-                                        <input type="hidden" name="themeId" value="${theme.id}"/>
-                                    </form>
+                                    </f:form>
                                 </c:otherwise>
                             </c:choose>
                         </td>

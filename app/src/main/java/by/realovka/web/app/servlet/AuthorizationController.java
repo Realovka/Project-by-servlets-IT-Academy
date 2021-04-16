@@ -5,6 +5,7 @@ import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 import by.realovka.web.service.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -12,30 +13,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping(path = "/auth")
 public class AuthorizationController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ApplicationContext applicationContext;
+    private final UserService userService;
 
-    @PostMapping("/auth")
-    public ModelAndView registration(HttpServletRequest req, HttpServletResponse resp, ModelAndView modelAndView) throws Exception {
-        String[] arr = applicationContext.getBeanDefinitionNames();
+    @PostMapping
+    public ModelAndView authorizationUser(HttpServletRequest req, HttpServletResponse resp, ModelAndView modelAndView) throws Exception {
         String login = req.getParameter("loginAuthorization");
         String password = req.getParameter("passwordAuthorization");
         User auth = userService.identificationUserByLoginAndPassword(login, password);
         if (!auth.equals(new User())) {
-            modelAndView.addObject("userAuth", auth);
-            modelAndView.addObject("userName", auth.getUserName());
+            HttpSession session = req.getSession();
+            session.setAttribute("userAuth", auth);
             forwardToSomeMainPage(auth, modelAndView);
         } else {
             modelAndView.addObject("authorizationFail", "Login or password is wrong!");
@@ -49,7 +45,7 @@ public class AuthorizationController {
             modelAndView.setViewName("/mainAdmin");
         } else {
             if (auth instanceof Trainer) {
-                modelAndView.setViewName("/mainTrainer");
+                modelAndView.setViewName("redirect:/trainerAndHisStudents");
             } else {
                 if (auth instanceof Student) {
                     modelAndView.setViewName("/mainStudent");
