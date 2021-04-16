@@ -9,7 +9,7 @@
 <h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
 <c:choose>
     <c:when test="${sessionScope.userAuth.group!= null}">
-        <a href="/allStudents">List All Students</a><br>
+        <a href="/addStudent">List All Students</a><br>
     </c:when>
     <c:otherwise>
         <a href="/addGroup">Create group with students</a><br>

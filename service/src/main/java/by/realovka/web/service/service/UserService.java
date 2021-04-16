@@ -13,7 +13,7 @@ public interface UserService {
 
     User identificationUserByLoginAndPassword(String login, String password);
 
-    List<Student> getAllStudents(Trainer trainer);
+    List<Student> getAllStudentsWithoutTrainerStudents(Trainer trainer);
 
     Trainer getById(Long id);
 

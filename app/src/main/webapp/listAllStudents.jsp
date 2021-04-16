@@ -6,19 +6,17 @@
 </head>
 <body>
 <h2 style="color: mediumblue">List All Students in the University</h2>
-<form action="/addStudent" method="post">
     <c:choose>
-        <c:when test="${sessionScope.students.size()>0}">
+        <c:when test="${students.size()>0}">
             <label>If you want to add his to your list, click on student name</label><br>
-            <c:forEach items="${sessionScope.students}" var="student">
-                <a href="<c:url value="/addStudent"/>?studentId=${student.id}">${student.userName}</a><br>
+            <c:forEach items="${students}" var="student">
+                <a href="/addStudent/${student.id}">${student.userName}</a><br>
             </c:forEach>
         </c:when>
         <c:otherwise>
             <label>All students from University are in your group</label>
         </c:otherwise>
     </c:choose>
-</form>
 
 <c:if test="${sessionScope.userAuth.group.students.size()>0}">
     <table border="3">
@@ -33,7 +31,7 @@
     </table>
 </c:if>
 
-<a href="mainTrainer.jsp">Main page</a><br>
+<a href="/trainerAndHisStudents">Main page</a><br>
 <a href="/logout">Logout</a>
 </body>
 </html>

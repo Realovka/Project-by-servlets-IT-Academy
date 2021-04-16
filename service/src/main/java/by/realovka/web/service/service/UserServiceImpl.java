@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Student> getAllStudents(Trainer trainer) {
+    public List<Student> getAllStudentsWithoutTrainerStudents(Trainer trainer) {
         List<Student> students = userDao.getAllStudents();
         students.removeAll(trainer.getGroup().getStudents());
         return students;
