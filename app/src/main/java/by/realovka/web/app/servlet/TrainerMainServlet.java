@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,8 +32,8 @@ public class TrainerMainServlet {
         this.userService = userService;
     }
 
-    @PostMapping
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @PostMapping("/trainerAndHisStudents")
+    public ModelAndView doPost(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Trainer auth = (Trainer) session.getAttribute("userAuth");
         Trainer trainer = userService.getById(auth.getId());
@@ -41,6 +42,7 @@ public class TrainerMainServlet {
             req.getSession().setAttribute("listStudents", students);
         }
         log.info("Auth trainer = {}", auth);
-        req.getRequestDispatcher("/mainTrainer.jsp").forward(req, resp);
+        modelAndView.setViewName("/mainTrainer.jsp");
+        return modelAndView;
     }
 }

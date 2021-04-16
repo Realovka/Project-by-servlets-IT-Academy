@@ -28,9 +28,7 @@ import static by.realovka.web.dao.model.Role.TRAINER;
 
 @Slf4j
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
-
 
     private final UserDao userDao;
 
@@ -39,7 +37,7 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    //    private static volatile UserServiceImpl instance;
+//        private static volatile UserServiceImpl instance;
 //    private final UserDao userDao = UserDaoImpl.getInstance();
 //
 //    private UserServiceImpl() {

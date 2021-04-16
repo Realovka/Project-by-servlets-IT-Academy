@@ -6,6 +6,7 @@ import by.realovka.web.service.service.UserService;
 import by.realovka.web.service.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,8 @@ import java.io.IOException;
 @Component
 @RequestMapping(path = "/reg")
 public class RegistrationServlet {
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private final UserService userService;
 
@@ -31,6 +34,7 @@ public class RegistrationServlet {
 
     @PostMapping
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] arr = applicationContext.getBeanDefinitionNames();
         String userName = req.getParameter("nameRegistration");
         int age = Integer.parseInt(req.getParameter("ageRegistration"));
         String login = req.getParameter("loginRegistration");
@@ -51,4 +55,5 @@ public class RegistrationServlet {
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
     }
+
 }

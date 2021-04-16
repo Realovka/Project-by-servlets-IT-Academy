@@ -1,5 +1,6 @@
 package by.realovka.web.app.config;
 
+//import by.realovka.web.app.interceptor.AuthInterceptor;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -11,6 +12,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -18,13 +21,21 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan("by.realovka.web")
+@ComponentScan({"by.realovka.web.app", "by.realovka.web.dao", "by.realovka.web.service"})
 @EnableWebMvc
 @EnableTransactionManagement
 @AllArgsConstructor
-public class ApplicationConfig {
-    @Autowired
-    private ApplicationContext ctx;
+public class ApplicationConfig extends WebMvcConfigurerAdapter {
+
+//    @Autowired
+//    private ApplicationContext ctx;
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+////        registry.addInterceptor(registrationInterceptor);
+//        registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/trainerAndHisStudents");
+//    }
+
+
 
     @Bean
     public DataSource dataSource() {

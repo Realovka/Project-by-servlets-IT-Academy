@@ -4,6 +4,7 @@
 //import by.realovka.web.dao.model.Student;
 //import by.realovka.web.dao.model.Trainer;
 //import by.realovka.web.dao.model.User;
+//import org.springframework.stereotype.Component;
 //
 //import javax.servlet.FilterChain;
 //import javax.servlet.ServletException;

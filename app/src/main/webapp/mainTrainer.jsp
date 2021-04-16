@@ -5,9 +5,9 @@
     <title>Hello Trainer</title>
 </head>
 <body>
-<h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
+<h2 style="color: mediumblue">Hello ${userName}</h2>
 <c:choose>
-    <c:when test="${sessionScope.userAuth.group!= null}">
+    <c:when test="${userAuth.group!= null}">
         <a href="/allStudents">List All Students</a><br>
     </c:when>
     <c:otherwise>
