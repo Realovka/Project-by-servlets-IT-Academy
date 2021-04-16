@@ -16,7 +16,7 @@
     </c:otherwise>
 </c:choose>
 
-<a href="/addTheme.jsp">Add new theme</a><br>
+<a href="/addTheme">Add new theme</a><br>
 
 <c:if test="${massageFormatOfMarkIsWrong!=null}">
     ${massageFormatOfMarkIsWrong}

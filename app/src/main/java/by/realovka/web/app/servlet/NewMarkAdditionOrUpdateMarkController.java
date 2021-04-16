@@ -33,8 +33,7 @@ public class NewMarkAdditionOrUpdateMarkController {
     private final UserService userService;
 
     @PostMapping(path = "/{themeId}")
-    public ModelAndView addOrUpdateMark(@PathVariable("themeId") Long themeId, @ModelAttribute("mark") String mark,
-                                        HttpServletRequest req, HttpSession session,
+    public ModelAndView addOrUpdateMark(@PathVariable("themeId") Long themeId, @ModelAttribute("mark") String mark, HttpSession session,
                                         ModelAndView modelAndView) {
         Trainer auth = (Trainer) session.getAttribute("userAuth");
         Trainer trainer = userService.getStudentsWithTrainerThemes(auth);
