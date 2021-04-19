@@ -2,11 +2,8 @@ package by.realovka.web.app.config;
 //
 //import by.realovka.web.app.filter.AuthFilter;
 //import by.realovka.web.app.filter.AuthFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebApplicationConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 //    @Autowired

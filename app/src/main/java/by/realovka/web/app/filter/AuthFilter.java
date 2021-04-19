@@ -25,11 +25,12 @@
 //
 //@Slf4j
 ////@WebFilter(urlPatterns = "/*", filterName = "authFilter", dispatcherTypes = {DispatcherType.REQUEST})
-//@Component
+////@Component
 //public class AuthFilter extends HttpFilter{
 //
 //    @Autowired
 //    private UserService userService;
+//
 ////    @Autowired
 ////    private ApplicationContext applicationContext;
 //

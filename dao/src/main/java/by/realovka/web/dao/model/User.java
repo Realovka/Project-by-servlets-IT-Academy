@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "users_hb2")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "status")
-public  class User {
+public  class  User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class TrainerServiceImpl implements TrainerService {
 
 //    private static volatile TrainerServiceImpl instance;
