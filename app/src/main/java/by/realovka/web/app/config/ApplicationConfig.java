@@ -36,16 +36,6 @@ public class ApplicationConfig {
     @Value("${password}")
     private String password;
 
-//    @Autowired
-//    private ApplicationContext ctx;
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-////        registry.addInterceptor(registrationInterceptor);
-//        registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/trainerAndHisStudents");
-//    }
-
-
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();

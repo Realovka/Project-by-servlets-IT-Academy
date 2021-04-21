@@ -5,7 +5,9 @@ import by.realovka.web.dao.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -29,9 +31,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     @JpaTransaction
     public User identificationUser(String loginAndPassword) {
-        return helper.getEntityManager().createQuery("from User where login_and_password =: loginAndPassword", User.class)
-                .setParameter("loginAndPassword", loginAndPassword)
-                .getSingleResult();
+        User user = null;
+        try {
+         user = helper.getEntityManager().createQuery("from User where login_and_password =: loginAndPassword", User.class)
+                    .setParameter("loginAndPassword", loginAndPassword)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            user = new User();
+        }
+        return user;
     }
 
     @Override

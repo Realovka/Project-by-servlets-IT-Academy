@@ -17,12 +17,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ControllerInterceptorConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
-//    private final RegistrationInterceptor registrationInterceptor;
-//    private ApplicationContext applicationContext;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(registrationInterceptor);
         registry.addInterceptor(authInterceptor).addPathPatterns("/auth");
     }
 }

@@ -6,9 +6,6 @@ package by.realovka.web.app.config;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebApplicationConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
-//    @Autowired
-//    private ApplicationContext applicationContext;
-//    private UserService userService =  applicationContext.getBean(UserService.class);
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -24,10 +21,5 @@ public class WebApplicationConfig extends AbstractAnnotationConfigDispatcherServ
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
-
-//    @Override
-//    protected Filter[] getServletFilters() {
-//        return new Filter[]{new AuthFilter()};
-//    }
 
 }

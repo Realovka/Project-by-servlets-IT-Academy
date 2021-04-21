@@ -1,13 +1,13 @@
-package by.realovka.web.app.servlet;
+package by.realovka.web.app.controller;
 
+import by.realovka.web.dao.dto.TrainerDTO;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
+import by.realovka.web.service.service.TrainerService;
 import by.realovka.web.service.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,6 +23,7 @@ import java.util.List;
 public class AuthorizationController {
 
     private final UserService userService;
+    private final TrainerService trainerService;
 
     @PostMapping
     public ModelAndView authorizationUser(HttpServletRequest req, HttpServletResponse resp, ModelAndView modelAndView) throws Exception {
@@ -34,6 +34,8 @@ public class AuthorizationController {
 
     private void forwardToSomeMainPage(User auth, ModelAndView modelAndView) {
         if (auth instanceof Admin) {
+            List<TrainerDTO> trainers = trainerService.getAllTrainers();
+            modelAndView.addObject("listTrainers", trainers);
             modelAndView.setViewName("mainAdmin");
         } else {
             if (auth instanceof Trainer) {
@@ -42,10 +44,10 @@ public class AuthorizationController {
                     List<Student> students = trainer.getGroup().getStudents();
                     modelAndView.addObject("listStudents", students);
                     modelAndView.setViewName("mainTrainer");
-                } else {
-                    if (auth instanceof Student) {
-                        modelAndView.setViewName("mainStudent");
-                    }
+                }
+            } else {
+                if (auth instanceof Student) {
+                    modelAndView.setViewName("mainStudent");
                 }
             }
         }

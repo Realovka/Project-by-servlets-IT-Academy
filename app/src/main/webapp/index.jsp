@@ -7,7 +7,7 @@
 <body>
 <h2 style="color: mediumblue">Authorization</h2>
 <form action="/auth" method="post">
-    ${authorizationFail}<br>
+    ${applicationScope.authorizationFail}<br>
     <input type="text" name="loginAuthorization" placeholder="Login"/>
     <input type="password" name="passwordAuthorization" placeholder="Password"/>
     <button type="submit"> Authorization</button>

@@ -7,6 +7,7 @@ import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao {
 
