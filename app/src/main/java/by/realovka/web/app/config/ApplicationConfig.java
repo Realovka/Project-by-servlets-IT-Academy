@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -23,7 +24,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan({"by.realovka.web.app", "by.realovka.web.dao", "by.realovka.web.service"})
 @EnableWebMvc
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 @PropertySource("classpath:application.properties")
 public class ApplicationConfig {
 
@@ -53,7 +54,7 @@ public class ApplicationConfig {
 
 
     @Bean
-    public InternalResourceViewResolver internalResourceViewResolver() {
+    public InternalResourceViewResolver internalResourceViewResolver(@Autowired ApplicationContext applicationContext) {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
         internalResourceViewResolver.setPrefix("/");
         internalResourceViewResolver.setSuffix(".jsp");
