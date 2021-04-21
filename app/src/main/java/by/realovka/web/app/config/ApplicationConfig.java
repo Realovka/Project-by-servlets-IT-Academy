@@ -3,10 +3,10 @@ package by.realovka.web.app.config;
 //import by.realovka.web.app.interceptor.AuthInterceptor;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -23,9 +23,18 @@ import java.util.Properties;
 @Configuration
 @ComponentScan({"by.realovka.web.app", "by.realovka.web.dao", "by.realovka.web.service"})
 @EnableWebMvc
-@EnableTransactionManagement
-@AllArgsConstructor
-public class ApplicationConfig extends WebMvcConfigurerAdapter {
+//@EnableAspectJAutoProxy
+@PropertySource("classpath:application.properties")
+public class ApplicationConfig {
+
+    @Value("${driver}")
+    private String driver;
+    @Value("${url}")
+    private String url;
+    @Value("${username}")
+    private String user;
+    @Value("${password}")
+    private String password;
 
 //    @Autowired
 //    private ApplicationContext ctx;
@@ -40,12 +49,17 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
-        driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
-        driverManagerDataSource.setUsername("postgres");
-        driverManagerDataSource.setPassword("Vorobei55");
+        driverManagerDataSource.setDriverClassName(driver);
+        driverManagerDataSource.setUrl(url);
+        driverManagerDataSource.setUsername(user);
+        driverManagerDataSource.setPassword(password);
         return driverManagerDataSource;
     }
+
+//    @Bean
+//    public JdbcTemplate jdbcTemplate() {
+//        return new JdbcTemplate(dataSource());
+//    }
 
 
     @Bean
@@ -56,29 +70,29 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
         return internalResourceViewResolver;
     }
 
-    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-        localSessionFactoryBean.setDataSource(dataSource());
-        localSessionFactoryBean.setPackagesToScan("by.realovka.web.dao.model");
-        localSessionFactoryBean.setHibernateProperties(hibProps());
-        return localSessionFactoryBean;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
-        hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());
-        return hibernateTransactionManager;
-    }
-
-    @Bean
-    public Properties hibProps() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "none");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        return properties;
-    }
+//    @Bean
+//    public LocalSessionFactoryBean sessionFactory() {
+//        LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
+//        localSessionFactoryBean.setDataSource(dataSource());
+//        localSessionFactoryBean.setPackagesToScan("by.realovka.web.dao.model");
+//        localSessionFactoryBean.setHibernateProperties(hibProps());
+//        return localSessionFactoryBean;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager transactionManager() {
+//        HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
+//        hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());
+//        return hibernateTransactionManager;
+//    }
+//
+//    @Bean
+//    public Properties hibProps() {
+//        Properties properties = new Properties();
+//        properties.setProperty("hibernate.hbm2ddl.auto", "none");
+//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+//        properties.setProperty("hibernate.show_sql", "true");
+//        return properties;
+//    }
 
 }

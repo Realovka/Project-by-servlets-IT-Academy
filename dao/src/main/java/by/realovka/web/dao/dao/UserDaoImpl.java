@@ -1,14 +1,10 @@
 package by.realovka.web.dao.dao;
 
-import by.realovka.web.dao.model.Group;
-import by.realovka.web.dao.model.Student;
-import by.realovka.web.dao.model.Theme;
-import by.realovka.web.dao.model.Trainer;
-import by.realovka.web.dao.model.User;
+import by.realovka.web.dao.dao.aspect.JpaTransaction;
+import by.realovka.web.dao.model.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.List;
 
 @Repository
@@ -17,133 +13,75 @@ public class UserDaoImpl implements UserDao {
     protected final EntityManagerHelper helper = EntityManagerHelper.getInstance();
 
     @Override
-
+    @JpaTransaction
     public User findByLogin(String login) {
-        User user;
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        user = em.createQuery("from User where login=: login ", User.class).setParameter("login", login).getSingleResult();
-
-        trx.commit();
-        em.close();
-        return user;
+        return helper.getEntityManager().createQuery("from User where login=: login ", User.class)
+                .setParameter("login", login)
+                .getSingleResult();
     }
 
     @Override
+    @JpaTransaction
     public void save(User user) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        em.persist(user);
-
-        trx.commit();
-        em.close();
+        helper.getEntityManager().persist(user);
     }
 
     @Override
+    @JpaTransaction
     public User identificationUser(String loginAndPassword) {
-        User user;
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-        user = em.createQuery("from User where login_and_password =: loginAndPassword", User.class)
+        return helper.getEntityManager().createQuery("from User where login_and_password =: loginAndPassword", User.class)
                 .setParameter("loginAndPassword", loginAndPassword)
                 .getSingleResult();
-        trx.commit();
-        em.close();
-        return user;
     }
 
     @Override
+    @JpaTransaction
     public List<Student> getAllStudents() {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        List<Student> allStudents = em.createQuery("from Student", Student.class).getResultList();
-
-        trx.commit();
-        em.close();
-        return allStudents;
+        return helper.getEntityManager().createQuery("from Student", Student.class).getResultList();
     }
 
     @Override
+    @JpaTransaction
     public Trainer addGroupToTrainer(Trainer trainer) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        em.merge(trainer);
-        trainer = em.find(Trainer.class, trainer.getId());
-
-        trx.commit();
-        em.close();
-        return trainer;
+        helper.getEntityManager().merge(trainer);
+        return helper.getEntityManager().find(Trainer.class, trainer.getId());
     }
 
-
     @Override
+    @JpaTransaction
     public User findById(Long id) {
-        User user;
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        user = em.find(User.class, id);
-
-        trx.commit();
-        em.close();
-        return user;
+        return helper.getEntityManager().find(User.class, id);
     }
 
 
     @Override
+    @JpaTransaction
     public void addStudentToGroup(Trainer trainer, Student student) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        em.merge(trainer);
-        em.merge(student);
-        Group group = em.find(Group.class, trainer.getGroup().getId());
+        helper.getEntityManager().merge(trainer);
+        helper.getEntityManager().merge(student);
+        Group group = helper.getEntityManager().find(Group.class, trainer.getGroup().getId());
         group.setStudents(trainer.getGroup().getStudents());
-        em.merge(group);
-
-        trx.commit();
-        em.close();
+        helper.getEntityManager().merge(group);
     }
 
-
     @Override
+    @JpaTransaction
     public void addThemeToGroup(List<Theme> themes) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
 
         for (Theme item : themes) {
-            em.persist(item);
+            helper.getEntityManager().persist(item);
         }
 
-        trx.commit();
-        em.close();
     }
 
-
     @Override
+    @JpaTransaction
     public Trainer addOrUpdateOrDeleteMarkToStudent(Long id, int mark, Trainer trainer) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        em.createQuery("update Theme t set t.mark=:mark where t.id=:id ").setParameter("mark", mark).setParameter("id", id).executeUpdate();
-        trainer = em.find(Trainer.class, trainer.getId());
-
-        trx.commit();
-        em.close();
-        return trainer;
+        helper.getEntityManager().createQuery("update Theme t set t.mark=:mark where t.id=:id ")
+                .setParameter("mark", mark)
+                .setParameter("id", id)
+                .executeUpdate();
+        return helper.getEntityManager().find(Trainer.class, trainer.getId());
     }
 
 }

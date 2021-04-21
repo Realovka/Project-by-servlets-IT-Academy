@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @AllArgsConstructor
 @Controller
@@ -26,29 +27,25 @@ public class AuthorizationController {
 
     @PostMapping
     public ModelAndView authorizationUser(HttpServletRequest req, HttpServletResponse resp, ModelAndView modelAndView) throws Exception {
-        String login = req.getParameter("loginAuthorization");
-        String password = req.getParameter("passwordAuthorization");
-        User auth = userService.identificationUserByLoginAndPassword(login, password);
-        if (!auth.equals(new User())) {
-            HttpSession session = req.getSession();
-            session.setAttribute("userAuth", auth);
-            forwardToSomeMainPage(auth, modelAndView);
-        } else {
-            modelAndView.addObject("authorizationFail", "Login or password is wrong!");
-            modelAndView.setViewName("/index");
-        }
+        User auth = (User) req.getSession().getAttribute("userAuth");
+        forwardToSomeMainPage(auth, modelAndView);
         return modelAndView;
     }
 
     private void forwardToSomeMainPage(User auth, ModelAndView modelAndView) {
         if (auth instanceof Admin) {
-            modelAndView.setViewName("/mainAdmin");
+            modelAndView.setViewName("mainAdmin");
         } else {
             if (auth instanceof Trainer) {
-                modelAndView.setViewName("redirect:/trainerAndHisStudents");
-            } else {
-                if (auth instanceof Student) {
-                    modelAndView.setViewName("/mainStudent");
+                Trainer trainer = userService.getById(auth.getId());
+                if (trainer.getGroup() != null) {
+                    List<Student> students = trainer.getGroup().getStudents();
+                    modelAndView.addObject("listStudents", students);
+                    modelAndView.setViewName("mainTrainer");
+                } else {
+                    if (auth instanceof Student) {
+                        modelAndView.setViewName("mainStudent");
+                    }
                 }
             }
         }
