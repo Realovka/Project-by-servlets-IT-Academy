@@ -2,12 +2,10 @@ package by.realovka.web.dao.dao;
 
 import by.realovka.web.dao.dao.aspect.JpaTransaction;
 import by.realovka.web.dao.model.*;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
