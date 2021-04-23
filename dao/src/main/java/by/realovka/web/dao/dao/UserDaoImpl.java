@@ -90,7 +90,6 @@ public class UserDaoImpl implements UserDao {
         for (Theme item : themes) {
             helper.getEntityManager().persist(item);
         }
-
     }
 
     @Override
