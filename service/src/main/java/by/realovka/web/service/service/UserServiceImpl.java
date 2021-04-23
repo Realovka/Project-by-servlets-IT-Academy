@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Trainer addOrUpdateOrDeleteMark(Trainer trainer, Long themeId, Integer mark) {
-        trainer = userDao.addOrUpdateOrDeleteMarkToStudent(themeId, mark, trainer);
+        trainer = userDao.update(themeId, mark, trainer);
         return getStudentsWithTrainerThemes(trainer);
     }
 

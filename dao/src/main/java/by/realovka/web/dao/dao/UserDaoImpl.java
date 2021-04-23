@@ -3,13 +3,8 @@ package by.realovka.web.dao.dao;
 import by.realovka.web.dao.dao.aspect.JpaTransaction;
 import by.realovka.web.dao.model.*;
 import lombok.AllArgsConstructor;
-import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import java.util.List;
 
@@ -94,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @JpaTransaction
-    public Trainer addOrUpdateOrDeleteMarkToStudent(Long id, int mark, Trainer trainer) {
+    public Trainer update(Long id, int mark, Trainer trainer) {
         helper.getEntityManager().createQuery("update Theme t set t.mark=:mark where t.id=:id ")
                 .setParameter("mark", mark)
                 .setParameter("id", id)
