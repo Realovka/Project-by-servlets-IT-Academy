@@ -1,14 +1,12 @@
 package by.realovka.web.service.service;
 
 import by.realovka.web.dao.dao.TrainerDao;
-import by.realovka.web.dao.dao.TrainerDaoImpl;
-import by.realovka.web.dao.dto.TrainerDTO;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +45,11 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public List<TrainerDTO> getAllTrainers() {
-        List<TrainerDTO> trainerDTO = new ArrayList<>();
+    public List<TrainerDto> getAllTrainers() {
+        List<TrainerDto> trainerDTO = new ArrayList<>();
         List<TrainerWithSalary> trainers = trainerDao.getAllTrainerWithSalary();
         for (TrainerWithSalary item : trainers) {
-            trainerDTO.add(TrainerDTO.builder()
+            trainerDTO.add(TrainerDto.builder()
                     .id(item.getId())
                     .name(item.getName())
                     .build());
@@ -72,7 +70,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public TrainerDTO getAverageSalary(String trainerId, String months) {
+    public TrainerDto getAverageSalary(String trainerId, String months) {
         Long trainerIdPars = Long.parseLong(trainerId);
         Integer monthsPars = Integer.parseInt(months);
         List<Salary> salaries = trainerDao.getAverageSalary(trainerIdPars, monthsPars);
@@ -82,7 +80,7 @@ public class TrainerServiceImpl implements TrainerService {
         }
         BigDecimal averageSalary = sum.divide(BigDecimal.valueOf(salaries.size()));
         TrainerWithSalary trainer = trainerDao.getById(trainerIdPars);
-        TrainerDTO trainerDTO = TrainerDTO.builder()
+        TrainerDto trainerDTO = TrainerDto.builder()
                 .name(trainer.getName())
                 .averageSalary(averageSalary)
                 .build();

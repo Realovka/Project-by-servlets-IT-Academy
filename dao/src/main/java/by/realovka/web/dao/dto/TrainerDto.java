@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TrainerDTO {
+public class TrainerDto {
     private long id;
     private String name;
     private BigDecimal averageSalary;

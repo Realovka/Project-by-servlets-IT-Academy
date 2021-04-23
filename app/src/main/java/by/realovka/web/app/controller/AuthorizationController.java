@@ -1,6 +1,6 @@
 package by.realovka.web.app.controller;
 
-import by.realovka.web.dao.dto.TrainerDTO;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class AuthorizationController {
     private final TrainerService trainerService;
 
     @PostMapping
-    public ModelAndView authorizationUser(HttpServletRequest req, HttpServletResponse resp, ModelAndView modelAndView) throws Exception {
+    public ModelAndView authorizationUser(HttpServletRequest req, ModelAndView modelAndView) throws Exception {
         User auth = (User) req.getSession().getAttribute("userAuth");
         forwardToSomeMainPage(auth, modelAndView);
         return modelAndView;
@@ -34,7 +33,7 @@ public class AuthorizationController {
 
     private void forwardToSomeMainPage(User auth, ModelAndView modelAndView) {
         if (auth instanceof Admin) {
-            List<TrainerDTO> trainers = trainerService.getAllTrainers();
+            List<TrainerDto> trainers = trainerService.getAllTrainers();
             modelAndView.addObject("listTrainers", trainers);
             modelAndView.setViewName("mainAdmin");
         } else {

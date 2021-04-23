@@ -1,6 +1,6 @@
 package by.realovka.web.app.controller;
 
-import by.realovka.web.dao.dto.TrainerDTO;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.service.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ public class AverageSalaryServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String trainerId = (String) req.getSession().getAttribute("trainerId");
         String finishMonthsNumber = req.getParameter("finishMonthsNumber");
-        TrainerDTO trainerDTO = trainerService.getAverageSalary(trainerId, finishMonthsNumber);
+        TrainerDto trainerDTO = trainerService.getAverageSalary(trainerId, finishMonthsNumber);
         req.getSession().setAttribute("trainerWithHisAverageSalary", trainerDTO);
         req.getRequestDispatcher("answerAverageSalary.jsp").forward(req, resp);
     }

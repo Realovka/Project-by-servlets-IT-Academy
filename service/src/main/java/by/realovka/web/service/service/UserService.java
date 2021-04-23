@@ -1,16 +1,15 @@
 package by.realovka.web.service.service;
 
-import by.realovka.web.dao.dto.UserDTO;
+import by.realovka.web.dao.dto.UserDto;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
-    boolean saveUser(UserDTO userDTO);
+    boolean saveUser(UserDto userDTO);
 
     User identificationUserByLoginAndPassword(String login, String password);
 

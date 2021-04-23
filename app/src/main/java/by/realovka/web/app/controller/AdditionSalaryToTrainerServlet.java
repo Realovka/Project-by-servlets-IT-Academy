@@ -1,6 +1,6 @@
 package by.realovka.web.app.controller;
 
-import by.realovka.web.dao.dto.TrainerDTO;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.service.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class AdditionSalaryToTrainerServlet {
         String trainerId = (String) req.getSession().getAttribute("trainerId");
         String salary = req.getParameter("salary");
         trainerService.addNewSalaryToTrainer(trainerId, salary);
-        List<TrainerDTO> trainerDTO = trainerService.getAllTrainers();
+        List<TrainerDto> trainerDTO = trainerService.getAllTrainers();
         req.getServletContext().setAttribute("listTrainers", trainerDTO);
         req.getRequestDispatcher("/mainAdmin.jsp").forward(req, resp);
     }

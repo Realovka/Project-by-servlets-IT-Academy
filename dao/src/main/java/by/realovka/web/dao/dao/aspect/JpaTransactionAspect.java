@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -17,7 +18,12 @@ import javax.persistence.EntityTransaction;
 @Component
 public class JpaTransactionAspect {
 
-    private final EntityManagerHelper helper;
+    public final EntityManagerHelper helper;
+
+//    @Pointcut("execution(* by.realovka.web.dao.*.*(..))")
+//    public void dao() {
+//
+//    }
 
     @SneakyThrows
     @Around("@annotation(JpaTransaction)")

@@ -2,28 +2,42 @@ package by.realovka.web.dao.dao;
 
 import by.realovka.web.dao.dao.aspect.JpaTransaction;
 import by.realovka.web.dao.model.*;
+import lombok.AllArgsConstructor;
+import org.hibernate.Transaction;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import java.util.List;
 
+@AllArgsConstructor
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    protected final EntityManagerHelper helper = EntityManagerHelper.getInstance();
+    public final EntityManagerHelper helper;
 
     @Override
     @JpaTransaction
     public User findByLogin(String login) {
-        return helper.getEntityManager().createQuery("from User where login=: login ", User.class)
-                .setParameter("login", login)
-                .getSingleResult();
+        User user = null;
+        try {
+            user = helper.getEntityManager().createQuery("from User where login=: login ", User.class)
+                    .setParameter("login", login)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            user = new User();
+        }
+        return user;
     }
 
     @Override
     @JpaTransaction
-    public void save(User user) {
+    public User save(User user) {
         helper.getEntityManager().persist(user);
+        return user;
     }
 
     @Override
@@ -73,7 +87,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     @JpaTransaction
     public void addThemeToGroup(List<Theme> themes) {
-
         for (Theme item : themes) {
             helper.getEntityManager().persist(item);
         }
@@ -87,7 +100,8 @@ public class UserDaoImpl implements UserDao {
                 .setParameter("mark", mark)
                 .setParameter("id", id)
                 .executeUpdate();
-        return helper.getEntityManager().find(Trainer.class, trainer.getId());
+        trainer = helper.getEntityManager().find(Trainer.class, trainer.getId());
+        return trainer;
     }
 
 }

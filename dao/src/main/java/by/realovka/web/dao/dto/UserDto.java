@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @With
 @Builder
-public class UserDTO {
+public class UserDto {
 
     private String userName;
     private int age;

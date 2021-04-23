@@ -3,7 +3,7 @@ package by.realovka.web.service.service;
 
 
 import by.realovka.web.dao.dao.UserDao;
-import by.realovka.web.dao.dto.UserDTO;
+import by.realovka.web.dao.dto.UserDto;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Group;
 import by.realovka.web.dao.model.Student;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static by.realovka.web.dao.model.Role.ADMIN;
@@ -56,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @SneakyThrows
     @Override
-    public boolean saveUser(UserDTO userDTO) {
+    public boolean saveUser(UserDto userDTO) {
         if (userDao.findByLogin(userDTO.getLogin()).equals(new User())) {
             String loginAndPassword = userDTO.getLogin().concat(userDTO.getPassword());
             MessageDigest md5 = MessageDigest.getInstance("MD5");
