@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class TrainerAddStudentController {
     private final UserService userService;
 
     @GetMapping
-    public ModelAndView getAllStudent(HttpSession session, ModelAndView modelAndView) {
-        Trainer auth = (Trainer) session.getAttribute("userAuth");
+    public ModelAndView getAllStudent(HttpServletRequest req, ModelAndView modelAndView) {
+        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
         List<Student> students = userService.getAllStudentsWithoutTrainerStudents(auth);
         modelAndView.addObject("students", students);
         modelAndView.setViewName("listAllStudents");
@@ -30,8 +31,8 @@ public class TrainerAddStudentController {
     }
 
     @GetMapping(path = "/{studentId}")
-    public ModelAndView addStudentToTrainer(@PathVariable("studentId") Long studentId, HttpSession session, ModelAndView modelAndView) {
-        Trainer auth = (Trainer) session.getAttribute("userAuth");
+    public ModelAndView addStudentToTrainer(@PathVariable("studentId") Long studentId, HttpServletRequest req, ModelAndView modelAndView) {
+        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
         auth = userService.addStudentToGroup(auth, studentId);
         List<Student> students = auth.getGroup().getStudents();
         modelAndView.addObject("students", students);

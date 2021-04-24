@@ -7,11 +7,11 @@
 </head>
 <body>
 <h2 style="color: mediumblue">Add New Theme</h2>
-<f:form action="/addTheme" method="post" modelAttribute="themeName">
+<f:form action="/addTheme" method="post">
     <input type="text" name="themeName" placeholder="Theme name"/>
     <button type="submit">Submit</button>
 </f:form>
-<a href="mainTrainer.jsp">Main page</a><br>
+<a href="/getAdminMainPage">Main page</a><br>
 <a href="/logout">Logout</a>
 </body>
 </html>

@@ -25,7 +25,7 @@ public class DeleteMarkController {
     private final UserService userService;
 
     @GetMapping(path = "/{themeId}")
-    public ModelAndView deleteMark (@PathVariable("themeId") Long themeId, HttpSession session, ModelAndView modelAndView) throws ServletException, IOException {
+    public ModelAndView deleteMark (@PathVariable("themeId") Long themeId, HttpSession session, ModelAndView modelAndView) {
         Trainer trainer = (Trainer) session.getAttribute("userAuth");
         trainer = userService.addOrUpdateOrDeleteMark(trainer, themeId, 0);
         List<Student> students = trainer.getGroup().getStudents();

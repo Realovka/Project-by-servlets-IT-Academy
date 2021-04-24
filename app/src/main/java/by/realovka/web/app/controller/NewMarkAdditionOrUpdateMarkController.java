@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class NewMarkAdditionOrUpdateMarkController {
     private final UserService userService;
 
     @PostMapping(path = "/{themeId}")
-    public ModelAndView addOrUpdateMark(@PathVariable("themeId") Long themeId, @ModelAttribute("mark") String mark, HttpSession session,
+    public ModelAndView addOrUpdateMark(@PathVariable("themeId") Long themeId, @ModelAttribute("mark") String mark, HttpServletRequest req,
                                         ModelAndView modelAndView) {
-        Trainer auth = (Trainer) session.getAttribute("userAuth");
+        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
         Trainer trainer = userService.getStudentsWithTrainerThemes(auth);
         modelAndView.addObject("listStudents", trainer.getGroup().getStudents());
         Integer markParse = 0;

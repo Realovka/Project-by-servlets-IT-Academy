@@ -58,10 +58,9 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public void addNewSalaryToTrainer(String trainerId, String salary) {
-        Long trainerIdPars = Long.parseLong(trainerId);
+    public void addNewSalaryToTrainer(Long trainerId, String salary) {
         BigDecimal salaryPars = BigDecimal.valueOf(Double.parseDouble(salary));
-        TrainerWithSalary trainerWithSalary = trainerDao.getById(trainerIdPars);
+        TrainerWithSalary trainerWithSalary = trainerDao.getById(trainerId);
         Salary newSalary = Salary.builder()
                 .value(salaryPars)
                 .trainerWithSalary(trainerWithSalary)
@@ -70,16 +69,15 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public TrainerDto getAverageSalary(String trainerId, String months) {
-        Long trainerIdPars = Long.parseLong(trainerId);
+    public TrainerDto getAverageSalary(Long trainerId, String months) {
         Integer monthsPars = Integer.parseInt(months);
-        List<Salary> salaries = trainerDao.getAverageSalary(trainerIdPars, monthsPars);
+        List<Salary> salaries = trainerDao.getAverageSalary(trainerId, monthsPars);
         BigDecimal sum = new BigDecimal(0);
         for(Salary item : salaries) {
             sum = sum.add(item.getValue());
         }
         BigDecimal averageSalary = sum.divide(BigDecimal.valueOf(salaries.size()));
-        TrainerWithSalary trainer = trainerDao.getById(trainerIdPars);
+        TrainerWithSalary trainer = trainerDao.getById(trainerId);
         TrainerDto trainerDTO = TrainerDto.builder()
                 .name(trainer.getName())
                 .averageSalary(averageSalary)

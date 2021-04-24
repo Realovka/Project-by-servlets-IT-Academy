@@ -11,8 +11,8 @@ public interface TrainerService {
 
     List<TrainerDto> getAllTrainers();
 
-    void addNewSalaryToTrainer(String trainerId, String salary);
+    void addNewSalaryToTrainer(Long trainerId, String salary);
 
-    TrainerDto getAverageSalary(String trainerId, String months);
+    TrainerDto getAverageSalary(Long trainerId, String months);
 
 }

@@ -25,7 +25,7 @@ public class AuthorizationController {
     private final TrainerService trainerService;
 
     @PostMapping
-    public ModelAndView authorizationUser(HttpServletRequest req, ModelAndView modelAndView) throws Exception {
+    public ModelAndView authorizationUser(HttpServletRequest req, ModelAndView modelAndView) {
         User auth = (User) req.getSession().getAttribute("userAuth");
         forwardToSomeMainPage(auth, modelAndView);
         return modelAndView;

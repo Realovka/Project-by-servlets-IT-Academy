@@ -5,7 +5,9 @@ import by.realovka.web.dao.model.Role;
 import by.realovka.web.service.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,12 +23,10 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping
-    public ModelAndView registrationUser (HttpServletRequest req, ModelAndView modelAndView) {
-        String userName = req.getParameter("nameRegistration");
-        int age = Integer.parseInt(req.getParameter("ageRegistration"));
-        String login = req.getParameter("loginRegistration");
-        String password = req.getParameter("passwordRegistration");
-        String role = req.getParameter("role");
+    public ModelAndView registrationUser (@ModelAttribute("nameRegistration") String userName, @ModelAttribute("ageRegistration") int age,
+                                          @ModelAttribute("loginRegistration") String login, @ModelAttribute("passwordRegistration") String password,
+                                          @ModelAttribute("role") String role,
+                                          ModelAndView modelAndView) {
         UserDto user = UserDto.builder()
                 .userName(userName)
                 .age(age)

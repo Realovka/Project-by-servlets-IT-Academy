@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -30,8 +31,9 @@ public class NewThemeAdditionController {
     }
 
     @PostMapping
-    public ModelAndView addNewTheme(@ModelAttribute("themeName")String themeName, ModelAndView modelAndView, HttpSession session) {
-        Trainer auth = (Trainer) session.getAttribute("userAuth");
+    public ModelAndView addNewTheme(ModelAndView modelAndView, HttpServletRequest req) {
+        String themeName = req.getParameter("themeName");
+        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
         auth = userService.getTrainerAndHisStudentsAfterAddTheme(auth, themeName);
         List<Student> students = auth.getGroup().getStudents();
         modelAndView.addObject("listStudents", students);

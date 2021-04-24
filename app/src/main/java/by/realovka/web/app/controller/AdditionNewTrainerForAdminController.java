@@ -2,34 +2,31 @@ package by.realovka.web.app.controller;
 
 import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.service.service.TrainerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping(path = "/addTrainer")
-public class AdditionNewTrainerForAdminServlet {
+public class AdditionNewTrainerForAdminController {
 
     private final TrainerService trainerService;
 
-    @Autowired
-    public AdditionNewTrainerForAdminServlet(TrainerService trainerService) {
-        this.trainerService = trainerService;
-    }
-
     @PostMapping
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public ModelAndView addNewTrainerForAdmin (ModelAndView modelAndView, HttpServletRequest req) {
         String trainerName = req.getParameter("trainerName");
         trainerService.addTrainer(trainerName);
         List<TrainerDto> trainerDTO = trainerService.getAllTrainers();
-        req.getServletContext().setAttribute("listTrainers", trainerDTO);
-        req.getRequestDispatcher("/listAllTrainers.jsp").forward(req, resp);
+        modelAndView.addObject("listTrainers", trainerDTO);
+        modelAndView.setViewName("listAllTrainers");
+        return modelAndView;
     }
 }

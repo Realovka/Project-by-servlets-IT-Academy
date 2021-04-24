@@ -13,7 +13,7 @@ public interface UserDao {
 
     User findByLogin(String login);
 
-    User save(User user);
+    void save(User user);
 
     User identificationUser(String loginAndPassword);
 
