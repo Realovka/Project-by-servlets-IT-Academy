@@ -1,7 +1,5 @@
 package by.realovka.web.app.config;
-//
-//import by.realovka.web.app.filter.AuthFilter;
-//import by.realovka.web.app.filter.AuthFilter;
+
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -14,7 +12,7 @@ public class WebApplicationConfig extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{ApplicationConfig.class, ControllerInterceptorConfig.class};
+        return new Class[]{ApplicationConfig.class, ControllerInterceptorConfig.class, SpringHibernateConfig.class};
     }
 
     @Override

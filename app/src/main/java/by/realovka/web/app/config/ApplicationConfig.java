@@ -61,29 +61,4 @@ public class ApplicationConfig {
         return internalResourceViewResolver;
     }
 
-//    @Bean
-//    public LocalSessionFactoryBean sessionFactory() {
-//        LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-//        localSessionFactoryBean.setDataSource(dataSource());
-//        localSessionFactoryBean.setPackagesToScan("by.realovka.web.dao.model");
-//        localSessionFactoryBean.setHibernateProperties(hibProps());
-//        return localSessionFactoryBean;
-//    }
-//
-//    @Bean
-//    public PlatformTransactionManager transactionManager() {
-//        HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
-//        hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());
-//        return hibernateTransactionManager;
-//    }
-//
-//    @Bean
-//    public Properties hibProps() {
-//        Properties properties = new Properties();
-//        properties.setProperty("hibernate.hbm2ddl.auto", "none");
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-//        properties.setProperty("hibernate.show_sql", "true");
-//        return properties;
-//    }
-
 }

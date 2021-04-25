@@ -4,32 +4,32 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- JDBC Database connection settings -->
-        <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-        <property name="connection.username">postgres</property>
-        <property name="connection.password">Vorobei55</property>
-        <!-- JDBC connection pool settings ... using built-in test pool -->
-        <property name="connection.pool_size">20</property>
-        <!-- Select our SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
-        <!-- Echo the SQL to stdout -->
-        <property name="show_sql">true</property>
-        <!-- Set the current session context -->
-        <property name="current_session_context_class">thread</property>
-        <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">none</property>
-        <!-- dbcp connection pool configuration -->
-        <property name="hibernate.dbcp.initialSize">5</property>
-        <property name="hibernate.dbcp.maxTotal">20</property>
-        <property name="hibernate.dbcp.maxIdle">10</property>
-        <property name="hibernate.dbcp.minIdle">5</property>
-        <property name="hibernate.dbcp.maxWaitMillis">-1</property>
-        <property name="hibernate.enable_lazy_load_no_trans">true</property>
-        <property name="hibernate.jdbc.batch_size">5</property>
-        <property name="hibernate.order_updates">true</property>
-        <property name="hibernate.order_inserts">true</property>
-        <property name="hibernate.generate_statistics">true</property>
+<!--        &lt;!&ndash; JDBC Database connection settings &ndash;&gt;-->
+<!--        <property name="connection.driver_class">org.postgresql.Driver</property>-->
+<!--        <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>-->
+<!--        <property name="connection.username">postgres</property>-->
+<!--        <property name="connection.password">Vorobei55</property>-->
+<!--        &lt;!&ndash; JDBC connection pool settings ... using built-in test pool &ndash;&gt;-->
+<!--        <property name="connection.pool_size">20</property>-->
+<!--        &lt;!&ndash; Select our SQL dialect &ndash;&gt;-->
+<!--        <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>-->
+<!--        &lt;!&ndash; Echo the SQL to stdout &ndash;&gt;-->
+<!--        <property name="show_sql">true</property>-->
+<!--        &lt;!&ndash; Set the current session context &ndash;&gt;-->
+<!--        <property name="current_session_context_class">thread</property>-->
+<!--        &lt;!&ndash; Drop and re-create the database schema on startup &ndash;&gt;-->
+<!--        <property name="hbm2ddl.auto">none</property>-->
+<!--        &lt;!&ndash; dbcp connection pool configuration &ndash;&gt;-->
+<!--        <property name="hibernate.dbcp.initialSize">5</property>-->
+<!--        <property name="hibernate.dbcp.maxTotal">20</property>-->
+<!--        <property name="hibernate.dbcp.maxIdle">10</property>-->
+<!--        <property name="hibernate.dbcp.minIdle">5</property>-->
+<!--        <property name="hibernate.dbcp.maxWaitMillis">-1</property>-->
+<!--        <property name="hibernate.enable_lazy_load_no_trans">true</property>-->
+<!--        <property name="hibernate.jdbc.batch_size">5</property>-->
+<!--        <property name="hibernate.order_updates">true</property>-->
+<!--        <property name="hibernate.order_inserts">true</property>-->
+<!--        <property name="hibernate.generate_statistics">true</property>-->
 
         <mapping class="by.realovka.web.dao.model.User"/>
         <mapping class="by.realovka.web.dao.model.Student"/>
