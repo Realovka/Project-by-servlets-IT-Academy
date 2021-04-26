@@ -21,22 +21,22 @@ public class JpaTransactionAspect {
     public final EntityManagerHelper helper;
 
 
-    @Pointcut("execution(* update(..))")
-    public void update() {
-
-    }
-
-    @SneakyThrows
-    @Around("update()")
-    public Object around(ProceedingJoinPoint jp) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-        Object result = jp.proceed();
-        trx.commit();
-        em.close();
-        return result;
-    }
+//    @Pointcut("execution(* update(..))")
+//    public void update() {
+//
+//    }
+//
+//    @SneakyThrows
+//    @Around("update()")
+//    public Object around(ProceedingJoinPoint jp) {
+//        EntityManager em = helper.getEntityManager();
+//        EntityTransaction trx = em.getTransaction();
+//        trx.begin();
+//        Object result = jp.proceed();
+//        trx.commit();
+//        em.close();
+//        return result;
+//    }
 
     @SneakyThrows
     @Around("@annotation(JpaTransaction)")
