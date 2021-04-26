@@ -21,11 +21,12 @@ import java.util.Set;
 @Builder
 public class UserDto {
 
-    private String userName;
+    private String name;
     private int age;
     private String login;
     private String password;
     private Role role;
     private List<User> students = new ArrayList<>();
     private Set<Theme> themes = new HashSet<>();
+
 }

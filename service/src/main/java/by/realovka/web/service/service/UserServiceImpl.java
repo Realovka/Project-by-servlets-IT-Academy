@@ -3,7 +3,7 @@ package by.realovka.web.service.service;
 
 
 import by.realovka.web.dao.dao.UserDao;
-import by.realovka.web.dao.dto.UserDto;
+import by.realovka.web.dao.dto.*;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Group;
 import by.realovka.web.dao.model.Student;
@@ -35,58 +35,40 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-//        private static volatile UserServiceImpl instance;
-//    private final UserDao userDao = UserDaoImpl.getInstance();
-//
-//    private UserServiceImpl() {
-//    }
-//
-//    public static UserServiceImpl getInstance() {
-//        if (instance == null) {
-//            synchronized (UserServiceImpl.class) {
-//                if (instance == null) {
-//                    instance = new UserServiceImpl();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
-
-
     @SneakyThrows
     @Override
-    public boolean saveUser(UserDto userDTO) {
-        if (userDao.findByLogin(userDTO.getLogin()).equals(new User())) {
-            String loginAndPassword = userDTO.getLogin().concat(userDTO.getPassword());
+    public boolean saveUser(UserDto userDto) {
+        if (userDao.findByLogin(userDto.getLogin()).equals(new User())) {
+            String loginAndPassword = userDto.getLogin().concat(userDto.getPassword());
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] loginAndPasswordHash = md5.digest(loginAndPassword.getBytes());
             StringBuilder builder = new StringBuilder();
             for (byte b : loginAndPasswordHash) {
                 builder.append(String.format("%02X", b));
             }
-            if (userDTO.getRole().equals(TRAINER)) {
+            if (userDto.getRole().equals(TRAINER)) {
                 Trainer trainer = Trainer.builder()
-                        .userName(userDTO.getLogin())
-                        .age(userDTO.getAge())
-                        .login(userDTO.getLogin())
+                        .name(userDto.getLogin())
+                        .age(userDto.getAge())
+                        .login(userDto.getLogin())
                         .loginAndPassword(builder.toString())
                         .build();
                 log.info("Save new user {}", trainer);
                 userDao.save(trainer);
-            } else if (userDTO.getRole().equals(STUDENT)) {
+            } else if (userDto.getRole().equals(STUDENT)) {
                 Student student = Student.builder()
-                        .userName(userDTO.getLogin())
-                        .age(userDTO.getAge())
-                        .login(userDTO.getLogin())
+                        .name(userDto.getLogin())
+                        .age(userDto.getAge())
+                        .login(userDto.getLogin())
                         .loginAndPassword(builder.toString())
                         .build();
                 log.info("Save new user {}", student);
                 userDao.save(student);
-            } else if (userDTO.getRole().equals(ADMIN)) {
+            } else if (userDto.getRole().equals(ADMIN)) {
                 Admin admin = Admin.builder()
-                        .userName(userDTO.getLogin())
-                        .age(userDTO.getAge())
-                        .login(userDTO.getLogin())
+                        .name(userDto.getLogin())
+                        .age(userDto.getAge())
+                        .login(userDto.getLogin())
                         .loginAndPassword(builder.toString())
                         .build();
                 log.info("Save new user {}", admin);
@@ -116,27 +98,62 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Trainer getById(Long id) {
-        return getStudentsWithTrainerThemes((Trainer) userDao.findById(id));
+    public TrainerDto getById(Long id) {
+        Trainer trainer = getStudentsWithTrainerThemes((Trainer) userDao.findById(id));
+        return TrainerDto.builder()
+                .id(trainer.getId())
+                .name(trainer.getName())
+                .group(GroupDto.builder()
+                        .id(trainer.getGroup().getId())
+                        .students(trainer.getGroup().getStudents().stream().map(student ->
+                                StudentDto.builder()
+                                        .id(student.getId())
+                                        .name(student.getName())
+                                        .theme(student.getThemes().stream().map(theme ->
+                                                ThemeDto.builder()
+                                                        .id(theme.getId())
+                                                        .name(theme.getName())
+                                                        .mark(theme.getMark())
+                                                        .build()).collect(Collectors.toList()))
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .build();
     }
 
     @Override
-    public List<Student> getAllStudentsWithoutTrainerStudents(Trainer trainer) {
-        List<Student> students = userDao.getAllStudents();
-        students.removeAll(trainer.getGroup().getStudents());
-        return students;
+    public TrainerDto getTrainer(Long id) {
+        Trainer trainer = userDao.findTrainerById(id);
+        if (trainer.getGroup() == null) {
+            return TrainerDto.builder()
+                    .id(trainer.getId())
+                    .name(trainer.getName())
+                    .build();
+        } else {
+            return TrainerDto.builder()
+                    .id(trainer.getId())
+                    .name(trainer.getName())
+                    .group(GroupDto.builder()
+                            .id(trainer.getGroup().getId())
+                            .build())
+                    .build();
+        }
     }
 
     @Override
-    public Trainer createGroupByTrainer(Trainer trainer) {
+    public TrainerDto createGroupByTrainer(TrainerDto trainerAuth) {
+        Trainer trainer = Trainer.builder()
+                .id(trainerAuth.getId())
+                .name(trainerAuth.getName())
+                .build();
         Group group = Group.builder()
-                .name("Group ".concat(trainer.getUserName()))
+                .name("Group ".concat(trainer.getName()))
                 .trainer(trainer)
                 .themes(new ArrayList<>())
                 .students(new ArrayList<>())
                 .build();
         trainer.setGroup(group);
-        return getStudentsWithTrainerThemes(userDao.addGroupToTrainer(trainer));
+        userDao.addGroupToTrainer(trainer);
+        return getById(trainer.getId());
     }
 
     @Override

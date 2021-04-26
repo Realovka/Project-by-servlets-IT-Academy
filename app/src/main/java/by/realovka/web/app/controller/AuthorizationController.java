@@ -1,6 +1,8 @@
 package by.realovka.web.app.controller;
 
+import by.realovka.web.dao.dto.StudentDto;
 import by.realovka.web.dao.dto.TrainerDto;
+import by.realovka.web.dao.dto.UserDto;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
@@ -27,23 +29,26 @@ public class AuthorizationController {
     @PostMapping
     public ModelAndView authorizationUser(HttpServletRequest req, ModelAndView modelAndView) {
         User auth = (User) req.getSession().getAttribute("userAuth");
-        forwardToSomeMainPage(auth, modelAndView);
+        forwardToSomeMainPage(auth, modelAndView, req);
         return modelAndView;
     }
 
-    private void forwardToSomeMainPage(User auth, ModelAndView modelAndView) {
+    private void forwardToSomeMainPage(User auth, ModelAndView modelAndView, HttpServletRequest request) {
         if (auth instanceof Admin) {
             List<TrainerDto> trainers = trainerService.getAllTrainers();
             modelAndView.addObject("listTrainers", trainers);
             modelAndView.setViewName("mainAdmin");
         } else {
             if (auth instanceof Trainer) {
-                Trainer trainer = userService.getById(auth.getId());
+                TrainerDto trainer = userService.getTrainer(auth.getId());
+                request.getSession().setAttribute("userAuth", trainer);
                 if (trainer.getGroup() != null) {
-                    List<Student> students = trainer.getGroup().getStudents();
+                    TrainerDto trainerDto = userService.getById(auth.getId());
+                    request.getSession().setAttribute("userAuth", trainerDto);
+                    List<StudentDto> students = trainerDto.getGroup().getStudents();
                     modelAndView.addObject("listStudents", students);
-                    modelAndView.setViewName("mainTrainer");
                 }
+                modelAndView.setViewName("mainTrainer");
             } else {
                 if (auth instanceof Student) {
                     modelAndView.setViewName("mainStudent");

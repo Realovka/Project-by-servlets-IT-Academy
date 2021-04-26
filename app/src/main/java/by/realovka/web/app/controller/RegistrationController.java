@@ -28,7 +28,7 @@ public class RegistrationController {
                                           @ModelAttribute("role") String role,
                                           ModelAndView modelAndView) {
         UserDto user = UserDto.builder()
-                .userName(userName)
+                .name(userName)
                 .age(age)
                 .login(login)
                 .password(password)

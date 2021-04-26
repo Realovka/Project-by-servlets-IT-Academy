@@ -1,5 +1,7 @@
 package by.realovka.web.app.controller;
 
+import by.realovka.web.dao.dto.StudentDto;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.service.service.UserService;
@@ -23,9 +25,9 @@ public class TrainerMainPageController {
     @GetMapping
     public ModelAndView getMainTrainerPage(ModelAndView modelAndView, HttpSession session) {
         Trainer auth = (Trainer) session.getAttribute("userAuth");
-        Trainer trainer = userService.getById(auth.getId());
+        TrainerDto trainer = userService.getById(auth.getId());
         if (trainer.getGroup() != null) {
-            List<Student> students = trainer.getGroup().getStudents();
+            List<StudentDto> students = trainer.getGroup().getStudents();
             modelAndView.addObject("listStudents", students);
         }
         modelAndView.setViewName("mainTrainer");

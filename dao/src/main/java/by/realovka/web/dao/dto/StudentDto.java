@@ -1,20 +1,21 @@
 package by.realovka.web.dao.dto;
 
-import by.realovka.web.dao.model.Group;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@With
 @Builder
-public class TrainerDto  {
-    private long id;
+public class StudentDto {
+
+    private Long id;
     private String name;
-    private BigDecimal averageSalary;
-    private GroupDto group;
+    private List<ThemeDto> theme;
 }

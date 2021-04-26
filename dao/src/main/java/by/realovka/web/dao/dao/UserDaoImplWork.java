@@ -93,15 +93,13 @@ public class UserDaoImplWork implements UserDao {
     }
 
     @Override
-    public Trainer addGroupToTrainer(Trainer trainer) {
+    public void addGroupToTrainer(Trainer trainer) {
         EntityManager em = helper.getEntityManager();
         EntityTransaction trx = em.getTransaction();
         trx.begin();
         em.merge(trainer);
-        trainer = em.find(Trainer.class, trainer.getId());
         trx.commit();
         em.close();
-        return trainer;
     }
 
 
@@ -114,6 +112,17 @@ public class UserDaoImplWork implements UserDao {
         trx.commit();
         em.close();
         return user;
+    }
+
+    @Override
+    public Trainer findTrainerById(Long id) {
+        EntityManager em = helper.getEntityManager();
+        EntityTransaction trx = em.getTransaction();
+        trx.begin();
+        Trainer trainer = em.find(Trainer.class, id);
+        trx.commit();
+        em.close();
+        return trainer;
     }
 
 
