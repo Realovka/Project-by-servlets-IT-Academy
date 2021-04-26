@@ -1,5 +1,7 @@
 package by.realovka.web.app.controller;
 
+import by.realovka.web.dao.dto.StudentDto;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.service.service.UserService;
@@ -27,9 +29,7 @@ public class NewMarkAdditionOrUpdateMarkController {
     @PostMapping(path = "/{themeId}")
     public ModelAndView addOrUpdateMark(@PathVariable("themeId") Long themeId, @ModelAttribute("mark") String mark, HttpServletRequest req,
                                         ModelAndView modelAndView) {
-        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
-        Trainer trainer = userService.getStudentsWithTrainerThemes(auth);
-        modelAndView.addObject("listStudents", trainer.getGroup().getStudents());
+        TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
         Integer markParse = 0;
         try {
             markParse = Integer.parseInt(mark);
@@ -43,8 +43,8 @@ public class NewMarkAdditionOrUpdateMarkController {
             modelAndView.setViewName("mainTrainer");
             return modelAndView;
         }
-        Trainer authUser = userService.addOrUpdateOrDeleteMark(auth, themeId, markParse);
-        List<Student> trainerStudents = authUser.getGroup().getStudents();
+        TrainerDto authUser = userService.addOrUpdateOrDeleteMark(auth, themeId, markParse);
+        List<StudentDto> trainerStudents = authUser.getGroup().getStudents();
         modelAndView.addObject("listStudents", trainerStudents);
         modelAndView.setViewName("mainTrainer");
         return modelAndView;

@@ -25,10 +25,8 @@ public interface UserService {
 
     TrainerDto addStudentToGroup(TrainerDto trainer, Long studentId);
 
-    Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme);
+    TrainerDto getTrainerAndHisStudentsAfterAddTheme(TrainerDto trainer, String nameTheme);
 
-    Trainer addOrUpdateOrDeleteMark(Trainer trainer, Long themeId, Integer mark);
-
-    Trainer getStudentsWithTrainerThemes(Trainer trainer);
+    TrainerDto addOrUpdateOrDeleteMark(TrainerDto trainer, Long themeId, Integer mark);
 
 }

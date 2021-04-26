@@ -14,27 +14,12 @@ import java.util.List;
 @Service
 public class TrainerServiceImpl implements TrainerService {
 
-//    private static volatile TrainerServiceImpl instance;
     private final TrainerDao trainerDao;
 
     @Autowired
     public TrainerServiceImpl(TrainerDao trainerDao) {
         this.trainerDao = trainerDao;
     }
-
-    //    private TrainerServiceImpl() {
-//    }
-//
-//    public static TrainerServiceImpl getInstance() {
-//        if (instance == null) {
-//            synchronized (TrainerDaoImpl.class) {
-//                if (instance == null) {
-//                    instance = new TrainerServiceImpl();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
 
     @Override
     public void addTrainer(String name) {

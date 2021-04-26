@@ -36,7 +36,8 @@ public class TrainerAddStudentController {
     public ModelAndView addStudentToTrainer(@PathVariable("studentId") Long studentId, HttpServletRequest req, ModelAndView modelAndView) {
         TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
         auth = userService.addStudentToGroup(auth, studentId);
-        List<StudentDto> students = auth.getGroup().getStudents();
+        req.getSession().setAttribute("userAuth", auth);
+        List<StudentDto> students = userService.getStudentsFromUniversityWhoDontStudyAtAuthTrainer(auth);
         modelAndView.addObject("students", students);
         log.info("trainerAndHisStudents = {}", auth);
         modelAndView.setViewName("listAllStudents");

@@ -1,5 +1,7 @@
 package by.realovka.web.app.controller;
 
+import by.realovka.web.dao.dto.StudentDto;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.service.service.UserService;
@@ -33,9 +35,9 @@ public class NewThemeAdditionController {
     @PostMapping
     public ModelAndView addNewTheme(ModelAndView modelAndView, HttpServletRequest req) {
         String themeName = req.getParameter("themeName");
-        Trainer auth = (Trainer) req.getSession().getAttribute("userAuth");
+        TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
         auth = userService.getTrainerAndHisStudentsAfterAddTheme(auth, themeName);
-        List<Student> students = auth.getGroup().getStudents();
+        List<StudentDto> students = auth.getGroup().getStudents();
         modelAndView.addObject("listStudents", students);
         log.info("Trainer after addition theme {}", auth);
         modelAndView.setViewName("mainTrainer");

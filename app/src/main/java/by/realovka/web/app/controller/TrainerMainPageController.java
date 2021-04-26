@@ -24,7 +24,7 @@ public class TrainerMainPageController {
 
     @GetMapping
     public ModelAndView getMainTrainerPage(ModelAndView modelAndView, HttpSession session) {
-        Trainer auth = (Trainer) session.getAttribute("userAuth");
+        TrainerDto auth = (TrainerDto) session.getAttribute("userAuth");
         TrainerDto trainer = userService.getById(auth.getId());
         if (trainer.getGroup() != null) {
             List<StudentDto> students = trainer.getGroup().getStudents();

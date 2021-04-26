@@ -1,5 +1,7 @@
 package by.realovka.web.app.controller;
 
+import by.realovka.web.dao.dto.StudentDto;
+import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.service.service.UserService;
@@ -26,9 +28,9 @@ public class DeleteMarkController {
 
     @GetMapping(path = "/{themeId}")
     public ModelAndView deleteMark (@PathVariable("themeId") Long themeId, HttpSession session, ModelAndView modelAndView) {
-        Trainer trainer = (Trainer) session.getAttribute("userAuth");
+        TrainerDto trainer = (TrainerDto) session.getAttribute("userAuth");
         trainer = userService.addOrUpdateOrDeleteMark(trainer, themeId, 0);
-        List<Student> students = trainer.getGroup().getStudents();
+        List<StudentDto> students = trainer.getGroup().getStudents();
         log.info("Trainer and his students after delete mark = {}", themeId);
         modelAndView.addObject("listStudents", students);
         modelAndView.setViewName("mainTrainer");

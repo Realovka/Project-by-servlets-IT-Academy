@@ -11,7 +11,7 @@
     <input type="text" name="themeName" placeholder="Theme name"/>
     <button type="submit">Submit</button>
 </f:form>
-<a href="/getAdminMainPage">Main page</a><br>
+<a href="/trainerAndHisStudents">Main page</a><br>
 <a href="/logout">Logout</a>
 </body>
 </html>
