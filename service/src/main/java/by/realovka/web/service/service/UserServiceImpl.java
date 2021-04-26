@@ -127,11 +127,17 @@ public class UserServiceImpl implements UserService {
             return TrainerDto.builder()
                     .id(trainer.getId())
                     .name(trainer.getName())
+                    .age(trainer.getAge())
+                    .login(trainer.getLogin())
+                    .loginAndPassword(trainer.getLoginAndPassword())
                     .build();
         } else {
             return TrainerDto.builder()
                     .id(trainer.getId())
                     .name(trainer.getName())
+                    .age(trainer.getAge())
+                    .login(trainer.getLogin())
+                    .loginAndPassword(trainer.getLoginAndPassword())
                     .group(GroupDto.builder()
                             .id(trainer.getGroup().getId())
                             .build())
@@ -144,6 +150,9 @@ public class UserServiceImpl implements UserService {
         Trainer trainer = Trainer.builder()
                 .id(trainerAuth.getId())
                 .name(trainerAuth.getName())
+                .login(trainerAuth.getLogin())
+                .age(trainerAuth.getAge())
+                .loginAndPassword(trainerAuth.getLoginAndPassword())
                 .build();
         Group group = Group.builder()
                 .name("Group ".concat(trainer.getName()))
@@ -152,12 +161,53 @@ public class UserServiceImpl implements UserService {
                 .students(new ArrayList<>())
                 .build();
         trainer.setGroup(group);
-        userDao.addGroupToTrainer(trainer);
+        trainer = userDao.addGroupToTrainer(trainer);
         return getById(trainer.getId());
     }
 
     @Override
-    public Trainer addStudentToGroup(Trainer trainer, Long studentId) {
+    public List<StudentDto> getStudentsFromUniversityWhoDontStudyAtAuthTrainer(TrainerDto trainerDto) {
+        List<Student> allStudentsFromUniversity = userDao.getAllStudents();
+        List<StudentDto> allStudentsFromUniversityDto = allStudentsFromUniversity.stream()
+                .map(student -> StudentDto.builder()
+                        .id(student.getId())
+                        .name(student.getName())
+                        .theme(student.getThemes().stream().filter(theme -> theme.getGroup().getId().equals(trainerDto.getGroup().getId())).map
+                                (theme ->
+                                        ThemeDto.builder()
+                                                .id(theme.getId())
+                                                .name(theme.getName())
+                                                .mark(theme.getMark())
+                                                .build()).collect(Collectors.toList()))
+                        .build()).collect(Collectors.toList());
+        allStudentsFromUniversityDto.removeAll(trainerDto.getGroup().getStudents());
+        return allStudentsFromUniversityDto;
+    }
+
+    @Override
+    public TrainerDto addStudentToGroup(TrainerDto trainerDto, Long studentId) {
+        Trainer trainer = Trainer.builder()
+                .id(trainerDto.getId())
+                .name(trainerDto.getName())
+                .age(trainerDto.getAge())
+                .login(trainerDto.getLogin())
+                .loginAndPassword(trainerDto.getLoginAndPassword())
+                .group(Group.builder()
+                        .id(trainerDto.getGroup().getId())
+                        .name(trainerDto.getGroup().getName())
+                        .students(trainerDto.getGroup().getStudents().stream()
+                                .map(student -> Student.builder()
+                                        .id(student.getId())
+                                        .name(student.getName())
+                                        .themes(student.getTheme().stream().map(theme -> Theme.builder()
+                                                .id(theme.getId())
+                                                .name(theme.getName())
+                                                .mark(theme.getMark())
+                                                .build()).collect(Collectors.toList()))
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .build();
+
         List<Theme> themesNewStudentInGroup = new ArrayList<>();
         Student student = (Student) userDao.findById(studentId);
         if (trainer.getGroup().getStudents().size() > 0) {
@@ -173,7 +223,7 @@ public class UserServiceImpl implements UserService {
         }
         trainer.getGroup().getStudents().add(student);
         userDao.addStudentToGroup(trainer, student);
-        return getStudentsWithTrainerThemes((Trainer) userDao.findById(trainer.getId()));
+        return getById(trainer.getId());
     }
 
     @Override

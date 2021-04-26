@@ -25,6 +25,7 @@ public class AdditionGroupToTrainerController {
     public ModelAndView addGroupToTrainer(HttpServletRequest req, ModelAndView modelAndView) {
         TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
         auth = userService.createGroupByTrainer(auth);
+        req.getSession().setAttribute("userAuth", auth);
         log.info("Trainer after addition group {}", auth);
         modelAndView.setViewName("mainTrainer");
         return modelAndView;

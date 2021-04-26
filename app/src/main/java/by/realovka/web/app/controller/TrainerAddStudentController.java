@@ -26,20 +26,20 @@ public class TrainerAddStudentController {
     @GetMapping
     public ModelAndView getAllStudent(HttpServletRequest req, ModelAndView modelAndView) {
         TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
-        List<StudentDto> students = auth.getGroup().getStudents();
+        List<StudentDto> students = userService.getStudentsFromUniversityWhoDontStudyAtAuthTrainer(auth);
         modelAndView.addObject("students", students);
         modelAndView.setViewName("listAllStudents");
         return modelAndView;
     }
 
-//    @GetMapping(path = "/{studentId}")
-//    public ModelAndView addStudentToTrainer(@PathVariable("studentId") Long studentId, HttpServletRequest req, ModelAndView modelAndView) {
-//        TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
-//        auth = userService.addStudentToGroup(auth, studentId);
-//        List<Student> students = auth.getGroup().getStudents();
-//        modelAndView.addObject("students", students);
-//        log.info("trainerAndHisStudents = {}", auth);
-//        modelAndView.setViewName("listAllStudents");
-//        return modelAndView;
-//    }
+    @GetMapping(path = "/{studentId}")
+    public ModelAndView addStudentToTrainer(@PathVariable("studentId") Long studentId, HttpServletRequest req, ModelAndView modelAndView) {
+        TrainerDto auth = (TrainerDto) req.getSession().getAttribute("userAuth");
+        auth = userService.addStudentToGroup(auth, studentId);
+        List<StudentDto> students = auth.getGroup().getStudents();
+        modelAndView.addObject("students", students);
+        log.info("trainerAndHisStudents = {}", auth);
+        modelAndView.setViewName("listAllStudents");
+        return modelAndView;
+    }
 }

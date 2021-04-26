@@ -10,7 +10,7 @@
         <c:when test="${students.size()>0}">
             <label>If you want to add his to your list, click on student name</label><br>
             <c:forEach items="${students}" var="student">
-                <a href="/addStudent/${student.id}">${student.userName}</a><br>
+                <a href="/addStudent/${student.id}">${student.name}</a><br>
             </c:forEach>
         </c:when>
         <c:otherwise>
@@ -25,7 +25,7 @@
         </thead>
         <c:forEach items="${sessionScope.userAuth.group.students}" var="student">
             <tr>
-                <td>${student.userName}</td>
+                <td>${student.name}</td>
             </tr>
         </c:forEach>
     </table>

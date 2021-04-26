@@ -14,6 +14,7 @@ import lombok.With;
 public class ThemeDto {
 
     private Long id;
+    private GroupDto group;
     private String name;
     private int mark;
 }

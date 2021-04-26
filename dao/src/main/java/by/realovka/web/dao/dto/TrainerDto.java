@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 public class TrainerDto  {
     private long id;
     private String name;
+    private String login;
+    private int age;
+    private String loginAndPassword;
     private BigDecimal averageSalary;
     private GroupDto group;
 }

@@ -20,7 +20,7 @@ public interface UserDao {
 
     List<Student> getAllStudents();
 
-    void addGroupToTrainer(Trainer trainer);
+    Trainer addGroupToTrainer(Trainer trainer);
 
     Trainer findTrainerById(Long id);
 

@@ -17,6 +17,7 @@ import java.util.List;
 public class GroupDto {
 
     private Long id;
+    private String name;
     private TrainerDto trainer;
     private List<StudentDto> students;
     private List<ThemeDto> themes;

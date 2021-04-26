@@ -1,5 +1,6 @@
 package by.realovka.web.service.service;
 
+import by.realovka.web.dao.dto.StudentDto;
 import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.dto.UserDto;
 import by.realovka.web.dao.model.Student;
@@ -20,7 +21,9 @@ public interface UserService {
 
     TrainerDto createGroupByTrainer(TrainerDto trainer);
 
-    Trainer addStudentToGroup(Trainer trainer, Long studentId);
+    List<StudentDto> getStudentsFromUniversityWhoDontStudyAtAuthTrainer(TrainerDto trainerDto);
+
+    TrainerDto addStudentToGroup(TrainerDto trainer, Long studentId);
 
     Trainer getTrainerAndHisStudentsAfterAddTheme(Trainer trainer, String nameTheme);
 
