@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 //
-//@WebFilter(filterName = "sessionFilter")
+@WebFilter(filterName = "sessionFilter")
 public class SessionFilter extends UtilFilter {
 
     @Override
