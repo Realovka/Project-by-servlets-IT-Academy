@@ -23,10 +23,10 @@ public interface UserService {
 
     List<StudentDto> getStudentsFromUniversityWhoDontStudyAtAuthTrainer(TrainerDto trainerDto);
 
-    TrainerDto addStudentToGroup(TrainerDto trainer, Long studentId);
-
-    TrainerDto getTrainerAndHisStudentsAfterAddTheme(TrainerDto trainer, String nameTheme);
-
-    TrainerDto addOrUpdateOrDeleteMark(TrainerDto trainer, Long themeId, Integer mark);
+//    TrainerDto addStudentToGroup(TrainerDto trainer, Long studentId);
+//
+//    TrainerDto getTrainerAndHisStudentsAfterAddTheme(TrainerDto trainer, String nameTheme);
+//
+//    TrainerDto addOrUpdateOrDeleteMark(TrainerDto trainer, Long themeId, Integer mark);
 
 }

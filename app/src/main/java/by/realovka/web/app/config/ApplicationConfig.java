@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -19,13 +20,13 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 @ComponentScan({"by.realovka.web.app", "by.realovka.web.dao", "by.realovka.web.service"})
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @PropertySource("classpath:application.properties")
+@EnableJpaRepositories(basePackages = "by.realovka.web.dao.repository")
 public class ApplicationConfig {
 
     @Value("${driver}")
