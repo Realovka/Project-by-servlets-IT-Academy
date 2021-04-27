@@ -3,21 +3,15 @@ package by.realovka.web.service.service;
 
 //
 //import by.realovka.web.dao.dao.UserDao;
+
 import by.realovka.web.dao.dto.*;
-import by.realovka.web.dao.model.Admin;
-import by.realovka.web.dao.model.Group;
-import by.realovka.web.dao.model.Student;
-import by.realovka.web.dao.model.Theme;
-import by.realovka.web.dao.model.Trainer;
-import by.realovka.web.dao.model.User;
+import by.realovka.web.dao.model.*;
 import by.realovka.web.dao.repository.StudentRepository;
 import by.realovka.web.dao.repository.TrainerRepository;
 import by.realovka.web.dao.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static by.realovka.web.dao.model.Role.ADMIN;
-import static by.realovka.web.dao.model.Role.STUDENT;
-import static by.realovka.web.dao.model.Role.TRAINER;
+import static by.realovka.web.dao.model.Role.*;
 
 @Slf4j
 @Service

@@ -8,8 +8,10 @@ import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -21,7 +23,7 @@ import java.util.Properties;
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories(basePackages = "by.realovka.web.dao.repository", entityManagerFactoryRef = "factory", transactionManagerRef = "jpaProperties")
+@EnableJpaRepositories(basePackages = "by.realovka.web.dao.repository", entityManagerFactoryRef = "factory", transactionManagerRef = "jpaTransactionManager")
 public class ApplicationConfig {
 
     @Value("${driver}")
@@ -85,4 +87,17 @@ public class ApplicationConfig {
         return props;
     }
 
+    @Bean
+    public JpaTransactionManager jpaTransactionManager() {
+        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+        jpaTransactionManager.setEntityManagerFactory(factory().getObject());
+        return jpaTransactionManager;
+    }
+
+    @Bean
+    public TransactionTemplate transactionTemplate() {
+        TransactionTemplate transactionTemplate = new TransactionTemplate();
+        transactionTemplate.setTransactionManager(jpaTransactionManager());
+        return transactionTemplate;
+    }
 }
