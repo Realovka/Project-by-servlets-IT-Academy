@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @AllArgsConstructor
-@EnableWebMvc
+//@EnableWebMvc
 public class ControllerInterceptorConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;

@@ -16,7 +16,7 @@ import java.util.Properties;
 
 @Configuration
 @AllArgsConstructor
-@Import(ApplicationConfig.class)
+@Import(SpringJdbcTemplate.class)
 public class SpringHibernateConfig {
 
     private final DataSource dataSource;
@@ -49,17 +49,4 @@ public class SpringHibernateConfig {
         return props;
     }
 
-    @Bean
-    public JpaTransactionManager jpaTransactionManager() {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(factory().getObject());
-        return jpaTransactionManager;
-    }
-
-    @Bean
-    public TransactionTemplate transactionTemplate() {
-        TransactionTemplate transactionTemplate = new TransactionTemplate();
-        transactionTemplate.setTransactionManager(jpaTransactionManager());
-        return transactionTemplate;
-    }
 }
