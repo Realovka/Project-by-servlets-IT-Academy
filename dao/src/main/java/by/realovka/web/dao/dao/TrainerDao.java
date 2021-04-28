@@ -9,6 +9,8 @@ public interface TrainerDao {
 
     void saveTrainerWithSalary(TrainerWithSalary trainerWithSalary);
 
+    TrainerWithSalary getTrainerWithSalaryByName(String name);
+
     List<TrainerWithSalary> getAllTrainerWithSalary();
 
     TrainerWithSalary getById (Long id);

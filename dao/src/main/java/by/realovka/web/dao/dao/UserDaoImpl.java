@@ -1,102 +1,138 @@
 package by.realovka.web.dao.dao;
 
-//import by.realovka.web.dao.dao.aspect.JpaTransaction;
+
 import by.realovka.web.dao.model.*;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@AllArgsConstructor
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @PersistenceContext
-    public EntityManager em;
+    private ThreadLocal<EntityManager> em = new ThreadLocal<>();
+    private EntityManagerFactory factory;
+
+    @Autowired
+    public void setFactory(EntityManagerFactory factory) {
+        this.factory = factory;
+    }
+
+    public EntityManager getEm() {
+        if (em.get() == null) {
+            em.set(factory.createEntityManager());
+        }
+        return em.get();
+    }
+
+    public void begin() {
+        getEm().getTransaction().begin();
+    }
+
+    public void commit() {
+        getEm().getTransaction().commit();
+    }
+
+    public void rollback() {
+        getEm().getTransaction().rollback();
+    }
 
     @Override
-//    @JpaTransaction
     public User findByLogin(String login) {
         User user = null;
+        begin();
         try {
-            user = em.createQuery("from User where login=: login ", User.class)
+            user = getEm().createQuery("from User where login=: login ", User.class)
                     .setParameter("login", login)
                     .getSingleResult();
         } catch (NoResultException e) {
             user = new User();
         }
+        commit();
         return user;
     }
 
     @Override
-//    @JpaTransaction
     public void save(User user) {
-        em.persist(user);
+        begin();
+        getEm().persist(user);
+        commit();
     }
 
     @Override
-//    @JpaTransaction
     public User identificationUser(String loginAndPassword) {
         User user = null;
+        begin();
         try {
-         user = em.createQuery("from User where login_and_password =: loginAndPassword", User.class)
+            user = getEm().createQuery("from User where login_and_password =: loginAndPassword", User.class)
                     .setParameter("loginAndPassword", loginAndPassword)
                     .getSingleResult();
         } catch (NoResultException e) {
             user = new User();
         }
+        commit();
         return user;
     }
 
     @Override
-//    @JpaTransaction
     public List<Student> getAllStudents() {
-        return em.createQuery("from Student", Student.class).getResultList();
+        begin();
+        List<Student> students = getEm().createQuery("from Student", Student.class).getResultList();
+        commit();
+        return students;
     }
 
     @Override
-//    @JpaTransaction
     public Trainer addGroupToTrainer(Trainer trainer) {
-        em.merge(trainer);
-        return em.find(Trainer.class, trainer.getId());
+        begin();
+        getEm().merge(trainer);
+        trainer = getEm().find(Trainer.class, trainer.getId());
+        commit();
+        return trainer;
     }
 
     @Override
-//    @JpaTransaction
     public User findById(Long id) {
-        return em.find(User.class, id);
+        begin();
+        User user = getEm().find(User.class, id);
+        commit();
+        return user;
     }
 
 
     @Override
-//    @JpaTransaction
     public void addStudentToGroup(Trainer trainer, Student student) {
-        em.merge(trainer);
-        em.merge(student);
-        Group group = em.find(Group.class, trainer.getGroup().getId());
+        begin();
+        getEm().merge(trainer);
+        getEm().merge(student);
+        Group group = getEm().find(Group.class, trainer.getGroup().getId());
         group.setStudents(trainer.getGroup().getStudents());
-        em.merge(group);
+        getEm().merge(group);
+        commit();
     }
 
     @Override
-//    @JpaTransaction
     public void addThemeToGroup(List<Theme> themes) {
+        begin();
         for (Theme item : themes) {
-            em.persist(item);
+            getEm().persist(item);
         }
+        commit();
     }
 
     @Override
-//    @JpaTransaction
-    public Trainer update(Long id, int mark, Trainer trainer) {
-        em.createQuery("update Theme t set t.mark=:mark where t.id=:id ")
+    public Trainer addOrUpdateOrDeleteMark(Long id, int mark, Trainer trainer) {
+        begin();
+        getEm().createQuery("update Theme t set t.mark=:mark where t.id=:id ")
                 .setParameter("mark", mark)
                 .setParameter("id", id)
                 .executeUpdate();
-        trainer = em.find(Trainer.class, trainer.getId());
+        trainer = getEm().find(Trainer.class, trainer.getId());
+        commit();
         return trainer;
     }
 

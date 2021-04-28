@@ -35,24 +35,6 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-//        private static volatile UserServiceImpl instance;
-//    private final UserDao userDao = UserDaoImpl.getInstance();
-//
-//    private UserServiceImpl() {
-//    }
-//
-//    public static UserServiceImpl getInstance() {
-//        if (instance == null) {
-//            synchronized (UserServiceImpl.class) {
-//                if (instance == null) {
-//                    instance = new UserServiceImpl();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
-
-
     @SneakyThrows
     @Override
     public boolean saveUser(UserDto userDTO) {
@@ -184,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Trainer addOrUpdateOrDeleteMark(Trainer trainer, Long themeId, Integer mark) {
-        trainer = userDao.update(themeId, mark, trainer);
+        trainer = userDao.addOrUpdateOrDeleteMark(themeId, mark, trainer);
         return getStudentsWithTrainerThemes(trainer);
     }
 

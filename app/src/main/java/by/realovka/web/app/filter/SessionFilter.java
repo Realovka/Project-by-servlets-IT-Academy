@@ -27,7 +27,7 @@
 //        } else {
 //            User auth = (User) session.getAttribute("userAuth");
 //            if (auth instanceof Admin) {
-//                request.getRequestDispatcher("/mainAdmin.jsp").forward(request, response);
+//                request.getRequestDispatcher("/").forward(request, response);
 //            } else {
 //                if (auth instanceof Student) {
 //                    request.getRequestDispatcher("/mainStudent.jsp").forward(request, response);

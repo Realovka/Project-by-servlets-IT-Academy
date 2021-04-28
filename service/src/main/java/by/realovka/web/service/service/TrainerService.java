@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TrainerService {
 
-    void addTrainer (String name);
+    boolean addTrainer (String name);
 
     List<TrainerDto> getAllTrainers();
 

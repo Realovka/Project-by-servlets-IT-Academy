@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -25,7 +23,7 @@ public class DeleteMarkController {
     private final UserService userService;
 
     @GetMapping(path = "/{themeId}")
-    public ModelAndView deleteMark (@PathVariable("themeId") Long themeId, HttpSession session, ModelAndView modelAndView) {
+    public ModelAndView deleteMark(@PathVariable("themeId") Long themeId, HttpSession session, ModelAndView modelAndView) {
         Trainer trainer = (Trainer) session.getAttribute("userAuth");
         trainer = userService.addOrUpdateOrDeleteMark(trainer, themeId, 0);
         List<Student> students = trainer.getGroup().getStudents();

@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class TrainerServiceImpl implements TrainerService {
 
-//    private static volatile TrainerServiceImpl instance;
     private final TrainerDao trainerDao;
 
     @Autowired
@@ -22,26 +21,18 @@ public class TrainerServiceImpl implements TrainerService {
         this.trainerDao = trainerDao;
     }
 
-    //    private TrainerServiceImpl() {
-//    }
-//
-//    public static TrainerServiceImpl getInstance() {
-//        if (instance == null) {
-//            synchronized (TrainerDaoImpl.class) {
-//                if (instance == null) {
-//                    instance = new TrainerServiceImpl();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
 
     @Override
-    public void addTrainer(String name) {
+    public boolean addTrainer(String name) {
         TrainerWithSalary trainerWithSalary = TrainerWithSalary.builder()
                 .name(name)
                 .build();
-        trainerDao.saveTrainerWithSalary(trainerWithSalary);
+        if(trainerDao.getTrainerWithSalaryByName(name) != null) {
+            trainerDao.saveTrainerWithSalary(trainerWithSalary);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

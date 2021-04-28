@@ -27,6 +27,6 @@ public interface UserDao {
 
     void addThemeToGroup(List<Theme> themes);
 
-    Trainer update(Long id, int mark, Trainer trainer);
+    Trainer addOrUpdateOrDeleteMark(Long id, int mark, Trainer trainer);
 
 }
