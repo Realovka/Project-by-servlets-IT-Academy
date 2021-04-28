@@ -13,7 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDaoImpl implements UserDao {
 
-    public final EntityManagerHelper helper;
+     EntityManagerHelper helper;
+
+    public void setHelper(EntityManagerHelper helper) {
+        this.helper = helper;
+    }
 
     @Override
     @JpaTransaction
