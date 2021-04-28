@@ -12,7 +12,7 @@ public class WebApplicationConfig extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{ApplicationConfig.class, ControllerInterceptorConfig.class, SpringHibernateConfig.class};
+        return new Class[]{ApplicationConfig.class};
     }
 
     @Override
