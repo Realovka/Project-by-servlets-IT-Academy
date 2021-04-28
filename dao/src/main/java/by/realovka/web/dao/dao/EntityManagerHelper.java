@@ -5,15 +5,18 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
 @Component
 public class EntityManagerHelper {
 
-    private final SessionFactory factory;
+    private  SessionFactory factory;
+    private final ThreadLocal<EntityManager> currentEntityManager = new ThreadLocal<>();
 
     @SneakyThrows
-    private EntityManagerHelper() {
+    @PostConstruct
+    public void init(){
         Configuration cfg = new Configuration().configure();
         this.factory = cfg.buildSessionFactory();
     }
@@ -27,6 +30,10 @@ public class EntityManagerHelper {
     }
 
     public EntityManager getEntityManager() {
-        return factory.createEntityManager();
+        EntityManager em = currentEntityManager.get();
+        if(em == null) {
+            currentEntityManager.set(em = factory.createEntityManager());
+        }
+        return em;
     }
 }

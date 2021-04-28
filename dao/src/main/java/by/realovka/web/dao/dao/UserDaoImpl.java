@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import java.util.List;
 
-@AllArgsConstructor
+
 @Repository
+@AllArgsConstructor
 public class UserDaoImpl implements UserDao {
 
     public final EntityManagerHelper helper;

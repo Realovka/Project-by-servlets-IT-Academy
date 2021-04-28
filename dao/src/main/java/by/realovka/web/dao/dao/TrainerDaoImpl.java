@@ -2,6 +2,7 @@ package by.realovka.web.dao.dao;
 
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -9,9 +10,10 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class TrainerDaoImpl implements TrainerDao {
 
-    protected final EntityManagerHelper helper = EntityManagerHelper.getInstance();
+    public final EntityManagerHelper helper;
 
     @Override
     public void saveTrainerWithSalary(TrainerWithSalary trainerWithSalary) {
