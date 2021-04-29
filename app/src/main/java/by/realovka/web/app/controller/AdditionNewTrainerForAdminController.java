@@ -23,7 +23,10 @@ public class AdditionNewTrainerForAdminController {
     @PostMapping
     public ModelAndView addNewTrainerForAdmin (ModelAndView modelAndView, HttpServletRequest req) {
         String trainerName = req.getParameter("trainerName");
-        trainerService.addTrainer(trainerName);
+        boolean flag = trainerService.addTrainer(trainerName);
+        if (!flag) {
+            modelAndView.addObject("Such trainer already exists", "messageTrainerExists");
+        }
         List<TrainerDto> trainerDTO = trainerService.getAllTrainers();
         modelAndView.addObject("listTrainers", trainerDTO);
         modelAndView.setViewName("listAllTrainers");

@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface TrainerService {
 
-    void addTrainer (String name);
+    boolean addTrainer (String name);
 
     List<TrainerDto> getAllTrainers();
 
-    void addNewSalaryToTrainer(Long trainerId, String salary);
-
-    TrainerDto getAverageSalary(Long trainerId, String months);
+//    void addNewSalaryToTrainer(Long trainerId, String salary);
+//
+//    TrainerDto getAverageSalary(Long trainerId, String months);
 
 }

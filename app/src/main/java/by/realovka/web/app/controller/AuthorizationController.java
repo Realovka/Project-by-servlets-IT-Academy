@@ -23,8 +23,8 @@ import java.util.List;
 @RequestMapping(path = "/auth")
 public class AuthorizationController {
 
-    private final UserService userService;
-    private final TrainerService trainerService;
+    private UserService userService;
+    private TrainerService trainerService;
 
     @PostMapping
     public ModelAndView authorizationUser(HttpServletRequest req, ModelAndView modelAndView) {

@@ -7,7 +7,7 @@
 </head>
 <body>
 <h2 style="color: mediumblue">Enter new trainer</h2>
-<h2 style="color: #ff0000">${suchTrainerAlreadyExist}</h2>
+<h2 style="color: #ff0000">${messageTrainerExists}</h2>
 <form action="/addTrainer" method="post">
     <input type="text" name="trainerName" placeholder="Trainer name"/><br>
     <button type="submit"> Submit </button>

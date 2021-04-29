@@ -28,9 +28,9 @@ import static by.realovka.web.dao.model.Role.*;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final TrainerRepository trainerRepository;
-    private final StudentRepository studentRepository;
+    private UserRepository userRepository;
+    private TrainerRepository trainerRepository;
+    private StudentRepository studentRepository;
 
     @SneakyThrows
     @Override
