@@ -27,7 +27,7 @@ public class JpaTransactionAspect {
         trx.begin();
         Object result = jp.proceed();
         trx.commit();
-        em.close();
+//        em.close();
         return result;
     }
 }
