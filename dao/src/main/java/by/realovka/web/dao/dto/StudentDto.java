@@ -17,5 +17,6 @@ public class StudentDto {
 
     private Long id;
     private String name;
+    private GroupDto group;
     private List<ThemeDto> theme;
 }

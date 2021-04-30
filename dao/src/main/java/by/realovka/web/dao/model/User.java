@@ -33,6 +33,6 @@ public  class  User {
     private int age;
     private String login;
     @Column(name = "login_and_password")
-    private String loginAndPassword;
+    private String loginandpassword;
 
 }

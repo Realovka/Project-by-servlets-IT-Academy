@@ -24,7 +24,7 @@ public class SpringHibernateConfig {
         emf.setDataSource(dataSource);
         emf.setPersistenceUnitName("jpa-unit");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        emf.setPackagesToScan("com.academy.persistence.model");
+        emf.setPackagesToScan("by.realovka.web.dao.model");
         emf.setJpaProperties(jpaProperties());
         return emf;
     }
@@ -42,7 +42,7 @@ public class SpringHibernateConfig {
         props.setProperty("hibernate.dbcp.maxIdle", "10");
         props.setProperty("hibernate.dbcp.minIdle", "5");
         props.setProperty("hibernate.dbcp.maxWaitMillis", "-1");
-//        props.setProperty("hibernate.enable_lazy_load_no_trans", "true");
+        props.setProperty("hibernate.enable_lazy_load_no_trans", "true");
         return props;
     }
 

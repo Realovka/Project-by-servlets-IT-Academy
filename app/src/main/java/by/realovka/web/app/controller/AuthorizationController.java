@@ -10,6 +10,7 @@ import by.realovka.web.dao.model.User;
 import by.realovka.web.service.service.TrainerService;
 import by.realovka.web.service.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -13,7 +13,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan({"by.realovka.web.app", "by.realovka.web.dao", "by.realovka.web.service"})
 @EnableWebMvc
 @EnableAspectJAutoProxy
-@PropertySource("classpath:application.properties")
 @EnableJpaRepositories(basePackages = "by.realovka.web.dao.repository",
         entityManagerFactoryRef = "factory",
         transactionManagerRef = "jpaTransactionManager")

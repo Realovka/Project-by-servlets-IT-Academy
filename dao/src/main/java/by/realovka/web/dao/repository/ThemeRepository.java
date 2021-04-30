@@ -1,15 +1,15 @@
 package by.realovka.web.dao.repository;
 
-import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Theme;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface ThemeRepository extends JpaRepository<Theme, Long> {
 
-    List<Student> findAll();
-    Student findStudentById(Long id);
+    Theme findThemeById(Long id);
+    List<Theme> findThemeByGroup_IdAndStudentId(Long groupId, Long studentId);
 
 }
