@@ -1,7 +1,11 @@
 package by.realovka.web.dao.dao;
 
 import by.realovka.web.dao.dao.aspect.JpaTransaction;
-import by.realovka.web.dao.model.*;
+import by.realovka.web.dao.model.User;
+import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Theme;
+import by.realovka.web.dao.model.Group;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -15,9 +19,6 @@ public class UserDaoImpl implements UserDao {
 
      EntityManagerHelper helper;
 
-    public void setHelper(EntityManagerHelper helper) {
-        this.helper = helper;
-    }
 
     @Override
     @JpaTransaction
@@ -93,7 +94,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @JpaTransaction
-    public Trainer update(Long id, int mark, Trainer trainer) {
+    public Trainer addOrUpdateOrDeleteMark(Long id, int mark, Trainer trainer) {
         helper.getEntityManager().createQuery("update Theme t set t.mark=:mark where t.id=:id ")
                 .setParameter("mark", mark)
                 .setParameter("id", id)

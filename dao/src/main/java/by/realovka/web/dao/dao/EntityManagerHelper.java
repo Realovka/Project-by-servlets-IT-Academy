@@ -21,14 +21,6 @@ public class EntityManagerHelper {
         this.factory = cfg.buildSessionFactory();
     }
 
-//    private static class EntityManagerHelperHolder {
-//        private static final EntityManagerHelper HOLDER_INSTANCE = new EntityManagerHelper();
-//    }
-//
-//    public static EntityManagerHelper getInstance() {
-//        return EntityManagerHelperHolder.HOLDER_INSTANCE;
-//    }
-
     public EntityManager createNewEntityManager() {
         return factory.createEntityManager();
     }
