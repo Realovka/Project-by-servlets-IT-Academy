@@ -69,7 +69,7 @@ public class TrainerServiceImpl implements TrainerService {
         Integer monthsPars = Integer.parseInt(months);
         List<Salary> salaries = trainerDao.getAverageSalary(trainerIdPars, monthsPars);
         BigDecimal sum = new BigDecimal(0);
-        for(Salary item : salaries) {
+        for (Salary item : salaries) {
             sum = sum.add(item.getValue());
         }
         BigDecimal averageSalary = sum.divide(BigDecimal.valueOf(salaries.size()));

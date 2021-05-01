@@ -3,11 +3,11 @@ package by.realovka.web.dao.dto;
 import by.realovka.web.dao.model.Role;
 import by.realovka.web.dao.model.Theme;
 import by.realovka.web.dao.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
+import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,7 +20,6 @@ import java.util.Set;
 @With
 @Builder
 public class UserDTO {
-
     private String userName;
     private int age;
     private String login;

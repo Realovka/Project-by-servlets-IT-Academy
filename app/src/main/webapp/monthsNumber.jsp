@@ -6,7 +6,6 @@
 </head>
 <body>
 <h2 style="color: mediumblue">Enter the months of the trainer's work for which you want to calculate the average salary</h2>
-${sessionScope.enterWrongMonths}<br>
 <form action="/calculationAverageSalary" method="post">
     <input type="text" name="finishMonthsNumber" placeholder="Enter months"/><br>
     <button>Submit</button>
