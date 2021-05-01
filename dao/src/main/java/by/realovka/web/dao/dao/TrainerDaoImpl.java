@@ -3,11 +3,13 @@ package by.realovka.web.dao.dao;
 import by.realovka.web.dao.dao.aspect.JpaTransaction;
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class TrainerDaoImpl implements TrainerDao {
 
     EntityManagerHelper helper;
