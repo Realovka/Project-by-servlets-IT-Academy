@@ -5,7 +5,7 @@
     <title>Hello Student</title>
 </head>
 <body>
-<h2 style="color: mediumblue">Hello ${sessionScope.userAuth.userName}</h2>
+<h2 style="color: mediumblue">Hello ${sessionScope.userAuth.name}</h2>
 <c:if test="${sessionScope.userAuth.themes.size()>0}">
     <table border="3">
         <thead>
