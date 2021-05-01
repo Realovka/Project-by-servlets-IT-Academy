@@ -3,7 +3,11 @@ package by.realovka.web.service.service;
 
 
 import by.realovka.web.dao.dao.UserDao;
-import by.realovka.web.dao.dto.*;
+import by.realovka.web.dao.dto.GroupDto;
+import by.realovka.web.dao.dto.UserDto;
+import by.realovka.web.dao.dto.TrainerDto;
+import by.realovka.web.dao.dto.StudentDto;
+import by.realovka.web.dao.dto.ThemeDto;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Group;
 import by.realovka.web.dao.model.Student;
@@ -122,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TrainerDto getTrainer(Long id) {
-        Trainer trainer = userDao.findTrainerById(id);
+        Trainer trainer = (Trainer) userDao.findById(id);
         if (trainer.getGroup() == null) {
             return TrainerDto.builder()
                     .id(trainer.getId())
@@ -226,7 +230,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public TrainerDto addOrUpdateOrDeleteMark(TrainerDto trainerDto, Long themeId, Integer mark) {
         Trainer trainer = (Trainer) userDao.findById(trainerDto.getId());
-        userDao.update(themeId, mark, trainer);
+        userDao.addOrUpdateOrDeleteMark(themeId, mark, trainer);
         return getById(trainerDto.getId());
     }
 

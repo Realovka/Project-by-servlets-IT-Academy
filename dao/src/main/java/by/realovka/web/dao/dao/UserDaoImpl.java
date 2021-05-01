@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import java.util.List;
 
-@AllArgsConstructor
 @Repository
+@AllArgsConstructor
 public class UserDaoImpl implements UserDao {
 
-    public final EntityManagerHelper helper;
+    EntityManagerHelper helper;
 
     @Override
     @JpaTransaction
@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
     public User identificationUser(String loginAndPassword) {
         User user = null;
         try {
-         user = helper.getEntityManager().createQuery("from User where login_and_password =: loginAndPassword", User.class)
+            user = helper.getEntityManager().createQuery("from User where login_and_password =: loginAndPassword", User.class)
                     .setParameter("loginAndPassword", loginAndPassword)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -88,7 +88,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @JpaTransaction
-    public Trainer update(Long id, int mark, Trainer trainer) {
+    public Trainer addOrUpdateOrDeleteMark(Long id, int mark, Trainer trainer) {
         helper.getEntityManager().createQuery("update Theme t set t.mark=:mark where t.id=:id ")
                 .setParameter("mark", mark)
                 .setParameter("id", id)

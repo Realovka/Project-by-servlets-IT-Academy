@@ -1,83 +1,49 @@
 package by.realovka.web.dao.dao;
 
+import by.realovka.web.dao.dao.aspect.JpaTransaction;
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.List;
 
 @Repository
 public class TrainerDaoImpl implements TrainerDao {
 
-    protected final EntityManagerHelper helper = EntityManagerHelper.getInstance();
+    EntityManagerHelper helper;
+
 
     @Override
+    @JpaTransaction
     public void saveTrainerWithSalary(TrainerWithSalary trainerWithSalary) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        em.persist(trainerWithSalary);
-
-        trx.commit();
-        em.close();
+        helper.getEntityManager().persist(trainerWithSalary);
     }
 
     @Override
+    @JpaTransaction
     public List<TrainerWithSalary> getAllTrainerWithSalary() {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        List<TrainerWithSalary> trainers = em.createQuery("from TrainerWithSalary", TrainerWithSalary.class).getResultList();
-
-        trx.commit();
-        em.close();
-        return trainers;
+        return helper.getEntityManager().createQuery("from TrainerWithSalary", TrainerWithSalary.class).getResultList();
     }
 
     @Override
+    @JpaTransaction
     public TrainerWithSalary getById(Long id) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        TrainerWithSalary trainerWithSalary = em.find(TrainerWithSalary.class, id);
-
-        trx.commit();
-        em.close();
-        return trainerWithSalary;
+        return helper.getEntityManager().find(TrainerWithSalary.class, id);
     }
 
     @Override
+    @JpaTransaction
     public void addSalaryToTrainer(Salary salary) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        em.persist(salary);
-
-        trx.commit();
-        em.close();
-
+        helper.getEntityManager().persist(salary);
     }
 
     @Override
+    @JpaTransaction
     public List<Salary> getAverageSalary(Long id, Integer months) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-
-        List<Salary> salaries = em.createQuery("from Salary where trainer_with_salary_id =: id", Salary.class)
+        return helper.getEntityManager().createQuery("from Salary where trainer_with_salary_id =: id", Salary.class)
                 .setParameter("id", id)
                 .setMaxResults(months)
                 .getResultList();
-
-        trx.commit();
-        em.close();
-        return salaries;
     }
 
 }

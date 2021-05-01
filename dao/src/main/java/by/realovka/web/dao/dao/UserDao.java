@@ -22,14 +22,12 @@ public interface UserDao {
 
     Trainer addGroupToTrainer(Trainer trainer);
 
-    Trainer findTrainerById(Long id);
-
     User findById(Long id);
 
     void addStudentToGroup(Trainer trainer, Student student);
 
     void addThemeToGroup(List<Theme> themes);
 
-    Trainer update(Long id, int mark, Trainer trainer);
+    Trainer addOrUpdateOrDeleteMark(Long id, int mark, Trainer trainer);
 
 }
