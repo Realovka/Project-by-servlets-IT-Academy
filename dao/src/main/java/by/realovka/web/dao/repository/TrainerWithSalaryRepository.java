@@ -12,4 +12,5 @@ public interface TrainerWithSalaryRepository extends JpaRepository<TrainerWithSa
     List<TrainerWithSalary> findAll();
 
     TrainerWithSalary findTrainerWithSalariesById(Long id);
+
 }
