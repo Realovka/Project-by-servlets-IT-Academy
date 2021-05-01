@@ -20,24 +20,6 @@ public class JpaTransactionAspect {
 
     public final EntityManagerHelper helper;
 
-
-    @Pointcut("execution(* update(..))")
-    public void update() {
-
-    }
-
-    @SneakyThrows
-    @Around("update()")
-    public Object around(ProceedingJoinPoint jp) {
-        EntityManager em = helper.getEntityManager();
-        EntityTransaction trx = em.getTransaction();
-        trx.begin();
-        Object result = jp.proceed();
-        trx.commit();
-        em.close();
-        return result;
-    }
-
     @SneakyThrows
     @Around("@annotation(JpaTransaction)")
     public Object transaction(ProceedingJoinPoint jp) {
@@ -46,7 +28,7 @@ public class JpaTransactionAspect {
         trx.begin();
         Object result = jp.proceed();
         trx.commit();
-        em.close();
+//        em.close();
         return result;
     }
 }
