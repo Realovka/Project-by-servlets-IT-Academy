@@ -19,7 +19,6 @@ public class UserDaoImpl implements UserDao {
 
      EntityManagerHelper helper;
 
-
     @Override
     @JpaTransaction
     public User findByLogin(String login) {
