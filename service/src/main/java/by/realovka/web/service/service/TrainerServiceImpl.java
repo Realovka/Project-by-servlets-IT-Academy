@@ -3,10 +3,13 @@ package by.realovka.web.service.service;
 import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.model.Salary;
 import by.realovka.web.dao.model.TrainerWithSalary;
+import by.realovka.web.dao.repository.SalaryPagingRepository;
 import by.realovka.web.dao.repository.SalaryRepository;
 import by.realovka.web.dao.repository.TrainerWithSalaryRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +24,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     private TrainerWithSalaryRepository trainerWithSalaryRepository;
     private SalaryRepository salaryRepository;
+    private SalaryPagingRepository repository;
 
     @Override
     public boolean addTrainer(String name) {
@@ -62,12 +66,12 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public TrainerDto getAverageSalary(Long trainerId, String months) {
         Integer monthsPars = Integer.parseInt(months);
-        List<Salary> salaries = salaryRepository.findSalaries(trainerId, monthsPars);
+        Page<Salary> salaries = repository.findByTrainerWithSalaryId(trainerId, PageRequest.of(0, monthsPars, Sort.Direction.DESC, "id"));
         BigDecimal sum = new BigDecimal(0);
         for (Salary item : salaries) {
             sum = sum.add(item.getValue());
         }
-        BigDecimal averageSalary = sum.divide(BigDecimal.valueOf(salaries.size()));
+        BigDecimal averageSalary = sum.divide(BigDecimal.valueOf(monthsPars));
         TrainerWithSalary trainer = trainerWithSalaryRepository.findTrainerWithSalariesById(trainerId);
         TrainerDto trainerDTO = TrainerDto.builder()
                 .name(trainer.getName())
