@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface SalaryRepository extends JpaRepository<Salary, Long> {
 
-    List<Salary> findAll();
+    List<Salary> findSalariesByTrainerWithSalaryId(Long trainerId);
 
-//    @Query(value = "SELECT t.id, t.name, s.value FROM trainer_with_salary_hb2 t join salary_hb2 s on t.id=s.trainer_with_salary_id WHERE s.trainer_with_salary_id = ?1 limit (?2)", nativeQuery = true)
-//    List<Salary> findSalaries(Long trainerId, Integer months);
 }

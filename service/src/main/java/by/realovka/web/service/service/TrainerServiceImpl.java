@@ -31,7 +31,7 @@ public class TrainerServiceImpl implements TrainerService {
         TrainerWithSalary trainerWithSalary = TrainerWithSalary.builder()
                 .name(name)
                 .build();
-        if (trainerWithSalaryRepository.findTrainerWithSalariesByName(name) != null) {
+        if (trainerWithSalaryRepository.findTrainerWithSalariesByName(name).isEmpty()) {
             trainerWithSalaryRepository.save(trainerWithSalary);
             return true;
         } else {
@@ -53,8 +53,8 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public void addNewSalaryToTrainer(Long trainerId, String salary) {
-        BigDecimal salaryPars = BigDecimal.valueOf(Double.parseDouble(salary));
+    public void addNewSalaryToTrainer(Long trainerId, Double salary) {
+        BigDecimal salaryPars = BigDecimal.valueOf(salary);
         TrainerWithSalary trainerWithSalary = trainerWithSalaryRepository.findTrainerWithSalariesById(trainerId);
         Salary newSalary = Salary.builder()
                 .value(salaryPars)
@@ -64,19 +64,24 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public TrainerDto getAverageSalary(Long trainerId, String months) {
-        Integer monthsPars = Integer.parseInt(months);
-        Page<Salary> salaries = repository.findByTrainerWithSalaryId(trainerId, PageRequest.of(0, monthsPars, Sort.Direction.DESC, "id"));
-        BigDecimal sum = new BigDecimal(0);
-        for (Salary item : salaries) {
-            sum = sum.add(item.getValue());
+    public TrainerDto getAverageSalary(Long trainerId, Integer months) {
+        BigDecimal averageSalary = new BigDecimal(0);
+        TrainerWithSalary trainer = new TrainerWithSalary();
+        List<Salary> salaries = salaryRepository.findSalariesByTrainerWithSalaryId(trainerId);
+        if(salaries.size() >= months) {
+            Page<Salary> salariesPaging = repository.findByTrainerWithSalaryId(trainerId, PageRequest.of(0, months, Sort.Direction.DESC, "id"));
+            BigDecimal sum = new BigDecimal(0);
+            for (Salary item : salariesPaging) {
+                sum = sum.add(item.getValue());
+            }
+            averageSalary = sum.divide(BigDecimal.valueOf(months));
+            trainer = trainerWithSalaryRepository.findTrainerWithSalariesById(trainerId);
         }
-        BigDecimal averageSalary = sum.divide(BigDecimal.valueOf(monthsPars));
-        TrainerWithSalary trainer = trainerWithSalaryRepository.findTrainerWithSalariesById(trainerId);
-        TrainerDto trainerDTO = TrainerDto.builder()
-                .name(trainer.getName())
-                .averageSalary(averageSalary)
-                .build();
+            TrainerDto trainerDTO = TrainerDto.builder()
+                    .name(trainer.getName())
+                    .averageSalary(averageSalary)
+                    .build();
+
         return trainerDTO;
     }
 

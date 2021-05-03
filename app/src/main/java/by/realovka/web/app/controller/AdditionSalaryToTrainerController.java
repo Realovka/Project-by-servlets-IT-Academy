@@ -22,11 +22,30 @@ public class AdditionSalaryToTrainerController {
     @PostMapping(path = "/{trainerId}")
     public ModelAndView addSalaryToTrainer(@PathVariable("trainerId") Long trainerId,
                                            HttpServletRequest req, ModelAndView modelAndView) {
+        Double salaryParse = 0.0;
         String salary = req.getParameter("salary");
-        trainerService.addNewSalaryToTrainer(trainerId, salary);
+        try {
+            salaryParse = Double.parseDouble(salary);
+        } catch (NumberFormatException e) {
+          getPageIfNewSalaryIsInvalid(modelAndView);
+          return modelAndView;
+        }
+        if (salaryParse < 0.0) {
+            getPageIfNewSalaryIsInvalid(modelAndView);
+            return modelAndView;
+        }
+        trainerService.addNewSalaryToTrainer(trainerId, salaryParse);
         List<TrainerDto> trainerDTO = trainerService.getAllTrainers();
         modelAndView.addObject("listTrainers", trainerDTO);
         modelAndView.setViewName("mainAdmin");
+        return modelAndView;
+    }
+
+    private ModelAndView getPageIfNewSalaryIsInvalid(ModelAndView modelAndView) {
+        modelAndView.addObject("wrongFormatSalary", "Format of salary is wrong");
+        List<TrainerDto> trainerDTO = trainerService.getAllTrainers();
+        modelAndView.addObject("listTrainers", trainerDTO);
+        modelAndView.setViewName("addSalary");
         return modelAndView;
     }
 }

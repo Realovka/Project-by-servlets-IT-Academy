@@ -8,6 +8,7 @@
 <body>
 <h2 style="color: mediumblue">Add Next Salary</h2>
 <f:form action="/addSalary/${trainerId}" method="post">
+    ${wrongFormatSalary}<br>
     <input type="text" name="salary" placeholder="Salary">
     <button>Submit</button>
 </f:form>

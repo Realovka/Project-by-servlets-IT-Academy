@@ -25,7 +25,9 @@ public class AdditionNewTrainerForAdminController {
         String trainerName = req.getParameter("trainerName");
         boolean flag = trainerService.addTrainer(trainerName);
         if (!flag) {
-            modelAndView.addObject("Such trainer already exists", "messageTrainerExists");
+            modelAndView.addObject("messageTrainerExists", "Such trainer already exists");
+            modelAndView.setViewName("addTrainer");
+            return modelAndView;
         }
         List<TrainerDto> trainerDTO = trainerService.getAllTrainers();
         modelAndView.addObject("listTrainers", trainerDTO);
