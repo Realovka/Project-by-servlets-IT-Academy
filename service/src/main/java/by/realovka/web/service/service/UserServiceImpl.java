@@ -53,28 +53,28 @@ public class UserServiceImpl implements UserService {
             }
             if (userDto.getRole().equals(TRAINER)) {
                 Trainer trainer = Trainer.builder()
-                        .name(userDto.getLogin())
+                        .username(userDto.getLogin())
                         .age(userDto.getAge())
                         .login(userDto.getLogin())
-                        .loginandpassword(builder.toString())
+                        .password(builder.toString())
                         .build();
                 log.info("Save new user {}", trainer);
                 userRepository.save(trainer);
             } else if (userDto.getRole().equals(STUDENT)) {
                 Student student = Student.builder()
-                        .name(userDto.getLogin())
+                        .username(userDto.getLogin())
                         .age(userDto.getAge())
                         .login(userDto.getLogin())
-                        .loginandpassword(builder.toString())
+                        .password(builder.toString())
                         .build();
                 log.info("Save new user {}", student);
                 userRepository.save(student);
             } else if (userDto.getRole().equals(ADMIN)) {
                 Admin admin = Admin.builder()
-                        .name(userDto.getLogin())
+                        .username(userDto.getLogin())
                         .age(userDto.getAge())
                         .login(userDto.getLogin())
-                        .loginandpassword(builder.toString())
+                        .password(builder.toString())
                         .build();
                 log.info("Save new user {}", admin);
                 userRepository.save(admin);
@@ -86,34 +86,34 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @SneakyThrows
-    @Override
-    public User identificationUserByLoginAndPassword(String login, String password) {
-        String loginAndPasswordFromUI = login.concat(password);
-        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-        byte[] loginAndPasswordHashFromUI = messageDigest.digest(loginAndPasswordFromUI.getBytes());
-        StringBuilder builder = new StringBuilder();
-        for (byte b : loginAndPasswordHashFromUI) {
-            builder.append(String.format("%02X", b));
-        }
-        String loginAndPassword = String.valueOf(builder);
-        Optional<User> user = userRepository.findUserByLoginandpassword(loginAndPassword);
-        log.info("Identification user {}", user);
-        return user.orElse(new User());
-    }
+//    @SneakyThrows
+//    @Override
+//    public User identificationUserByLoginAndPassword(String login, String password) {
+//        String loginAndPasswordFromUI = login.concat(password);
+//        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+//        byte[] loginAndPasswordHashFromUI = messageDigest.digest(loginAndPasswordFromUI.getBytes());
+//        StringBuilder builder = new StringBuilder();
+//        for (byte b : loginAndPasswordHashFromUI) {
+//            builder.append(String.format("%02X", b));
+//        }
+//        String loginAndPassword = String.valueOf(builder);
+//        Optional<User> user = userRepository.findUserByLoginandpassword(loginAndPassword);
+//        log.info("Identification user {}", user);
+//        return user.orElse(new User());
+//    }
 
     @Override
     public TrainerDto getById(Long id) {
         Trainer trainer = getStudentsWithTrainerThemes((Trainer) userRepository.findUsersById(id));
         return TrainerDto.builder()
                 .id(trainer.getId())
-                .name(trainer.getName())
+                .name(trainer.getUsername())
                 .group(GroupDto.builder()
                         .id(trainer.getGroup().getId())
                         .students(trainer.getGroup().getStudents().stream().map(student ->
                                 StudentDto.builder()
                                         .id(student.getId())
-                                        .name(student.getName())
+                                        .name(student.getUsername())
                                         .theme(student.getThemes().stream().map(theme ->
                                                 ThemeDto.builder()
                                                         .id(theme.getId())
@@ -131,18 +131,18 @@ public class UserServiceImpl implements UserService {
         if (trainer.getGroup() == null) {
             return TrainerDto.builder()
                     .id(trainer.getId())
-                    .name(trainer.getName())
+                    .name(trainer.getUsername())
                     .age(trainer.getAge())
                     .login(trainer.getLogin())
-                    .loginAndPassword(trainer.getLoginandpassword())
+                    .loginAndPassword(trainer.getPassword())
                     .build();
         } else {
             return TrainerDto.builder()
                     .id(trainer.getId())
-                    .name(trainer.getName())
+                    .name(trainer.getUsername())
                     .age(trainer.getAge())
                     .login(trainer.getLogin())
-                    .loginAndPassword(trainer.getLoginandpassword())
+                    .loginAndPassword(trainer.getPassword())
                     .group(GroupDto.builder()
                             .id(trainer.getGroup().getId())
                             .build())
@@ -154,13 +154,13 @@ public class UserServiceImpl implements UserService {
     public TrainerDto createGroupByTrainer(TrainerDto trainerAuth) {
         Trainer trainer = Trainer.builder()
                 .id(trainerAuth.getId())
-                .name(trainerAuth.getName())
+                .username(trainerAuth.getName())
                 .login(trainerAuth.getLogin())
                 .age(trainerAuth.getAge())
-                .loginandpassword(trainerAuth.getLoginAndPassword())
+                .password(trainerAuth.getLoginAndPassword())
                 .build();
         Group group = Group.builder()
-                .name("Group ".concat(trainer.getName()))
+                .name("Group ".concat(trainer.getUsername()))
                 .trainer(trainer)
                 .themes(new ArrayList<>())
                 .students(new ArrayList<>())
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
         return  allStudentsFromUniversity.stream()
                 .map(student -> StudentDto.builder()
                         .id(student.getId())
-                        .name(student.getName())
+                        .name(student.getUsername())
                         .theme(student.getThemes().stream().filter(theme -> theme.getGroup().getId().equals(trainerDto.getGroup().getId())).map
                                 (theme ->
                                         ThemeDto.builder()

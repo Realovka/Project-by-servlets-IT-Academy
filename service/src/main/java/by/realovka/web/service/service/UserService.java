@@ -13,7 +13,7 @@ public interface UserService {
 
     boolean saveUser(UserDto userDTO);
 
-    User identificationUserByLoginAndPassword(String login, String password);
+//    User identificationUserByLoginAndPassword(String login, String password);
 
     TrainerDto getById(Long id);
 

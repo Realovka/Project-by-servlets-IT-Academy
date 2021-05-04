@@ -5,7 +5,6 @@ import by.realovka.web.dao.model.Role;
 import by.realovka.web.service.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +33,17 @@ public class RegistrationController {
                 .build();
         log.info("User = {}", user);
         if (userService.saveUser(user)) {
-            modelAndView.setViewName("index");
+            modelAndView.setViewName("/index.html");
         } else {
             modelAndView.addObject("massageAboutFailRegistration", "Such user already exists!");
             modelAndView.setViewName("registration");
         }
+        return modelAndView;
+    }
+
+    @PostMapping("/auth")
+    public ModelAndView getPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("mainAdmin");
         return modelAndView;
     }
 
