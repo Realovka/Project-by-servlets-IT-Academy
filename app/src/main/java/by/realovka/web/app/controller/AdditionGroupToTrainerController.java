@@ -1,6 +1,5 @@
 package by.realovka.web.app.controller;
 
-import by.realovka.web.dao.dto.StudentDto;
 import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.service.service.UserService;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Slf4j
 @Controller

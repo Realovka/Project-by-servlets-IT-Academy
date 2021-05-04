@@ -68,7 +68,7 @@ public class TrainerServiceImpl implements TrainerService {
         BigDecimal averageSalary = new BigDecimal(0);
         TrainerWithSalary trainer = new TrainerWithSalary();
         List<Salary> salaries = salaryRepository.findSalariesByTrainerWithSalaryId(trainerId);
-        if(salaries.size() >= months) {
+        if (salaries.size() >= months) {
             Page<Salary> salariesPaging = repository.findByTrainerWithSalaryId(trainerId, PageRequest.of(0, months, Sort.Direction.DESC, "id"));
             BigDecimal sum = new BigDecimal(0);
             for (Salary item : salariesPaging) {
@@ -77,12 +77,11 @@ public class TrainerServiceImpl implements TrainerService {
             averageSalary = sum.divide(BigDecimal.valueOf(months));
             trainer = trainerWithSalaryRepository.findTrainerWithSalariesById(trainerId);
         }
-            TrainerDto trainerDTO = TrainerDto.builder()
-                    .name(trainer.getName())
-                    .averageSalary(averageSalary)
-                    .build();
+        TrainerDto trainerDTO = TrainerDto.builder()
+                .name(trainer.getName())
+                .averageSalary(averageSalary)
+                .build();
 
         return trainerDTO;
     }
-
 }

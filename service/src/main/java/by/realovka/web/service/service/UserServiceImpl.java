@@ -2,9 +2,23 @@
 package by.realovka.web.service.service;
 
 
-import by.realovka.web.dao.dto.*;
-import by.realovka.web.dao.model.*;
-import by.realovka.web.dao.repository.*;
+import by.realovka.web.dao.dto.UserDto;
+import by.realovka.web.dao.dto.TrainerDto;
+import by.realovka.web.dao.dto.ThemeDto;
+import by.realovka.web.dao.dto.StudentDto;
+import by.realovka.web.dao.dto.GroupDto;
+
+import by.realovka.web.dao.model.User;
+import by.realovka.web.dao.model.Student;
+import by.realovka.web.dao.model.Group;
+import by.realovka.web.dao.model.Admin;
+import by.realovka.web.dao.model.Trainer;
+import by.realovka.web.dao.model.Theme;
+import by.realovka.web.dao.repository.ThemeRepository;
+import by.realovka.web.dao.repository.TrainerRepository;
+import by.realovka.web.dao.repository.UserRepository;
+import by.realovka.web.dao.repository.StudentRepository;
+import by.realovka.web.dao.repository.GroupRepository;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +33,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static by.realovka.web.dao.model.Role.*;
+import static by.realovka.web.dao.model.Role.ADMIN;
+import static by.realovka.web.dao.model.Role.TRAINER;
+import static by.realovka.web.dao.model.Role.STUDENT;
 
 @Slf4j
 @Service
@@ -175,7 +191,7 @@ public class UserServiceImpl implements UserService {
         List<Student> allStudentsFromUniversity = studentRepository.findAll();
         Group group = groupRepository.findGroupById(trainerDto.getGroup().getId());
         allStudentsFromUniversity.removeAll(group.getStudents());
-        return  allStudentsFromUniversity.stream()
+        return allStudentsFromUniversity.stream()
                 .map(student -> StudentDto.builder()
                         .id(student.getId())
                         .name(student.getName())
@@ -195,7 +211,8 @@ public class UserServiceImpl implements UserService {
         List<Theme> themesNewStudentInGroup = new ArrayList<>();
         Student student = studentRepository.findStudentById(studentId);
         if (trainer.getGroup().getStudents().size() > 0) {
-            List<Theme> themes = themeRepository.findThemeByGroup_IdAndStudentId(trainerDto.getGroup().getId(), trainerDto.getGroup().getStudents().get(0).getId());
+            List<Theme> themes = themeRepository.findThemeByGroup_IdAndStudentId(trainerDto.getGroup().getId(),
+                    trainerDto.getGroup().getStudents().get(0).getId());
             for (Theme item : themes) {
                 themesNewStudentInGroup.add(Theme.builder()
                         .name(item.getName())
@@ -240,7 +257,6 @@ public class UserServiceImpl implements UserService {
         themeRepository.save(theme);
         return getById(trainerDto.getId());
     }
-
 
     private Trainer getStudentsWithTrainerThemes(Trainer trainer) {
         if (trainer.getGroup() != null) {

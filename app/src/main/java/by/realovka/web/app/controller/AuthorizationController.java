@@ -2,7 +2,6 @@ package by.realovka.web.app.controller;
 
 import by.realovka.web.dao.dto.StudentDto;
 import by.realovka.web.dao.dto.TrainerDto;
-import by.realovka.web.dao.dto.UserDto;
 import by.realovka.web.dao.model.Admin;
 import by.realovka.web.dao.model.Student;
 import by.realovka.web.dao.model.Trainer;
@@ -10,7 +9,6 @@ import by.realovka.web.dao.model.User;
 import by.realovka.web.service.service.TrainerService;
 import by.realovka.web.service.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

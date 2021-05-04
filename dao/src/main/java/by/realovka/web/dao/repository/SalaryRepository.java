@@ -2,8 +2,6 @@ package by.realovka.web.dao.repository;
 
 import by.realovka.web.dao.model.Salary;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 
 import java.util.List;
 

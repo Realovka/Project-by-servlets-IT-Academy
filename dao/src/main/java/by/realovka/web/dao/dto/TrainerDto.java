@@ -1,6 +1,5 @@
 package by.realovka.web.dao.dto;
 
-import by.realovka.web.dao.model.Group;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TrainerDto  {
+public class TrainerDto {
+
     private long id;
     private String name;
     private String login;

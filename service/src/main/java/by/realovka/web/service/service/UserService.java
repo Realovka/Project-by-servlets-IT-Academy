@@ -3,8 +3,6 @@ package by.realovka.web.service.service;
 import by.realovka.web.dao.dto.StudentDto;
 import by.realovka.web.dao.dto.TrainerDto;
 import by.realovka.web.dao.dto.UserDto;
-import by.realovka.web.dao.model.Student;
-import by.realovka.web.dao.model.Trainer;
 import by.realovka.web.dao.model.User;
 
 import java.util.List;

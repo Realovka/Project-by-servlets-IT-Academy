@@ -31,9 +31,14 @@ public class AverageSalaryController {
             modelAndView.setViewName("monthsNumber");
             return modelAndView;
         }
+        if(finishMonthsNumberParse <= 0) {
+            modelAndView.addObject("wrongEnterNumberMonths", "Number of months must be greater than zero");
+            modelAndView.setViewName("monthsNumber");
+            return modelAndView;
+        }
         TrainerDto trainerDTO = trainerService.getAverageSalary(trainerId, finishMonthsNumberParse);
         if(trainerDTO.getAverageSalary().compareTo(new BigDecimal(0)) == 0) {
-            modelAndView.addObject("tooManyMonths", "This trainer has not worked so many months!");
+            modelAndView.addObject("wrongEnterNumberMonths", "This trainer has not worked so many months!");
             modelAndView.setViewName("monthsNumber");
             return modelAndView;
         }
