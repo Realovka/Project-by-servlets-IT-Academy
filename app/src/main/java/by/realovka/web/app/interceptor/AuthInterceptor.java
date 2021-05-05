@@ -17,13 +17,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-        String login = req.getParameter("loginAuthorization");
-        String password = req.getParameter("passwordAuthorization");
+        String login = req.getParameter("loginAuthentication");
+        String password = req.getParameter("passwordAuthentication");
         User user = userService.identificationUserByLoginAndPassword(login, password);
         if (!user.equals(new User())) {
             req.getSession().setAttribute("userAuth", user);
         } else {
-            req.getServletContext().setAttribute("authorizationFail", "Login or password is wrong!");
+            req.getServletContext().setAttribute("authenticationFail", "Login or password is wrong!");
             resp.sendRedirect("index.jsp");
             return false;
         }

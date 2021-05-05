@@ -5,7 +5,7 @@
     <title>Enter Trainers</title>
 </head>
 <body>
-<h2 style="color: mediumblue">All Trainer</h2>
+<h2 style="color: mediumblue">All Trainers</h2>
 <label>If you want to add salary to trainer, click on his name</label>
 <c:if test="${listTrainers.get(0)!=null}">
     <table border="3">
