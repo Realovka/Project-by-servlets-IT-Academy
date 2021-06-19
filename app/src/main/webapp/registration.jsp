@@ -19,6 +19,6 @@
     </select>
     <button type="submit"> Registration</button>
 </form>
-<a href="/index.jsp">Authorisation</a>
+<a href="/pages/index.jsp">Authorisation</a>
 </body>
 </html>

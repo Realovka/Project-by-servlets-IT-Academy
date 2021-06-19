@@ -10,6 +10,10 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 
 @Configuration
@@ -21,11 +25,12 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
         transactionManagerRef = "jpaTransactionManager")
 public class ApplicationConfig {
 
+
     @Bean
     public InternalResourceViewResolver internalResourceViewResolver(@Autowired ApplicationContext applicationContext) {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
         internalResourceViewResolver.setPrefix("/");
-        internalResourceViewResolver.setSuffix(".jsp");
+        internalResourceViewResolver.setSuffix(".html");
         return internalResourceViewResolver;
     }
 }

@@ -33,7 +33,7 @@ public class RegistrationController {
                 .build();
         log.info("User = {}", user);
         if (userService.saveUser(user)) {
-            modelAndView.setViewName("index");
+            modelAndView.setViewName("pages/index");
         } else {
             modelAndView.addObject("massageAboutFailRegistration", "Such user already exists!");
             modelAndView.setViewName("registration");

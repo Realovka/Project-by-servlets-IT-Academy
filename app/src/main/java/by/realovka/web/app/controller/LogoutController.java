@@ -14,7 +14,7 @@ public class LogoutController {
     @GetMapping
     public ModelAndView logout(HttpSession session, ModelAndView modelAndView) {
         session.invalidate();
-        modelAndView.setViewName("index");
+        modelAndView.setViewName("pages/index");
         return modelAndView;
     }
 }
