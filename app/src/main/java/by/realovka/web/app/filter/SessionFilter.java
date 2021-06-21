@@ -21,11 +21,11 @@ public class SessionFilter extends UtilFilter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
         if (session.isNew()) {
-            req.getRequestDispatcher("home").include(request, response);
+            req.getRequestDispatcher("home.jsp").forward(request, response);
         } else {
             User auth = (User) session.getAttribute("userAuth");
             if (auth instanceof Admin) {
-                request.getRequestDispatcher("/getAdminMainPage").forward(request, response);
+                req.getRequestDispatcher("/getAdminMainPage").forward(request, response);
             } else {
                 if (auth instanceof Student) {
                     request.getRequestDispatcher("/getMainStudentPage").forward(request, response);
